@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Orçamentos – Insufláveis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default"> 
+    <meta name="apple-mobile-web-app-title" content="Orçamentos">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png"> 
+    <meta name="theme-color" content="#007bff"/>
+
+    <style>
+        :root {
+            --green: #4CAF50;
+            --red: #D32F2F;
+            --grey: #5F6368;
+            --blue: #005A9C;
+            --light-grey: #F5F5F5;
+            --dark-grey: #202124;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Modernized font stack */
+            background: #f7f9fc; /* Slightly lighter, cooler background */
+            color: var(--dark-grey);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
+        .password-section {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        .password-section h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--dark-grey);
+        }
+        .password-section input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        .password-section button {
+            background: var(--blue);
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .password-section button:hover {
+            background: #004080;
+        }
+        .password-error {
+            color: var(--red);
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .container {
+            max-width: 900px; 
+            margin: 20px auto; 
+            background: #fff;
+            padding: 35px; /* Increased padding */
+            border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07); /* Softer shadow */
+            display: none; 
+        }
+        h1 {
+            text-align: center;
+            margin: 0 0 30px; 
+            color: var(--dark-grey);
+            font-size: 2em; 
+            font-weight: 600;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Standardized gap */
+            margin-bottom: 20px; /* Standardized margin */
+            align-items: flex-end; /* Align field groups by their bottom edge */
+        }
+        .row.options-row { 
+            gap: 20px; 
+            align-items: center;
+        }
+
+        .field-group { 
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 calc(50% - 10px); /* Retaining 50% basis for two-column, -10px for half of the gap */
+            min-width: 150px;
+            position: relative; /* Needed for absolute positioning of suggestions */
+        }
+        .field-group.full-width {
+            flex-basis: 100%;
+        }
+         .field-group-inline { 
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 calc(33.333% - 10px); 
+            min-width: 100px;
+        }
+
+
+        label {
+            font-size: 0.9em; /* Slightly smaller for a cleaner look */
+            display: flex;
+            flex-direction: column;
+            color: #4a5568; /* Softer label color */
+            font-weight: 500;
+            margin-bottom: 6px; /* Increased space between label and input */
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="time"], 
+        select { 
+            padding: 12px; /* Increased padding */
+            border: 1px solid #dfe1e5; /* Lighter border */
+            border-radius: 6px; 
+            width: 100%;
+            font-size: 0.95em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: #fff; 
+            appearance: none; /* Remove default system appearance for select for more control */
+        }
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23a0aec0'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.25em 1.25em;
+            padding-right: 2.5rem; /* Make space for custom arrow */
+        }
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        select:focus { 
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(0, 90, 156, 0.15); /* More subtle focus shadow */
+            outline: none;
+        }
+        
+        .checkbox-label { 
+            flex-direction: row !important; 
+            align-items: center !important;
+            gap: 8px !important; 
+            font-size: 0.9em !important; 
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            margin-bottom: 0 !important; 
+            flex-grow: 0 !important; 
+            flex-shrink: 0;
+            white-space: nowrap; 
+        }
+        input[type="checkbox"] { 
+            width: 1.1em; 
+            height: 1.1em;
+            margin-top: 0; 
+            accent-color: var(--blue); 
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px; 
+            margin-top: 25px;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: stretch;
+        }
+        .export-group { 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: nowrap; 
+            flex: 0 1 auto; 
+        }
+        button {
+            flex: 0 1 auto;
+            padding: 9px 16px;
+            font-size: 0.95em;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            min-width: 120px;
+            transition: background-color 0.2s ease, transform 0.1s ease; 
+        }
+        button:active {
+            transform: scale(0.97); 
+        }
+        .add {
+            background: var(--green);
+            color: #fff;
+        }
+        .add:hover {
+            background: #388E3C;
+        }
+        .reset {
+            background: var(--grey);
+            color: #fff;
+        }
+        .reset:hover {
+            background: #424549;
+        }
+        .export {
+            background: var(--blue); 
+            color: #fff;
+        }
+        .export:hover {
+            background: #004080;
+        }
+        .save, .load {
+            background: var(--grey);
+            color: #fff;
+        }
+        .save:hover, .load:hover {
+            background: #424549;
+        }
+        .item {
+            background: var(--light-grey); 
+            padding: 20px; 
+            margin-bottom: 20px;
+            border-radius: 8px;
+            position: relative;
+            padding-top: 50px; 
+            border: 1px solid #e2e8f0; /* Lighter item border */
+        }
+        .item-section-title {
+            font-size: 0.85em;
+            font-weight: 500;
+            color: var(--grey);
+            margin-top: 15px;
+            margin-bottom: 5px;
+            text-transform: none;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 3px;
+        }
+        .item-options-container { 
+            display: flex; 
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 6px;
+        }
+        .item-options-row {
+            display: flex;
+        }
+        .item-options-row .field-group, .item-options-row .field-group-inline {
+             flex: 1 1 calc(50% - 5px); 
+            min-width: 130px;
+        }
+         .item-monitor-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center; 
+            margin-top: 10px;
+        }
+        .item-monitor-options .field-group {
+            min-width: 120px; 
+        }
+        .item-equip-timing-options {
+            display: none; 
+            flex-wrap: wrap;
+            gap: 10px; 
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e0e0e0; 
+            border-radius: 6px;
+        }
+
+        .remove {
+            position: absolute;
+            top: 15px; 
+            right: 15px;
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 5px 8px; 
+            border-radius: 4px; 
+            cursor: pointer;
+            z-index: 10;
+            font-weight: bold;
+            line-height: 1; 
+            font-size: 0.9em; 
+            transition: background-color 0.2s ease;
+        }
+        .remove:hover {
+            background: #C62828;
+        }
+        .output {
+            font-size: 0.95em; 
+            margin-top: 15px;
+            white-space: pre-line;
+            background-color: #e0e7ff; 
+            padding: 10px;
+            border-radius: 6px;
+            color: #343a40;
+            border-left: 4px solid var(--blue); 
+        }
+        .summary {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            font-weight: 500; 
+            margin-top: 25px;
+            font-size: 1em; 
+            white-space: pre-line;
+            border: 1px solid #d6d8db;
+        }
+        .summary p { 
+            margin: 8px 0;
+        }
+        .summary span { 
+            font-weight: bold;
+            color: var(--dark-grey);
+        }
+        .summary .discount-line { 
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+        }
+         .summary .grand-total {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #bbb; 
+            font-size: 0.95em; 
+        }
+        .summary .grand-total span {
+            color: var(--dark-grey); /* Changed from var(--green) */
+            font-size: 1.1em; 
+        }
+        small {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+
+   @media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    h1 {
+        font-size: 1.8em;
+    }
+    .buttons { /* Adicionada a propriedade flex-wrap */
+        flex-wrap: wrap;
+    }
+    .buttons button, .export-group { /* Esta regra existente agora funcionará como esperado para empilhar */
+        flex: 1 1 100%;
+    }
+    .buttons .export-group { /* Modificado para incluir flex-wrap */
+        justify-content: center;
+        flex-wrap: wrap; /* Adicionado para permitir que o botão e o label dentro dele possam quebrar linha */
+    }
+    .export-group .checkbox-label { /* Modificado para incluir white-space */
+        margin-top: 10px;
+        white-space: normal; /* Adicionado para permitir que o texto do label quebre linha */
+        /* Opcional: Se quiser que o label ocupe toda a largura abaixo do botão de exportar: */
+        /* flex-basis: 100%; */
+        /* text-align: center; */
+    }
+    .field-group,
+    .item-options-row .field-group,
+    .item-options-row .field-group-inline,
+    .item-equip-timing-options .field-group-inline {
+        flex-basis: 100% !important;
+        min-width: unset !important;
+    }
+}
+
+        /* START - PRINT STYLES */
+        @media print { 
+            html, body {
+                font-size: 10pt; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
+                margin: 0; 
+                padding: 0;
+                height: auto !important;
+                overflow: visible !important;
+            } 
+            .export-container { 
+                box-shadow: none; 
+                border: none;
+                width: 180mm;
+                margin: 20mm auto; 
+                padding: 10mm; 
+                background-color: #fff !important; 
+                max-width: none; 
+                height: auto !important;
+                overflow: visible !important;
+                page-break-inside: avoid !important;
+            }
+            .equipment-catalog-section { 
+                page-break-after: auto; 
+                page-break-inside: avoid !important;
+            } 
+            .equipment-detail-item-wrapper {
+                page-break-after: auto !important; 
+                page-break-inside: avoid !important; 
+                margin-bottom: 10mm; 
+            }
+            .equipment-detail-item-wrapper:last-of-type {
+                page-break-after: auto; 
+            }
+            .equipment-detail-item {
+                border-bottom: 1px dotted #eee; 
+            }
+            .equipment-detail-image-column img {
+                max-width: 100%;
+                max-height: 50mm;
+            }
+            .equipment-detail-info-column h2 {
+                 font-size: 13pt;
+            }
+            .equipment-detail-info-column .description {
+                font-size: 9pt;
+            }
+            .summary-table-wrapper { 
+                page-break-before: auto !important; 
+            }
+            table { font-size: 8pt; }
+            th, td { padding: 4px 6px; }
+            .summary-section { font-size: 0.9em; page-break-inside: avoid !important; }
+            .summary-section .grand-total-final { font-size: 0.95em; color: #333 !important; }
+            .summary-section .grand-total-final strong { color: #333 !important; } 
+            .no-print { display: none !important; } 
+        }
+        /* END - PRINT STYLES */
+
+.autocomplete-suggestions {
+    border: 1px solid #dfe1e5;
+    border-top: none;
+    max-height: 150px; /* Limit height and make scrollable */
+    overflow-y: auto;
+    position: absolute;
+    background-color: #fff;
+    z-index: 1000; /* Ensure it's on top */
+    width: 100%; /* Will be adjusted by JS to match input if necessary */
+    box-sizing: border-box;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestion-item strong { /* For highlighting matched part */
+    font-weight: bold;
+}
+
+.payment-options-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 20px; /* Same gap as other .row elements */
+    margin-bottom: 20px; /* Same margin as other .row elements */
+    align-items: flex-start; /* Align the flex items (sections) to the top */
+}
+
+.payment-condition-section,
+.payment-method-section {
+    flex: 1 1 calc(50% - 10px); /* Each takes up half the space minus gap adjustment */
+    min-width: 300px; /* Minimum width before wrapping */
+    margin-bottom: 0; /* Remove individual bottom margin as container has it */
+}
+
+/* Adjustments for smaller screens if the above causes issues */
+@media (max-width: 768px) { /* Or a suitable breakpoint */
+    .payment-condition-section,
+    .payment-method-section {
+        flex-basis: 100%; /* Stack them on smaller screens */
+        min-width: unset;
+    }
+}
+
+/* Style for radio button labels to be inline */
+.radio-label {
+    display: flex !important; /* Override general label if necessary */
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important; /* Similar to checkbox-label */
+    font-size: 0.9em !important; /* Consistent font size */
+    font-weight: normal !important; /* Radio labels are typically normal weight */
+    margin-bottom: 5px !important; /* Spacing between radio options */
+    cursor: pointer !important;
+}
+
+/* Ensure radio inputs themselves don't cause layout shifts if they have margin/padding */
+.radio-label input[type="radio"] {
+    margin-top: 0 !important; /* Align with text */
+    accent-color: var(--blue);
+    cursor: pointer;
+}
+
+.section-hidden {
+    display: none !important;
+}
+
+    </style>
+</head>
+<body>
+    <div id="passwordSection" class="password-section">
+        <h2>Acesso à Calculadora</h2>
+        <input type="password" id="passwordInput" placeholder="Senha">
+        <button onclick="checkPassword()">Entrar</button>
+        <p id="passwordError" class="password-error" style="display:none;">Senha incorreta!</p>
+    </div>
+
+    <div id="appContainer" class="container" style="display:none;"> <h1>Calculadora de Orçamentos</h1>
+        <div class="row">
+            <div class="field-group">
+                <label for="clientName">Nome do Cliente:</label>
+                <input type="text" id="clientName" placeholder="Opcional">
+            </div>
+            <div class="field-group">
+                <label for="sellerName">Nome do Vendedor:</label>
+                <input type="text" id="sellerName" placeholder="Opcional (ex: Armando Alves)">
+            </div>
+        </div>
+        <div class="row">
+            <div class="field-group"><label for="fromDate">De (Global):</label><input type="date" id="fromDate"></div>
+            <div class="field-group"><label for="toDate">Até (Global):</label><input type="date" id="toDate"></div>
+        </div>
+        <div class="row">
+            <div class="field-group"><label for="fromTime">Hora Início (Global):</label><input type="time" id="fromTime"></div>
+            <div class="field-group"><label for="toTime">Hora Fim (Global):</label><input type="time" id="toTime"></div>
+        </div>
+        <div class="row options-row"> 
+            <label class="checkbox-label"><input type="checkbox" id="globalDatesApply" checked> Datas Glob.</label>
+            <label class="checkbox-label"><input type="checkbox" id="globalTimesApply" checked> Horários Glob.</label>
+            <label class="checkbox-label"><input type="checkbox" id="iva"> S/ IVA</label>
+        </div>
+        <div id="items">
+            </div>
+        
+        <div class="row">
+            <div class="field-group"><label for="discount">Desconto (%)<small>(aplicável apenas ao valor dos equipamentos)</small></label>
+                <input type="number" id="discount" value="" min="0" max="100" placeholder="0">
+            </div>
+             <div class="field-group"><label for="transportLocation">Localidade Transporte:</label>
+                <select id="transportLocation">
+                </select>
+            </div>
+        </div>
+        <div class="row payment-options-container"> <!-- New wrapper div -->
+            <div class="row options-row additional-options-section payment-condition-section"> <!-- Added payment-condition-section class -->
+                <div class="field-group full-width">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeCondPagamentoExport" checked>
+                        <strong>Incluir Condições de Pagamento no Orçamento?</strong>
+                    </label>
+                    <div id="condicoesPagamentoOptions" style="margin-top: 10px; padding-left: 20px;">
+                        <label class="radio-label"><input type="radio" name="condPagamento" value="50/50" id="condPag5050" checked> 50% na adjudicação</label> <!-- Shortened -->
+                        <label class="radio-label"><input type="radio" name="condPagamento" value="ateMontagem" id="condPagAteMontagem"> Até à montagem</label> <!-- Shortened -->
+                        <label class="radio-label"><input type="radio" name="condPagamento" value="30dias" id="condPag30Dias"> Até 30 dias</label> <!-- Shortened -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row options-row additional-options-section payment-method-section"> <!-- Added payment-method-section class -->
+                <div class="field-group full-width">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeMetPagamentoExport" checked>
+                        <strong>Incluir Métodos de Pagamento no Orçamento?</strong>
+                    </label>
+                    <div id="metodosPagamentoOptions" style="margin-top: 10px; padding-left: 20px;">
+                        <label class="checkbox-label sub-checkbox-label"><input type="checkbox" id="metPagDinheiro" checked> Dinheiro</label> <!-- Shortened -->
+                        <label class="checkbox-label sub-checkbox-label"><input type="checkbox" id="metPagMbway" checked> Mbway</label> <!-- Shortened -->
+                        <label class="checkbox-label sub-checkbox-label"><input type="checkbox" id="metPagCheque" checked> Cheque</label> <!-- Shortened -->
+                        <label class="checkbox-label sub-checkbox-label"><input type="checkbox" id="metPagTransf" checked> Transf. Bancária</label> <!-- Shortened -->
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End of new wrapper div -->
+
+        <div id="summary" class="summary"></div>
+
+        <div class="buttons">
+            <button class="add" onclick="addItem()">Adicionar Item</button>
+            <button class="reset" onclick="resetApp()">Reset</button>
+            <button class="save" onclick="saveQuoteData()">Guardar Orçamento</button>
+            <input type="file" id="loadQuoteFile" accept=".json" style="display: none;" />
+            <button class="load" onclick="document.getElementById('loadQuoteFile').click()">Carregar Orçamento</button>
+            <div class="export-group">
+                <button class="export" onclick="exportQuote()">Exportar Orçamento</button>
+                <label class="checkbox-label" style="margin-left: 5px; font-size: 0.85em !important;">
+                    <input type="checkbox" id="excludeDetailsCheckbox"> Não incluir detalhes
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // console.log("Script da Calculadora Iniciado"); 
+        let idx = 0;
+        const IVA_RATE = 0.23; 
+        const CORRECT_PASSWORD = "Mddkdsds1"; 
+
+        const predefinedPrices = {
+            "Piscina de Bolas": 49, "Mar de Bolas": 89, "Mergulho de Bolas": 249, "Bolobstacle": 299,
+            "Oceano de Bolas": 399, "Casa das Bolas": 399, "Lago de Bolas": 79, "Space Balls": 249,
+            "Slide Ball": 299, "Aquário de Bolas": 449, "Quintinha": 49, "Forty": 79, "Índios": 79,
+            "Aquário": 79, "Kids Park": 89, "Castelinho": 89, "Funny": 89, "Macacada": 99,
+            "Amazónia": 99, "Escorrega das Princesas": 129, "Trono Insuflável": 49, "Jumpy": 79,
+            "Safari Park": 99, "Unicórnio das Princesas": 149, "Palhaços": 69, "Party Clown": 79,
+            "Fundo do Mar": 99, "Dynamickids": 99, "Barco Pirata": 99, "Ilha dos Piratas": 119,
+            "Escorregão": 119, "Aventura no Mar": 129, "Girafa": 139, "Super Obstacle": 139,
+            "T-Rex": 139, "Kids Obstacle": 139, "Fun Island": 159, "Palácio das Princesas": 169,
+            "Jumper": 109, "Egípcio": 119, "Fun Obstacle": 129, "Texas": 139, "Avião": 149,
+            "Ilha dos Flamingos": 149, "Ocean Park": 159, "Space Jump": 179, "Princelândia": 189,
+            "Jungle": 99, "Selva": 139, "Junior Park": 139, "Fortaleza": 149, "Jump n Slide": 159,
+            "Castelo": 159, "Spin Slide": 169, "Fun Gym": 169, "Crazy Obstacle": 179,
+            "Disco Dome": 199, "Vale Encantado": 159, "Double Fun": 159, "Castelo do Dragão": 159,
+            "Ninja": 189, "Coche Encantado das Princesas": 199, "Radical Obstacle": 199,
+            "Submarino": 159, "Panda": 179, "Extreme Obstacle": 199, "Balloon Obstacle": 199,
+            "Navio Piratas das Caraíbas": 239, "Xtreme Park": 249, "Clown Land": 249,
+            "Obstacle Slide": 249, "Tall Slide": 449, "Jangada Slide": 349, "Crazy Train": 349,
+            "Giant Obstacle": 349, "Giant Slide": 359, "Double Slide": 399, "Bamboo": 449,
+            "Little Builders": 449, "Obstacle Run": 199, "Take Down": 199, "Slide": 239,
+            "Paraíso dos Macacos": 349, "Jungle Slide": 359, "Missão a Marte": 389,
+            "Twin Slide": 399, "Run n Slide": 399, "Mega Slide": 449, "Climb n Slide": 449,
+            "Volcano": 499, "Music Land": 559, "Parque Divertido": 599, "Transformer": 599,
+            "Banzai": 699, "Quartel dos Bombeiros": 799, "Polar Express": 799, "Adrenaline": 799,
+            "Colossus": 1299, "Spartan": 199, "Samurai": 199, "Up and Down": 199, "Tropical": 299,
+            "Extreme Slide": 349, "Treasure Slide": 369, "Kraken": 399, "Space X": 499,
+            "Runner": 799, "Kamikaze": 899, "Trampolim": 99, "Touro Mecânico": 299,
+            "Surf Mecânico": 299, "Onda Mecânica": 299, "Airbourne": 299, "BOOT": 299,
+            "Xtreme Challenge": 349, "Cone de Escalada": 379, "Eliminator": 399,
+            "BootCamp (18 metros)": 399, "Dynamicbungee": 449, "Extreme Fun Run": 599,
+            "Bag Jump": 599, "Target Jump": 699, "BootCamp (35 metros)": 799,
+            "Xtreme Jump": 1299, "BootCamp (50 metros)": 1499, "Parede Escalada com Slide": 1699,
+            "BootCamp (75 metros)": 1899, "Circuito Arborismo": 1899, "BootCamp (100 metros)": 2499,
+            "Parede Anti-Gravidade": 189, "Bungee Basket": 249, "Snowboard Mecânico": 299,
+            "Bola Mecânica": 299, "BootCamp (12 metros)": 299, "Bowling Humano": 399, "HOP": 399,
+            "Torre de Escalada": 449, "Boom!": 99, "Ténis de Mesa": 99, "Alley Oop": 149,
+            "Alvo Gigante": 149, "Wakka Wall": 149, "4 em linha": 149, "Golf Shot": 199,
+            "Conjunto 4 Jogos": 249, "Foot Pool": 299, "Mega Buzz": 149, "Twist Air": 89,
+            "Air Ball": 89, "Tiro com Arco": 149, "Tola Toupeira": 199, "Cash Cube": 159,
+            "Ring Toss": 149, "Mesa de Matraquilhos": 79, "Shoot Out": 129, "Golooo!": 129,
+            "Air Football": 149, "Penalti": 199, "Chuto ao Alvo": 199, "Campo de Futebol": 199,
+            "Bubble Football": 199, "Speed Shot": 199, "Matrecos Humanos": 249,
+            "Arena de Futebol": 349, "Foot Bump": 399, "Foot Bump Arena": 599,
+            "Double Penalty": 199, "Futebol de Sabão": 349, "Lutadores de Sumo": 159,
+            "Gladiadores": 159, "Ringue de Box": 199, "Luta de Almofadas": 249,
+            "Guerreiros": 159, "Fun&Cycle": 179, "Circuito Karts": 399, "Circuito F1": 599,
+            "Dynamic Train": 599, "TGV Comboio Eléctrico": 999, "Bouncy Pool": 89,
+            "Aqua Castle": 199, "Rolo": 199, "Dynamicboats": 199, "Piscina 6mx5mx0,65m": 199,
+            "Aqua Slide": 249, "Palm Splash": 249, "Crocodilo": 249, "Barco Capitão Gancho": 249,
+            "Cova dos Piratas": 249, "Piscina 8mx6mx0,65m": 249, "Water House": 299,
+            "Kongro": 299, "Obstacle Splash": 299, "Piscina 10mx8mx0,65m": 349,
+            "Swimming Balls": 349, "Castle Splash": 389, "Paraíso Aquático": 499,
+            "Piscina 12mx10mx0,65m": 499, "Giant Obstacle Splash": 499, "Volcano Splash": 499,
+            "Slip & Splash": 559, "Run n Splash": 599, "Banzai Splash": 899,
+            "Adrenaline Splash": 999, "Ilha do Surf": 1299, "Kamikaze Splash": 1599,
+            "Piscina Gigante": 1899, "Colossus Splash": 1899, "Splash Slide": 179,
+            "Space Splash": 229, "Splash": 249, "Wild Splash": 249, "Shark Splash": 349,
+            "Dunk Tank": 399, "Splash Race": 449, "Slide Splash": 699, "Jungle Splash": 699,
+            "River Run": 1199, 
+            "Ringue de Espuma": 299, "Aqua Foam": 299, "Foam Slide": 349, "Piscina de Espuma": 399,
+            "Foam House": 399, "Castle Foam": 449, "Giant Obstacle Foam": 699, "Volcano Foam": 899,
+            "Banzai Foam": 999, "Wild Foam Splash": 299, "Foam Park": 399, "Slide Foam": 399,
+            "Kongro Foam": 399, "Twin Slide Foam": 499, "Extreme Foam": 599, "Extreme Foam com Bóias": 699,
+            "Run n Foam": 599, "Ilha da Espuma": 1299,
+            "Dynamickids Personalizado": 199, "Jump n Slide Personalizado": 249,
+            "Jumper Personalizado": 199, "Ninja Personalizado": 299, "Submarino Personalizado": 259,
+            "Totem Cónico": 59, "Tenda de Montagem Rápida": 69, "Letras Insufláveis": 89,
+            "Tenda com Laterais": 99, "Totem Iluminado": 99, "Sky Dancer": 99,
+            "Pórtico Iluminado": 129, "Quiosque Insuflável": 159, "Pórtico Meta": 159,
+            "Pórtico Gigante": 229, "Iglo": 239, "Tenda Insuflável": 249,
+            "Balão Personalizado": 249, "Pórtico Complete": 249,
+            "Torre de Escalada Personalizada": 449, "Dynamicbungee Personalizado": 449,
+            "Xtreme Jump Personalizado": 1299, "Globo Personalizado": 1499, "Color Park": 159,
+            "Arco de Balões": 189, "2 Colunas de Balões": 189, "Arco de Flores + 6 Flores": 289,
+            "Gerador": 99, "TV Led 55 com tripé": 159, "Canhão Lança T-Shirts": 159,
+            "Máquina de Fumo": 199, "Canhão de Confettis Pressão de Ar": 269,
+            "Canhão de Confettis Eléctrico": 299, "Canhão de Neve": 299, "Canhão de Espuma": 339,
+            "Tela de Cinema": 349, "Mascotes": 129, "Pinturas Faciais": 199,
+            "Modelagem de Balões": 199, "Origami Colorido": 199, "Crachás": 199,
+            "Faz o teu Slime": 249, "Smart Tattoo": 249, "Penteados Malucos": 299,
+            "Laboratório Divertido": 299, "Kinetic Sand": 299, "Fotos Loucas": 349,
+            "Salão de Beleza": 399, "Algodão Doce": 169, "Pipocas": 169, "Granizados": 199,
+            "Candy Bar": 239, "Crepes": 249, "Gelados": 299, "Pórtico Standar": 189,
+            "FASTER": 199, "Tropical Splash": 349
+        };
+        const MONITOR_BASE_CHARGE_IVA_INCLUSIVE = 89; 
+        const MONITOR_HOURLY_EXTRA_IVA_INCLUSIVE = 19; 
+
+        const transportationFees = {
+            "Nenhuma": 0, 
+            "Amadora": 0, "Lisboa": 0, "Loures": 0, "Cascais": 14.5, "Mafra": 14.5,
+            "Arruda dos Vinhos": 24.5, "Almada": 24.5, "Barreiro": 24.5, "Moita": 24.5,
+            "Montijo": 24.5, "Palmela": 24.5, "Seixal": 24.5, "Azambuja": 34.5,
+            "Alcochete": 34.5, "Alenquer": 39.5, "Cadaval": 39.5, "Lourinhã": 39.5,
+            "Sesimbra": 39.5, "Setúbal": 49.5, "Alcácer do Sal": 89.5, "Grândola": 99.5,
+            "Santiago do Cacém": 99.5, "Sines": 99.5,
+            "Gondomar": 0, "Maia": 0, "Matosinhos": 0, "Porto": 0, "Vila Nova de Gaia": 0,
+            "Espinho": 0, "Valongo": 14.5, "Ovar": 14.5, "Santa Maria da Feira": 14.5,
+            "Vila do Conde": 14.5, "Póvoa de Varzim": 24.5, "Santo Tirso": 24.5, "Trofa": 24.5,
+            "Estarreja": 24.5, "Lousada": 34.5, "Paços de Ferreira": 34.5, "Paredes": 34.5,
+            "Penafiel": 34.5, "Aveiro": 34.5, "Murtosa": 34.5, "São João da Madeira": 34.5,
+            "Felgueiras": 39.5, "Marco de Canaveses": 39.5, "Arouca": 39.5, "Castelo de Paiva": 39.5,
+            "Ílhavo": 39.5, "Oliveira de Azeméis": 39.5, "Oliveira do Bairro": 39.5,
+            "Vale de Cambra": 39.5, "Amarante": 59.5, "Baião": 59.5, "Águeda": 59.5,
+            "Albergaria-a-Velha": 59.5, "Anadia": 59.5, "Mealhada": 59.5, "Sever do Vouga": 59.5,
+            "Vagos": 59.5,
+            "Lagos (Algarve)": 0, "Portimão (Algarve)": 0, "Aljezur (Algarve)": 14.5, "Lagoa (Algarve)": 14.5,
+            "Monchique (Algarve)": 14.5, "Silves (Algarve)": 14.5, "Vila do Bispo (Algarve)": 14.5,
+            "Albufeira (Algarve)": 24.5, "Faro (Algarve)": 24.5, "Loulé (Algarve)": 24.5,
+            "Olhão (Algarve)": 34.5, "São Brás de Alportel (Algarve)": 34.5,
+            "Vila Real de Santo António (Algarve)": 34.5, "Castro Marim (Algarve)": 39.5,
+            "Tavira (Algarve)": 39.5, "Alcoutim (Algarve)": 59.5,
+            "Odemira": 89, "Ourique": 89, "Almodovar": 89, "Aljustrel": 99, "Castro Verde": 99,
+            "Mértola": 119, "Ferreira do Alentejo": 129, "Beja": 129, "Serpa": 129,
+            "Alvito": 139, "Cuba": 139, "Vidigueira": 139, "Moura": 149, "Barrancos": 149,
+            "Évora": 129, "Portalegre": 249, "Santarém": 129, "Leiria": 149, "Castelo Branco": 249,
+            "Coimbra": 149, "Guarda": 249, "Viseu": 199, "Bragança": 249, "Vila Real": 149,
+            "Braga": 89, "Viana do Castelo": 149
+        };
+
+        const equipmentDetails = {
+            "Piscina de Bolas": { description: "Dimensões: C 1.8m x L 1.8m x A 0.4m\nLotação: 4 utilizadores", image_url: "imagens/piscina-de-bolas.png" },
+            "Mar de Bolas": { description: "Dimensões: C 3.5m x L 4m x A 0.8m\nLotação: 8 utilizadores", image_url: "imagens/mar-de-bolas.png" },
+            "Mergulho de Bolas": { description: "Dimensões: C 9.5m x L 4.5m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/mergulho-de-bolas.png" },
+            "Bolobstacle": { description: "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/bolobstacle.png" },
+            "Oceano de Bolas": { description: "Dimensões: C 6m x L 5m x A 0.6m\nLotação: 16 utilizadores", image_url: "imagens/oceano-de-bolas.png" },
+            "Casa das Bolas": { description: "Dimensões: C 7m x L 7m x A 4m\nLotação: 14 utilizadores", image_url: "imagens/casa-das-bolas.png" },
+            "Lago de Bolas": { description: "Dimensões: C 3.5m x L 4m x A 0.8m\nLotação: 8 utilizadores", image_url: "imagens/lago-de-bolas.png" },
+            "Space Balls": { description: "Dimensões: C 5.5m x L 5m x A 3.5m\nLotação: 10 utilizadores", image_url: "imagens/space-balls.png" },
+            "Slide Ball": { description: "Dimensões: C 9,5m x L 3m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/slide-ball.png" },
+            "Aquário de Bolas": { description: "Dimensões: C 3m x L 4.5m x A 3m\nLotação: 2 utilizadores", image_url: "imagens/aquario-de-bolas.png" }, 
+            "Quintinha": { description: "Dimensões: C 2m x L 3m x A 2.4m\nLotação: 4 utilizadores", image_url: "imagens/quintinha.png" },
+            "Forty": { description: "Dimensões: C 3m x L 3.5m x A 2.5m\nLotação: 5 utilizadores", image_url: "imagens/forty.png" },
+            "Índios": { description: "Dimensões: C 3m x L 3,8m x A 2,8m\nLotação: 5 utilizadores", image_url: "imagens/indios.png" }, 
+            "Aquário": { description: "Dimensões: C 3,5m x L 3,5m x A 2,2m\nLotação: 6 utilizadores", image_url: "imagens/aquario.png" }, 
+            "Kids Park": { description: "Dimensões: C 3.5m x L 4m x A 3m\nLotação: 5 utilizadores", image_url: "imagens/kids-park.png" },
+            "Castelinho": { description: "Dimensões: C 3.5m x L 4m x A 3.5m\nLotação: 5 utilizadores", image_url: "imagens/castelinho.png" },
+            "Funny": { description: "Dimensões: C 3.5m x L 3.5m x A 2.5m\nLotação: 7 utilizadores", image_url: "imagens/funny.png" },
+            "Macacada": { description: "Dimensões: C 4m x L 4m x A 4m\nLotação: 7 utilizadores", image_url: "imagens/macacada.png" },
+            "Amazónia": { description: "Dimensões: C 4m x L 4m x A 2.6m\nLotação: 7 utilizadores", image_url: "imagens/amazonia.png" }, 
+            "Escorrega das Princesas": { description: "Dimensões: C 3.5m x L 3.5m x A 2.5m\nLotação: 7 utilizadores", image_url: "imagens/escorrega-das-princesas.png" },
+            "Trono Insuflável": { description: "Dimensões: C 1.2m x L 1m x A 2.5m\nLotação: 1 utilizadores", image_url: "imagens/trono-insuflavel.png" },
+            "Jumpy": { description: "Dimensões: C 3m x L 2m x A 2m\nLotação: 8 utilizadores", image_url: "imagens/jumpy.png" },
+            "Safari Park": { description: "Dimensões: C 4m x L 3.5m x A 3m\nLotação: 7 utilizadores", image_url: "imagens/safari-park.png" },
+            "Unicórnio das Princesas": { description: "Dimensões: C 4m x L 4m x A 3,5m\nLotação: 8 utilizadores", image_url: "imagens/unicornio-das-princesas.png" },
+            "Palhaços": { description: "Dimensões: C 4m x L 3.5m x A 3m\nLotação: 5 utilizadores", image_url: "imagens/palhacos.png" }, 
+            "Party Clown": { description: "Dimensões: C 3m x L 3.8m x A 2.8m\nLotação: 5 utilizadores", image_url: "imagens/party-clown.png" },
+            "Fundo do Mar": { description: "Dimensões: C 3mx L 4mx A 2.7m\nLotação: 7 utilizadores", image_url: "imagens/fundo-do-mar.png" },
+            "Dynamickids": { description: "Dimensões: C 4m x L 4m x A 2.8m\nLotação: 7 utilizadores", image_url: "imagens/dynamickids.png" },
+            "Barco Pirata": { description: "Dimensões: C 6m x L 3m x A 3m\nLotação: 8 utilizadores", image_url: "imagens/barco-pirata.png" },
+            "Ilha dos Piratas": { description: "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores", image_url: "imagens/ilha-dos-piratas.png" },
+            "Escorregão": { description: "Dimensões: C 4m x L 6m x A 3m\nLotação: 10 utilizadores", image_url: "imagens/escorregao.png" }, 
+            "Aventura no Mar": { description: "Dimensões: C 4.5m x L 6m x A 3m\nLotação: 10 utilizadores", image_url: "imagens/aventura-no-mar.png" },
+            "Girafa": { description: "Dimensões: C 5m x L 5,5m x A 5m\nLotação: 10 utilizadores", image_url: "imagens/girafa.png" },
+            "Super Obstacle": { description: "Dimensões: C 6m x L 3m x A 2,5m\nLotação: 6 utilizadores", image_url: "imagens/super-obstacle.png" },
+            "T-Rex": { description: "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 9 utilizadores", image_url: "imagens/t-rex.png" },
+            "Kids Obstacle": { description: "Dimensões: C 6m x L 2,5m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/kids-obstacle.png" },
+            "Fun Island": { description: "Dimensões: C 6m x L 6m x A 3,5m\nLotação: 12 utilizadores", image_url: "imagens/fun-island.png" },
+            "Palácio das Princesas": { description: "Dimensões: C 5,5m x L 5,5m x A 6m\nLotação: 8 utilizadores", image_url: "imagens/palacio-das-princesas.png" }, 
+            "Jumper": { description: "Dimensões: C 5.5m x L 4.5m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/jumper.png" },
+            "Egípcio": { description: "Dimensões: C 4m x L 5m x A 3.5m\nLotação: 7 utilizadores", image_url: "imagens/egipcio.png" }, 
+            "Fun Obstacle": { description: "Dimensões: C 5m x L 3m x A 2,8m\nLotação: 8 utilizadores", image_url: "imagens/fun-obstacle.png" },
+            "Texas": { description: "Dimensões: C 5m x L 5.5m x A 4m\nLotação: 10 utilizadores", image_url: "imagens/texas.png" },
+            "Avião": { description: "Dimensões: C 6m x L 5m x A 3,5m\nLotação: 8 utilizadores", image_url: "imagens/aviao.png" }, 
+            "Ilha dos Flamingos": { description: "Dimensões: C 5m x L 5m x A 3,5m\nLotação: 10 utilizadores", image_url: "imagens/ilha-dos-flamingos.png" },
+            "Ocean Park": { description: "Dimensões: C 5m x L 5,5m x A 3,5m\nLotação: 10 utilizadores", image_url: "imagens/ocean-park.png" },
+            "Space Jump": { description: "Dimensões: C 5.5m x L 5m x A 3,5m\nLotação: 10 utilizadores", image_url: "imagens/space-jump.png" },
+            "Princelândia": { description: "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores", image_url: "imagens/princelandia.png" }, 
+            "Jungle": { description: "Dimensões: C 4m x L 3.5m x A 2.2m\nLotação: 7 utilizadores", image_url: "imagens/jungle.png" },
+            "Selva": { description: "Dimensões: C 5m x L 4m x A 3,9m\nLotação: 8 utilizadores", image_url: "imagens/selva.png" },
+            "Junior Park": { description: "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores", image_url: "imagens/junior-park.png" },
+            "Fortaleza": { description: "Dimensões: C 5m x L 7m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/fortaleza.png" },
+            "Jump n Slide": { description: "Dimensões: C 4m x L 7m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/jump-n-slide.png" },
+            "Castelo": { description: "Dimensões: C 5m x L 8.5m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/castelo.png" },
+            "Spin Slide": { description: "Dimensões: C 7m x L 6m x A 5m\nLotação: 10 utilizadores", image_url: "imagens/spin-slide.png" },
+            "Fun Gym": { description: "Dimensões: C 6m x L 5m x A 3.5m\nLotação: 12 utilizadores", image_url: "imagens/fun-gym.png" },
+            "Crazy Obstacle": { description: "Dimensões: C 8m x L 3m x A 3m\nLotação: 6 utilizadores", image_url: "imagens/crazy-obstacle.png" },
+            "Disco Dome": { description: "Dimensões: C 6m x L 5m x A 4,2m\nLotação: 12 utilizadores", image_url: "imagens/disco-dome.png" },
+            "Vale Encantado": { description: "Dimensões: C 5,5m x L 5,5m x A 5m\nLotação: 10 utilizadores", image_url: "imagens/vale-encantado.png" },
+            "Double Fun": { description: "Dimensões: C 6,5m x L 4,5m x A 3m\nLotação: 10 utilizadores", image_url: "imagens/double-fun.png" },
+            "Castelo do Dragão": { description: "Dimensões: C 6m x L 5m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/castelo_do_dragão.png" },
+            "Ninja": { description: "Dimensões: C 5m x L 6m x A 3,5m\nLotação: 12 utilizadores", image_url: "imagens/ninja.png" },
+            "Coche Encantado das Princesas": { description: "Dimensões: C 4m x L 6m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/coche_encantado_das_princesas.png" },
+            "Radical Obstacle": { description: "Dimensões: C 8,5m x L 4m x A 4,5m\nLotação: 10 utilizadores", image_url: "imagens/radical_obstacle.png" },
+            "Submarino": { description: "Dimensões: C 5,5m x L 5,5m x A 5,5m\nLotação: 12 utilizadores", image_url: "imagens/submarino.png" },
+            "Panda": { description: "Dimensões: C 6m x L 7m x A 5,5m\nLotação: 12 utilizadores", image_url: "imagens/panda.png" },
+            "Extreme Obstacle": { description: "Dimensões: C 12m x L 3m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/extreme-obstacle.png" },
+            "Balloon Obstacle": { description: "Dimensões: C 3.5m x L 12m x A 3.5m\nLotação: 8 utilizadores", image_url: "imagens/balloon-obstacle.png" },
+            "Navio Piratas das Caraíbas": { description: "Dimensões: C 8,5m x L 5m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/navio-piratas-das-caraibas.png" },
+            "Xtreme Park": { description: "Dimensões: C 9m x L 5m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/xtreme-park.png" },
+            "Clown Land": { description: "Dimensões: C 7m x L 5m x A 4m\nLotação: 16 utilizadores", image_url: "imagens/clown-land.png" },
+            "Obstacle Slide": { description: "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/obstacle-slide.png" },
+            "Tall Slide": { description: "Dimensões: C 12m x L 5m x A 9m\nLotação: 4 utilizadores", image_url: "imagens/tall-slide.png" },
+            "Jangada Slide": { description: "Dimensões: C 8m x L 6,5m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/jangada-slide.png" },
+            "Crazy Train": { description: "Dimensões: C 5m x L 14m x A 3m\nLotação: 10 utilizadores", image_url: "imagens/crazy-train.png" },
+            "Giant Obstacle": { description: "Dimensões: C 18m x L 4m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/giant-obstacle.png" },
+            "Giant Slide": { description: "Dimensões: C 9m x L 6m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/giant-slide.png" },
+            "Double Slide": { description: "Dimensões: C 9m x L 6m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/double-slide.png" },
+            "Bamboo": { description: "Dimensões: C 8m x L 8,5m x A 8m\nLotação: 16 utilizadores", image_url: "imagens/bamboo.png" },
+            "Little Builders": { description: "Dimensões: C 10m x L 5m x A 9m\nLotação: 16 utilizadores", image_url: "imagens/little-builders.png" },
+            "Obstacle Run": { description: "Dimensões: C 11m x L 3,5m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/obstacle-run.png" },
+            "Take Down": { description: "Dimensões: C 11m x L 3,5m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/take-down.png" },
+            "Slide": { description: "Dimensões: C 6m x L 3m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/slide.png" },
+            "Paraíso dos Macacos": { description: "Dimensões: C 7m x L 8m x A 8m\nLotação: 16 utilizadores", image_url: "imagens/paraiso_dos_macacos.png" },
+            "Jungle Slide": { description: "Dimensões: C 7m x L 11m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/jungle-slide.png" },
+            "Missão a Marte": { description: "Dimensões: C 12m x L 6m x A 7m\nLotação: 18 utilizadores", image_url: "imagens/missao_a_marte.png" },
+            "Twin Slide": { description: "Dimensões: C 11,5m x L 7m x A 7m\nLotação: 4 utilizadores", image_url: "imagens/twin-slide.png" },
+            "Run n Slide": { description: "Dimensões: C 11m x L 5,5m x A 6m\nLotação: 8 utilizadores", image_url: "imagens/run-n-slide.png" },
+            "Mega Slide": { description: "Dimensões: C 15m x L 7m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/mega-slide.png" },
+            "Climb n Slide": { description: "Dimensões: C 11m x L 5,5m x A 6m\nLotação: 8 utilizadores", image_url: "imagens/climb-n-slide.png" },
+            "Volcano": { description: "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores", image_url: "imagens/volcano.png" },
+            "Music Land": { description: "Dimensões: C 12m x L 7m x A 4,5m\nLotação: 20 utilizadores", image_url: "imagens/music-land.png" },
+            "Parque Divertido": { description: "Dimensões: C 12m x L 9m x A 5m\nLotação: 24 utilizadores", image_url: "imagens/parque-divertido.png" },
+            "Transformer": { description: "Dimensões: C 12m x L 8m x A 6,5m\nLotação: 22 utilizadores", image_url: "imagens/transformer.png" },
+            "Banzai": { description: "Dimensões: C 26m x L 7m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/banzai.png" },
+            "Quartel dos Bombeiros": { description: "Dimensões: C 11m x L 11m x A 7,5m\nLotação: 30 utilizadores", image_url: "imagens/quartel_dos_bombeiros.png" },
+            "Polar Express": { description: "Dimensões: C 20m x L 4m x A 4,5m\nLotação: 18 utilizadores", image_url: "imagens/polar-express.png" },
+            "Adrenaline": { description: "Dimensões: C 21m x L 5.5m x A 6m\nLotação: 16 utilizadores", image_url: "imagens/adrenaline.png" },
+            "Colossus": { description: "Dimensões: C 30m x L 8m x A 12m\nLotação: 8 utilizadores", image_url: "imagens/colossus.png" },
+            "Spartan": { description: "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/spartan.png" },
+            "Samurai": { description: "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/samurai.png" },
+            "Up and Down": { description: "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/up-and-down.png" },
+            "Tropical": { description: "Dimensões: C 4m x L 4,5m x A 3,5m\nLotação: 16 utilizadores", image_url: "imagens/tropical.png" },
+            "Extreme Slide": { description: "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/extreme-slide.png" },
+            "Treasure Slide": { description: "Dimensões: C 9m x L 6m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/treasure-slide.png" },
+            "Kraken": { description: "Dimensões: C 10m x L 7m x A 6,5m\nLotação: 16 utilizadores", image_url: "imagens/kraken.png" },
+            "Space X": { description: "Dimensões: C 6m x L 8m x A 6m\nLotação: 18 utilizadores", image_url: "imagens/space-x.png" },
+            "Runner": { description: "Dimensões: C 25m x L 9m x A 4,5m\nLotação: 20 utilizadores", image_url: "imagens/runner.png" },
+            "Kamikaze": { description: "Dimensões: C 30m x L 10m x A 10m\nLotação: 4 utilizadores", image_url: "imagens/kamikaze.png" },
+            "Trampolim": { description: "Dimensões: C 4,3m x L 4,3m x A 2,7m\nLotação: 4 utilizadores", image_url: "imagens/trampolim.png" },
+            "Touro Mecânico": { description: "Dimensões: C 5m x L 5m x A 2m\nLotação: 1 utilizador", image_url: "imagens/touro-mecanico.png" },
+            "Surf Mecânico": { description: "Dimensões: C 5m x L 5m x A 2m\nLotação: 1 utilizadores", image_url: "imagens/surf-mecanico.png" },
+            "Onda Mecânica": { description: "Dimensões: C 5.5m x L 5.5m x A 5m\nLotação: 1 utilizadores", image_url: "imagens/onda-mecanica.png" },
+            "Airbourne": { description: "Dimensões: C 4,5m x L 4,5m x A 6,5m\nLotação: 1 utilizadores", image_url: "imagens/airbourne.png" },
+            "BOOT": { description: "Dimensões: C 12m x L 3.5m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/boot.png" },
+            "Xtreme Challenge": { description: "Dimensões: C 8m x L 8,5m x A 5,5m\nLotação: 8 utilizadores", image_url: "imagens/xtreme-challenge.png" },
+            "Cone de Escalada": { description: "Dimensões: C 8m x L 8m x A 6m\nLotação: 2 utilizadores", image_url: "imagens/cone-de-escalada.png" },
+            "Eliminator": { description: "Dimensões: C 7m x L 7m x A 2m\nLotação: 6 utilizadores", image_url: "imagens/eliminator.png" },
+            "BootCamp (18 metros)": { description: "Dimensões: C 18m x L 3.5m x A 4.5m\nLotação: 12 utilizadores", image_url: "imagens/bootcamp-18-metros.png" },
+            "Dynamicbungee": { description: "Dimensões: C 9m x L 9m x A 7m\nLotação: 4 utilizadores", image_url: "imagens/dynamicbungee.png" },
+            "Extreme Fun Run": { description: "Dimensões: C 15.5m x L 7m x A 4.5m\nLotação: 20 utilizadores", image_url: "imagens/extreme-fun-run.png" },
+            "Bag Jump": { description: "Dimensões: C 9m x L 10m x A 2m\nLotação: 1 utilizadores", image_url: "imagens/bag-jump.png" },
+            "Target Jump": { description: "Dimensões: C 8,5m x L 6,5m x A 7m\nLotação: 6 utilizadores", image_url: "imagens/target-jump.png" },
+            "BootCamp (35 metros)": { description: "Dimensões: C 35m x L 3.5m x A 4.5m\nLotação: 24 utilizadores", image_url: "imagens/bootcamp-35-metros.png" },
+            "Xtreme Jump": { description: "Dimensões: C 20m x L 10m x A 9m\nLotação: 6 utilizadores", image_url: "imagens/xtreme-jump.png" },
+            "BootCamp (50 metros)": { description: "Dimensões: C 50m x L 3.5m x A 4.5m\nLotação: 36 utilizadores", image_url: "imagens/bootcamp-50-metros.png" },
+            "Parede Escalada com Slide": { description: "Dimensões: C 50m x L 3.5m x A 8m\nLotação: 5 utilizadores", image_url: "imagens/parede-escalada-com-slide.png" },
+            "BootCamp (75 metros)": { description: "Dimensões: C 75m x L 3.5m x A 4.5m\nLotação: 45 utilizadores", image_url: "imagens/bootcamp-75-metros.png" },
+            "Circuito Arborismo": { description: "Dimensões: C 12m x L 4m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/circuito-arborismo.png" },
+            "BootCamp (100 metros)": { description: "Dimensões: C 100m x L 3.5m x A 4.5m\nLotação: 60 utlizadores", image_url: "imagens/bootcamp-100-metros.png" }, 
+            "Parede Anti-Gravidade": { description: "Dimensões: C 8m x L 4m x A 4m\nLotação: 2 utilizadores", image_url: "imagens/parede-anti-gravidade.png" },
+            "Bungee Basket": { description: "Dimensões: C 11m x L 4,5m x A 2,5m\nLotação: 3 utilizadores", image_url: "imagens/bungee-basket.png" },
+            "Snowboard Mecânico": { description: "Dimensões: C 5.5m x L 5.5m x A 5m\nLotação: 1 utilizadores", image_url: "imagens/snowboard-mecanico.png" },
+            "Bola Mecânica": { description: "Dimensões: C 6.5m x L 6.5m x A 2m\nLotação: 1 utilizadores", image_url: "imagens/bola-mecanica.png" },
+            "BootCamp (12 metros)": { description: "Dimensões: C 12m x L 3.5m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/bootcamp-12-metros.png" },
+            "Bowling Humano": { description: "Dimensões: C 10m x L 4.5m x A 2.1m\nLotação: 1 utilizadores", image_url: "imagens/bowling-humano.png" },
+            "HOP": { description: "Dimensões: C 17m x L 5m x A 5.5m\nLotação: 4 utilizadores", image_url: "imagens/hop.png" },
+            "Torre de Escalada": { description: "Dimensões: C 8m x L 8m x A 8m\nLotação: 2 utilizadores", image_url: "imagens/torre-de-escalada.png" },
+            "Boom!": { description: "Dimensões: C 2m x L 5m x A 1.5m\nLotação: 2 utilizadores", image_url: "imagens/boom!.png" },
+            "Ténis de Mesa": { description: "Dimensões: C 3,5m x L 1,6m x A 0,75m\nLotação: 4 utilizadores", image_url: "imagens/tenis-de-mesa.png" },
+            "Alley Oop": { description: "Dimensões: C 2m x L 3,1m x A 4m\nLotação: 3 utilizadores", image_url: "imagens/alley-oop.png" },
+            "Alvo Gigante": { description: "Dimensões: C 2.5m x L 3m x A 3m\nLotação: 1 utilizadores", image_url: "imagens/alvo-gigante.png" },
+            "Wakka Wall": { description: "Dimensões: C 2,6m x L 4m x A 2,1m\nLotação: 2 utilizadores", image_url: "imagens/wakka-wall.png" },
+            "4 em linha": { description: "Dimensões: C 2,5m x L 4m x A 2,8m\nLotação: 2 utilizadores", image_url: "imagens/4-em-linha.png" },
+            "Golf Shot": { description: "Dimensões: C 4m x L 3m x A 3.5m\nLotação: 1 utilizadores", image_url: "imagens/golf-shot.png" },
+            "Conjunto 4 Jogos": { description: "Dimensões: C 6m x L 1.5m x A 2m\nLotação: 4 utilizadores", image_url: "imagens/conjunto-4-jogos.png" },
+            "Foot Pool": { description: "Dimensões: C 9m x L 5,5m x A 1m\nLotação: 2 utilizadores", image_url: "imagens/foot-pool.png" },
+            "Mega Buzz": { description: "Dimensões: C 0,5m x L 3,5m x A 1,5m\nLotação: 1 utilizadores", image_url: "imagens/mega-buzz.png" },
+            "Twist Air": { description: "Dimensões: C 1.2m x L 1.2m x A 1.75m\nLotação: 2 utilizadores", image_url: "imagens/twist-air.png" },
+            "Air Ball": { description: "Dimensões: C 4.5m x L 1.5m x A 1.5m\nLotação: 6 utilizadores", image_url: "imagens/air-ball.png" },
+            "Tiro com Arco": { description: "Dimensões: C 3m x L 2m x A 2.5m\nLotação: 2 utilizadores", image_url: "imagens/tiro-com-arco.png" },
+            "Tola Toupeira": { description: "Dimensões: C 5m x L 5m x A 2.5m\nLotação: 7 utilizadores", image_url: "imagens/tola-toupeira.png" },
+            "Cash Cube": { description: "Dimensões: C 1.5m x L 1.5m x A 2.2m\nLotação: 1 utilizador", image_url: "imagens/cash-cube.png" },
+            "Ring Toss": { description: "Dimensões: C 4m x L 2,5m x A 2,8m\nLotação: 2 utilizadores", image_url: "imagens/ring-toss.png" },
+            "Mesa de Matraquilhos": { description: "Dimensões: C 1.5m x L 1.3m x A 0.9m\nLotação: 4 utilizadores", image_url: "imagens/mesa-de-matraquilhos.png" },
+            "Shoot Out": { description: "Dimensões: C 4.5m x L 2.5m x A 3.5m\nLotação: 2 utilizadores", image_url: "imagens/shoot-out.png" },
+            "Golooo!": { description: "Dimensões: C 4m x L 2m x A 2m\nLotação: 2 utilizadores", image_url: "imagens/golooo!.png" },
+            "Air Football": { description: "Dimensões: C 4.5m x L 2.4m x A 1.2m\nLotação: 6 utilizadores", image_url: "imagens/air-football.png" },
+            "Penalti": { description: "Dimensões: C 7m x L 4m x A 2.5m\nLotação: 2 utilizadores", image_url: "imagens/penalti.png" },
+            "Chuto ao Alvo": { description: "Dimensões: C 4m x L 2.5m x A 5m\nLotação: 1 utilizadores", image_url: "imagens/chuto-ao-alvo.png" },
+            "Campo de Futebol": { description: "Dimensões: C 13m x L 7m x A 2.4m\nLotação: 10 utilizadores", image_url: "imagens/campo-de-futebol.png" },
+            "Bubble Football": { description: "Dimensões: a partir de 50m2\nLotação: 6 utilizadores", image_url: "imagens/bubble-football.png" },
+            "Speed Shot": { description: "Dimensões: C 4m x L 7m x A 2.4m\nLotação: 1 utilizadores", image_url: "imagens/speed-shot.png" },
+            "Matrecos Humanos": { description: "Dimensões: C 13.5m x L 6m x A 2m\nLotação: 12 utilizadores", image_url: "imagens/matrecos-humanos.png" },
+            "Arena de Futebol": { description: "Dimensões: C 20m x L 10m x A 2.4m\nLotação: 12 utilizadores", image_url: "imagens/arena-de-futebol.png" },
+            "Foot Bump": { description: "Dimensões: C 13m x L 7m x A 2.4m\nLotação: 6 utilizadores", image_url: "imagens/foot-bump.png" },
+            "Foot Bump Arena": { description: "Dimensões: C 20m x L 10m x A 2.4m\nLotação: 6 utilizadores", image_url: "imagens/foot-bump-arena.png" },
+            "Double Penalty": { description: "Dimensões: C 4,5m x L 6m x A 3,7m\nLotação: 2 utilizadores", image_url: "imagens/double-penalty.png" },
+            "Futebol de Sabão": { description: "Dimensões: C 13m x L 6m x A 2m\nLotação: 10 utilizadores", image_url: "imagens/futebol_de_sabão.png" },
+            "Lutadores de Sumo": { description: "Dimensões: C 5m x L 5m x A 2m\nLotação: 2 utilizadores", image_url: "imagens/lutadores_de_sumo.png" },
+            "Gladiadores": { description: "Dimensões: C 5m x L 5m x A 2.5m\nLotação: 2 utilizadores", image_url: "imagens/gladiadores.png" },
+            "Ringue de Box": { description: "Dimensões: C 6m x L 6m x A 2.2m\nLotação: 2 utilizadores", image_url: "imagens/ringue_de_box.png" },
+            "Luta de Almofadas": { description: "Dimensões: C 6m x L 6m x A 2.2m\nLotação: 4 utilizadores", image_url: "imagens/luta_de_almofadas.png" },
+            "Guerreiros": { description: "Dimensões: C 5m x L 5m x A 2m\nLotação: 2 utilizadores", image_url: "imagens/guerreiros.png" },
+            "Fun&Cycle": { description: "Dimensões: a partir de 40m2\nLotação: 4 utilizadores", image_url: "imagens/fun&cycle.png" },
+            "Circuito Karts": { description: "Dimensões: C 20m x L 10m x A 3,5m\nLotação: 8 utilizadores", image_url: "imagens/circuito-karts.png" },
+            "Circuito F1": { description: "Dimensões: C 30m x L 15m x A 3m\nLotação: 8 utilizadores", image_url: "imagens/circuito-f1.png" },
+            "Dynamic Train": { description: "Dimensões: C 10m x L 1.5m x A 2m\nLotação: 10 utilizadores", image_url: "imagens/dynamic-train.png" },
+            "TGV Comboio Eléctrico": { description: "Dimensões: C 10m x L 0.6m x A 0.6m\nLotação: 8 utilizadores", image_url: "imagens/tgv-comboio-electrico.png" },
+            "Bouncy Pool": { description: "Dimensões: C 3,5m x L 4m x A 0,8m\nLotação: 8 utilizadores", image_url: "imagens/bouncy-pool.png" },
+            "Aqua Castle": { description: "Dimensões: C 4m x L x 7m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/aqua-castle.png" }, 
+            "Rolo": { description: "Dimensões: C 3m x L 2m x A 2m\nLotação: 1 utilizador", image_url: "imagens/rolo.png" },
+            "Dynamicboats": { description: "Dimensões: a partir de 40m2\nLotação: 4 utilizadores", image_url: "imagens/dynamicboats.png" },
+            "Piscina 6mx5mx0,65m": { description: "Dimensões: C 6m x L 5m x A 0,65m\nLotação: 10 utilizadores", image_url: "imagens/piscina-6mx5mx0_65m.png" },
+            "Aqua Slide": { description: "Dimensões: C 4,5m x L 9,5m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/aqua-slide.png" },
+            "Palm Splash": { description: "Dimensões: C 10m x L 3m x A 4m\nLotação: 4 utilizadores", image_url: "imagens/palm-splash.png" },
+            "Crocodilo": { description: "Dimensões: C 8m x L 3m x A 3m\nLotação: 12 utilizadores", image_url: "imagens/crocodilo.png" },
+            "Barco Capitão Gancho": { description: "Dimensões: C 7m x L 3,5m x A 3m\nLotação: 12 utilizadores", image_url: "imagens/barco-capitao-gancho.png" },
+            "Cova dos Piratas": { description: "Dimensões: C 4,5m x L 3,5m x A 3,5m\nLotação: 6 utilizadores", image_url: "imagens/cova_dos_piratas.png" },
+            "Piscina 8mx6mx0,65m": { description: "Dimensões: C 8m x L 6m x A 0,65m\nLotação: 16 utilizadores", image_url: "imagens/piscina_8mx6mx0_65m.png" },
+            "Water House": { description: "Dimensões: C 7m x L 7m x A 4m\nLotação: 14 utilizadores", image_url: "imagens/water-house.png" },
+            "Kongro": { description: "Dimensões: C 13,5m x L 4,5m x A 5,5m\nLotação: 5 utilizadores", image_url: "imagens/kongro.png" },
+            "Obstacle Splash": { description: "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/obstacle-splash.png" },
+            "Piscina 10mx8mx0,65m": { description: "Dimensões: C 10m x L 8m x A 0,65m\nLotação: 24 utilizadores", image_url: "imagens/piscina_10mx8mx0_65m.png" },
+            "Swimming Balls": { description: "Dimensões: C 10m x L 8m x A 0.33m\nLotação: 20 utilizadores", image_url: "imagens/swimming-balls.png" },
+            "Castle Splash": { description: "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/castle-splash.png" },
+            "Paraíso Aquático": { description: "Dimensões: C 15m x L 3m x A 4m\nLotação: 16 utilizadores", image_url: "imagens/paraiso-aquatico.png" },
+            "Piscina 12mx10mx0,65m": { description: "Dimensões: C 12m x L 10m x A 0,65m\nLotação: 40 utilizadores", image_url: "imagens/piscina_12mx10mx0_65m.png" },
+            "Giant Obstacle Splash": { description: "Dimensões: C 26m x L 6m x A 4m\nLotação: 12 utilizadores", image_url: "imagens/giant-obstacle-splash.png" },
+            "Volcano Splash": { description: "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores", image_url: "imagens/volcano-splash.png" },
+            "Slip & Splash": { description: "Dimensões: C 19m x L 4,5m x A 7m\nLotação: 6 utilizadores", image_url: "imagens/slip_&_splash.png" },
+            "Run n Splash": { description: "Dimensões: C 17m x L 5.5m x A 6m\nLotação: 12 utilizadores", image_url: "imagens/run-n-splash.png" },
+            "Banzai Splash": { description: "Dimensões: C 20m x L 10m x A 10m\nLotação: 6 utilizadores", image_url: "imagens/banzai-splash.png" },
+            "Adrenaline Splash": { description: "Dimensões: C 27m x L 5.5m x A 6m\nLotação: 20 utilizadores", image_url: "imagens/adrenaline-splash.png" },
+            "Ilha do Surf": { description: "Dimensões: C 14m x L 14m x A 6m\nLotação: 32 utilizadores", image_url: "imagens/ilha_do_surf.png" },
+            "Kamikaze Splash": { description: "Dimensões: C 34m x L 10m x A 10m\nLotação: 10 utilizadores", image_url: "imagens/kamikaze-splash.png" },
+            "Piscina Gigante": { description: "Dimensões: C 30m x L 15m x A 1,5m\nLotação: 75 utilizadores", image_url: "imagens/piscina-gigante.png" },
+            "Colossus Splash": { description: "Dimensões: C 35m x L 8m x A 12m\nLotação: 12 utilizadores", image_url: "imagens/colossus-splash.png" },
+            "Splash Slide": { description: "Dimensões: C 7m x L 4m x A 4m\nLotação: 4 utilizadores", image_url: "imagens/splash-slide.png" },
+            "Space Splash": { description: "Dimensões: C 5.5m x L 5m x A 3.5m\nLotação: 10 utilizadores", image_url: "imagens/space-splash.png" },
+            "Splash": { description: "Dimensões: C 9m x L 4m x A 4m\nLotação: 6 utilizadores", image_url: "imagens/splash.png" },
+            "Wild Splash": { description: "Dimensões: C 8.5m x L 2.5m x A 2m\nLotação: 1 utilizador", image_url: "imagens/wild-splash.png" },
+            "Shark Splash": { description: "Dimensões: C 15m x L 2.6m x A 3m\nLotação: 1 utilizador", image_url: "imagens/shark-splash.png" },
+            "Dunk Tank": { description: "Dimensões: C 3m x L 4,5m x A 3m\nLotação: 2 utilizadores", image_url: "imagens/dunk-tank.png" },
+            "Splash Race": { description: "Dimensões: C 12m x L 5m x A 4,5m\nLotação: 6 utilizadores", image_url: "imagens/splash-race.png" },
+            "Jungle Splash": { description: "Dimensões: C 17m x L 8m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/jungle-splash.png" },
+            "River Run": { description: "Dimensões: C 14m x L 4m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/river-run.png" },
+            "Ringue de Espuma": { description: "Dimensões: C 6m x L 6m x A 2,2m\nLotação: 2 utilizadores", image_url: "imagens/ringue_de_espuma.png" },
+            "Aqua Foam": { description: "Dimensões: C 4m x L 7m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/aqua-foam.png" },
+            "Foam Slide": { description: "Dimensões: C 4,5m x L 9,5m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/foam-slide.png" },
+            "Piscina de Espuma": { description: "Dimensões: C 8m x L 6m x A 0,65m\nLotação: 16 utilizadores", image_url: "imagens/piscina_de_espuma.png" },
+            "Foam House": { description: "Dimensões: C 6,5m x L 7m x A4,5m\nLotação: 14 utilizadores", image_url: "imagens/foam-house.png" },
+            "Castle Foam": { description: "Dimensões: C 13,5m x L 6m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/castle-foam.png" },
+            "Giant Obstacle Foam": { description: "Dimensões: C 26m x L 6m x A 4m\nLotação: 12 utilizadores", image_url: "imagens/giant-obstacle-foam.png" },
+            "Volcano Foam": { description: "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores", image_url: "imagens/volcano-foam.png" },
+            "Banzai Foam": { description: "Dimensões: C 20m x L 10m x A 10m\nLotação: 4 utilizadores", image_url: "imagens/banzai-foam.png" },
+            "Wild Foam Splash": { description: "Dimensões: C 8,5m x L 2,5m x A2m\nLotação: 1 utilizador", image_url: "imagens/wild-foam-splash.png" },
+            "Foam Park": { description: "Dimensões: C 10m x L 10m x A 2,5m\nLotação: 10 utilizadores", image_url: "imagens/foam-park.png" },
+            "Slide Foam": { description: "Dimensões: C 9,5m x L 3m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/slide-foam.png" },
+            "Kongro Foam": { description: "Dimensões: C 13,5m x L 4,5m x A 5,5m\nLotação: 5 utilizadores", image_url: "imagens/kongro-foam.png" },
+            "Twin Slide Foam": { description: "Dimensões: C 11,5m x L 7m x A 7m\nLotação: 4 utilizadores", image_url: "imagens/twin-slide-foam.png" },
+            "Extreme Foam": { description: "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/extreme-foam.png" },
+            "Extreme Foam com Bóias": { description: "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/extreme-foam-com-boias.png" },
+            "Dynamickids Personalizado": { description: "Dimensões: C 4m x L 4m x A 2.8m\nLotação: 7 utilizadores", image_url: "imagens/dynamickids-personalizado.png" },
+            "Jump n Slide Personalizado": { description: "Dimensões: C 4m x L 7m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/jump-n-slide-personalizado.png" },
+            "Jumper Personalizado": { description: "Dimensões: C 5.5m x L 4.5m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/jumper-personalizado.png" },
+            "Ninja Personalizado": { description: "Dimensões: C 5m x L 6m x A 3.5m\nLotação: 12 utilizadores", image_url: "imagens/ninja-personalizado.png" },
+            "Submarino Personalizado": { description: "Dimensões: C 5,5m x L 5,5m x A 5,5m\nLotação: 12 utilizadores", image_url: "imagens/submarino-personalizado.png" },
+            "Totem Cónico": { description: "Dimensões: C 0.65m x L 0.65m x A 2.6m\nLotação: ", image_url: "imagens/totem-conico.png" },
+            "Tenda de Montagem Rápida": { description: "Dimensões: C 3m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/tenda-de-montagem-rapida.png" },
+            "Letras Insufláveis": { description: "Dimensões: C 1.5m x L 0.5m x A 4m\nLotação: ", image_url: "imagens/letras-insuflaveis.png" },
+            "Tenda com Laterais": { description: "Dimensões: C 3m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/tenda-com-laterais.png" },
+            "Totem Iluminado": { description: "Dimensões: C 0.65m x L 0.65m x A 3m\nLotação: ", image_url: "imagens/totem-iluminado.png" },
+            "Sky Dancer": { description: "Dimensões: C 0.5m x L 0.5m x A 4m\nLotação: ", image_url: "imagens/sky-dancer.png" },
+            "Pórtico Iluminado": { description: "Dimensões: C 0.8m x L 6m x A 3.5m\nLotação: ", image_url: "imagens/portico-iluminado.png" },
+            "Quiosque Insuflável": { description: "Dimensões: C 3m x L 3m x A 4m\nLotação: ", image_url: "imagens/quiosque-insuflavel.png" },
+            "Pórtico Meta": { description: "Dimensões: C 6m x L 1m x A 4m\nLotação: ", image_url: "imagens/portico-meta.png" },
+            "Pórtico Gigante": { description: "Dimensões: C 3m x L 10m x A 7m\nLotação: ", image_url: "imagens/portico-gigante.png" },
+            "Iglo": { description: "Dimensões: C 5.8m x L 5m x A 3m\nLotação: ", image_url: "imagens/iglo.png" },
+            "Tenda Insuflável": { description: "Dimensões: C 10m x L 10m x A 6m\nLotação: ", image_url: "imagens/tenda-insuflavel.png" },
+            "Balão Personalizado": { description: "Dimensões: C 3m x L 3m x A 6m\nLotação: ", image_url: "imagens/balao-personalizado.png" },
+            "Pórtico Complete": { description: "Dimensões: C 4m x L 8m x A 7m\nLotação: ", image_url: "imagens/portico-complete.png" },
+            "Torre de Escalada Personalizada": { description: "Dimensões: C 8m x L 8m x A 8m\nLotação: 2 utilizadores", image_url: "imagens/torre_de_escalada_personalizada.png" },
+            "Dynamicbungee Personalizado": { description: "Dimensões: C 9m x L 9m x A 7m\nLotação: 4 utilizadores", image_url: "imagens/dynamicbungee_personalizado.png" },
+            "Xtreme Jump Personalizado": { description: "Dimensões: C 20m x L 10m x A 9m\nLotação: 6 utilizadores", image_url: "imagens/xtreme_jump_personalizado.png" },
+            "Globo Personalizado": { description: "Dimensões: C 4m x L 4m x A 4m\nLotação: ", image_url: "imagens/globo_personalizado.png" },
+            "Color Park": { description: "Dimensões: C 10m x L 10m x A 2.5m\nLotação: ", image_url: "imagens/color_park.png" },
+            "Arco de Balões": { description: "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/arco_de_baloes.png" },
+            "2 Colunas de Balões": { description: "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/2_colunas_de_baloes.png" },
+            "Arco de Flores + 6 Flores": { description: "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/arco_de_flores_+_6_flores.png" },
+            "Gerador": { description: "Dimensões: C 0.5m x L 0.5m x A 0.6m\nLotação: ", image_url: "imagens/gerador.png" },
+            "TV Led 55 com tripé": { description: "Dimensões: C 0.5m x L 1m x A 2m\nLotação: ", image_url: "imagens/tv_led_55_com_tripe.png" },
+            "Canhão Lança T-Shirts": { description: "Dimensões: C 1m x L 1m x A 1m\nLotação: ", image_url: "imagens/canhao-lanca-t-shirts.png" },
+            "Máquina de Fumo": { description: "Dimensões: C 0.6m x L 0.3m x A 0.4m\nLotação: ", image_url: "imagens/maquina_de_fumo.png" },
+            "Canhão de Confettis Pressão de Ar": { description: "Dimensões: C 1m x L 1m x A 1m\nLotação: ", image_url: "imagens/canhao_de_confettis_pressao_de_ar.png" },
+            "Canhão de Confettis Eléctrico": { description: "Dimensões: C 1m x L 1.5m x A 1m\nLotação: ", image_url: "imagens/canhao_de_confettis_electrico.png" },
+            "Canhão de Neve": { description: "Dimensões: C 1.5m x L 1.5m x A 2m\nLotação: ", image_url: "imagens/canhao_de_neve.png" },
+            "Canhão de Espuma": { description: "Dimensões: C 1.5m x L 1.5m x A 2m\nLotação: ", image_url: "imagens/canhao_de_espuma.png" },
+            "Tela de Cinema": { description: "Dimensões: C 7m x L 3m x A 5.5m\nLotação: ", image_url: "imagens/tela_de_cinema.png" },
+            "Mascotes": { description: "Dimensões: \nLotação: ", image_url: "imagens/mascotes.png" },
+            "Pinturas Faciais": { description: "Dimensões: \nLotação: 1 utilizador", image_url: "imagens/pinturas_faciais.png" },
+            "Modelagem de Balões": { description: "Dimensões: \nLotação: 1 utilizador", image_url: "imagens/modelagem_de_baloes.png" },
+            "Origami Colorido": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/origami_colorido.png" },
+            "Crachás": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/crachas.png" },
+            "Faz o teu Slime": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/faz_o_teu_slime.png" },
+            "Smart Tattoo": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador", image_url: "imagens/smart_tattoo.png" },
+            "Penteados Malucos": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador", image_url: "imagens/penteados_malucos.png" },
+            "Laboratório Divertido": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/laboratorio_divertido.png" },
+            "Kinetic Sand": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/kinetic_sand.png" },
+            "Fotos Loucas": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/fotos_loucas.png" },
+            "Salão de Beleza": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador", image_url: "imagens/salao_de_beleza.png" },
+            "Algodão Doce": { description: "Dimensões: C 0.7m x L 0.5m x A 1.5m\nLotação: ", image_url: "imagens/algodao_doce.png" },
+            "Pipocas": { description: "Dimensões: C 0.7m x L 0.5m x A 1.9m\nLotação: ", image_url: "imagens/pipocas.png" },
+            "Granizados": { description: "Dimensões: C 0.5m x L 0.5m x A 2m\nLotação: ", image_url: "imagens/granizados.png" },
+            "Candy Bar": { description: "Dimensões: C 2m x L 1m x A 2m\nLotação: ", image_url: "imagens/candy_bar.png" },
+            "Crepes": { description: "Dimensões: C 2m x L 1m x A 2m\nLotação: ", image_url: "imagens/crepes.png" },
+            "Gelados": { description: "Dimensões: C 2m x L 1,5m x A 2m\nLotação: ", image_url: "imagens/gelados.png" },
+            "Pórtico Standar": { description: "Dimensões: \nLotação: ", image_url: "imagens/portico_standar.png" },
+             "FASTER": { description: "Dimensões: C 10m x L 3m x A 2,2m\nLotação: 2 Utilizadores", image_url: "imagens/faster.png" },
+            "Tropical Splash": { description: "Dimensões: C 12m x L 5.5m x A 6m\nLotação: 8 utilizadores", image_url: "imagens/tropical_splash.png" }
+        };
+
+        const sellerSignatures = {
+            "Armando Alves": "Armando Alves\n913313174\narmando.alves@mydynamic.pt",
+            "Ângelo Lobo": "Ângelo Lobo\n918789192\nangelo.lobo@mydynamic.pt",
+            "Carla Loução": "Carla Loução\n915832584\ngeral@mydynamic.pt",
+            "Valeriya Ishchenko": "Valeriya Ishchenko\n918379037\nwww.mydynamic.pt",
+            "Gonçalo Alves": "Gonçalo A.V. Alves\n912030078\ninfo.mydynamic@gmail.com"
+        };
+
+
+        function populateTransportLocations() {
+            // console.log("[populateTransportLocations] Iniciando população de localidades.");
+            const selectElement = document.getElementById('transportLocation');
+            if (!selectElement) {
+                console.error("[populateTransportLocations] ERRO: Elemento select 'transportLocation' não encontrado.");
+                return;
+            }
+            selectElement.innerHTML = ''; 
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "Nenhuma";
+            defaultOption.textContent = "Selecionar localidade...";
+            selectElement.appendChild(defaultOption);
+            
+            const sortedLocations = Object.keys(transportationFees).filter(loc => loc !== "Nenhuma").sort();
+            // console.log(`[populateTransportLocations] Número de localidades para adicionar: ${sortedLocations.length}`);
+
+            sortedLocations.forEach(locationName => {
+                const option = document.createElement('option');
+                option.value = locationName;
+                option.textContent = locationName;
+                selectElement.appendChild(option);
+            });
+            // console.log("[populateTransportLocations] População de localidades concluída.");
+        }
+
+        function today() {
+            return new Date().toISOString().substr(0, 10);
+        }
+        
+        function handleGlobalPriceControlsChange() { 
+            update();
+        }
+        
+        function toggleItemSpecificOptions(itemIndex, showDates, showTimes) {
+            const itemDatesDiv = document.getElementById(`itemDates${itemIndex}`);
+            const itemTimesDiv = document.getElementById(`itemTimes${itemIndex}`);
+
+            if (itemDatesDiv) {
+                itemDatesDiv.style.display = showDates ? 'flex' : 'none';
+                if (showDates) {
+                    const itemFromDateInput = document.getElementById(`itemFromDate${itemIndex}`);
+                    const itemToDateInput = document.getElementById(`itemToDate${itemIndex}`);
+                    if (itemFromDateInput && !itemFromDateInput.value) {
+                        itemFromDateInput.value = document.getElementById('fromDate').value || today();
+                    }
+                    if (itemToDateInput && !itemToDateInput.value) {
+                        itemToDateInput.value = document.getElementById('toDate').value || today();
+                    }
+                }
+            }
+            if (itemTimesDiv) {
+                itemTimesDiv.style.display = showTimes ? 'flex' : 'none';
+                 if (showTimes) {
+                    const itemFromTimeInput = document.getElementById(`itemFromTime${itemIndex}`);
+                    const itemToTimeInput = document.getElementById(`itemToTime${itemIndex}`);
+                    if (itemFromTimeInput && !itemFromTimeInput.value) {
+                        itemFromTimeInput.value = document.getElementById('fromTime').value || '';
+                    }
+                    if (itemToTimeInput && !itemToTimeInput.value) {
+                        itemToTimeInput.value = document.getElementById('toTime').value || '';
+                    }
+                }
+            }
+        }
+
+        function handleGlobalDatesApplyChange() {
+            const showItemDates = !document.getElementById('globalDatesApply').checked;
+            const showItemTimes = !document.getElementById('globalTimesApply').checked; 
+            for (let i = 0; i < idx; i++) {
+                toggleItemSpecificOptions(i, showItemDates, showItemTimes);
+                updateItemDateTimeSectionVisibility(i); // Added call
+            }
+            update();
+        }
+        
+        function handleGlobalTimesApplyChange() {
+            const showItemDates = !document.getElementById('globalDatesApply').checked; 
+            const showItemTimes = !document.getElementById('globalTimesApply').checked;
+            for (let i = 0; i < idx; i++) {
+                 toggleItemSpecificOptions(i, showItemDates, showItemTimes);
+                 updateItemDateTimeSectionVisibility(i); // Added call
+            }
+            update();
+        }
+
+
+        function checkPredefinedPrice(itemIndex) {
+            const nameInput = document.getElementById(`name${itemIndex}`);
+            const priceInput = document.getElementById(`price${itemIndex}`);
+            
+            // console.log(`[checkPredefinedPrice] Item ${itemIndex}, Nome Inserido: '${nameInput ? nameInput.value : 'N/A'}'`);
+
+            if (nameInput && priceInput) {
+                const itemName = nameInput.value.trim();
+                const enteredItemNameLower = itemName.toLowerCase();
+                let foundMatch = false;
+
+                // console.log(`   Nome Processado (lowercase, trimmed): '${enteredItemNameLower}'`);
+
+                for (const predefinedName in predefinedPrices) {
+                    if (predefinedPrices.hasOwnProperty(predefinedName)) {
+                        if (predefinedName.toLowerCase() === enteredItemNameLower) {
+                            const ivaInclusivePrice = predefinedPrices[predefinedName];
+                            priceInput.value = ivaInclusivePrice; // Directly set the IVA-inclusive price
+                            priceInput.dataset.originalIvaInclusivePrice = ivaInclusivePrice; 
+                            priceInput.dataset.manualOverride = 'false';
+                            delete priceInput.dataset.enteredWithIvaExclusive; // Remove flag
+                            // console.log(`   CORRESPONDÊNCIA ENCONTRADA: '${predefinedName}', Preço IVA Incl.: ${ivaInclusivePrice}`);
+                            foundMatch = true;
+                            break; 
+                        }
+                    }
+                }
+                if (!foundMatch) {
+                    // priceInput.dataset.originalIvaInclusivePrice = ''; // Keep this if name is cleared and no match
+                    // If no match, and it wasn't manual override before, it might become manual implicitly
+                    // However, if user just clears name, price shouldn't become manual. 
+                    // This part is tricky. If name is cleared, price should clear or be based on empty name.
+                    // For now, if no match, we don't alter manualOverride or enteredWithIvaExclusive directly here.
+                    // If priceInput.value is empty and dataset is empty, it will be treated as 0 price.
+                    // If name is cleared, and then user types a price, oninput for price will set manual flags.
+                    if (!priceInput.dataset.manualOverride || priceInput.dataset.manualOverride === 'false') {
+                        priceInput.dataset.originalIvaInclusivePrice = ''; 
+                        // if name is empty and we had a predefined price, clear the value
+                        if (itemName === '' && priceInput.dataset.originalIvaInclusivePrice === '') priceInput.value = '';
+                    }
+                }
+                // updateOneDisplayedItemPrice(itemIndex); // This will be removed
+            } else {
+                // console.error(`   ERRO: nameInput ou priceInput não encontrado para o item ${itemIndex}`);
+            }
+            update(); 
+        }
+
+        function updateOneDisplayedItemPrice(itemIndex) {
+            const priceInput = document.getElementById(`price${itemIndex}`);
+            if (!priceInput) {
+                // console.error(`[updateOneDisplayedItemPrice] ERRO: PriceInput não encontrado para o item ${itemIndex}`);
+                return;
+            }
+            
+            let basePriceForCalculations;
+            const originalIvaInclusivePriceFromDataset = parseFloat(priceInput.dataset.originalIvaInclusivePrice);
+            const currentItemPriceFieldValue = parseFloat(priceInput.value);
+
+            if (priceInput.dataset.manualOverride === 'true' && !isNaN(currentItemPriceFieldValue)) {
+                if (document.getElementById('iva').checked) { 
+                    basePriceForCalculations = currentItemPriceFieldValue * (1 + IVA_RATE); 
+                } else { 
+                    basePriceForCalculations = currentItemPriceFieldValue; 
+                }
+                // console.log(`[updateOneDisplayedItemPrice] Usando preço manual (convertido para COM IVA se necessário): ${basePriceForCalculations}`);
+            } else if (!isNaN(originalIvaInclusivePriceFromDataset) && originalIvaInclusivePriceFromDataset > 0) {
+                basePriceForCalculations = originalIvaInclusivePriceFromDataset;
+                //  console.log(`[updateOneDisplayedItemPrice] Usando preço do dataset: ${basePriceForCalculations}`);
+            } else {
+                priceInput.value = '';
+                // console.log(`[updateOneDisplayedItemPrice] Nenhum preço válido, campo de preço limpo.`);
+                return; 
+            }
+
+            let displayPrice = basePriceForCalculations; 
+
+            if (document.getElementById('iva').checked) { 
+                displayPrice /= (1 + IVA_RATE);
+            }
+            if (document.getElementById('partner').checked) {
+                displayPrice *= 0.85;
+            }
+            priceInput.value = displayPrice.toFixed(2);
+            // console.log(`   Preço do campo atualizado para o item ${itemIndex}: ${priceInput.value}`);
+        }
+
+
+        function addItem() {
+            const itemsContainer = document.getElementById('items');
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item';
+            const currentItemIdx = idx; 
+            itemDiv.id = 'item' + currentItemIdx;
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove';
+            removeButton.innerHTML = '&times;';
+            removeButton.onclick = function() { removeItem(currentItemIdx); };
+            itemDiv.appendChild(removeButton);
+
+            const nameLabel = document.createElement('label');
+            nameLabel.innerHTML = 'Nome do Equipamento:';
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.id = `name${currentItemIdx}`;
+            nameInput.placeholder = 'Ex: Castelo Azul';
+            
+            const suggestionsContainer = document.createElement('div');
+            suggestionsContainer.className = 'autocomplete-suggestions';
+            suggestionsContainer.style.display = 'none'; // Initially hidden
+            
+            nameInput.oninput = (event) => {
+                const inputText = event.target.value.toLowerCase();
+                suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+                if (inputText.length < 1) { // Minimum characters to trigger suggestions (e.g., 1 or 2)
+                    suggestionsContainer.style.display = 'none';
+                    // Still call checkPredefinedPrice if input is cleared or very short, to reset price if needed
+                    const priceField = document.getElementById(`price${currentItemIdx}`);
+                    if(priceField) {
+                        priceField.dataset.manualOverride = 'false'; 
+                        priceField.dataset.enteredWithIvaExclusive = 'false';
+                    } 
+                    checkPredefinedPrice(currentItemIdx);
+                    return;
+                }
+
+                const filteredNames = Object.keys(predefinedPrices).filter(name => 
+                    name.toLowerCase().startsWith(inputText) // Changed from includes to startsWith
+                ).sort(); // Sort alphabetically for consistency
+
+                if (filteredNames.length > 0) {
+                    filteredNames.forEach(name => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.className = 'suggestion-item';
+                        // Highlight the matched part
+                        const index = name.toLowerCase().indexOf(inputText);
+                        const part1 = name.substring(0, index);
+                        const match = name.substring(index, index + inputText.length);
+                        const part2 = name.substring(index + inputText.length);
+                        suggestionItem.innerHTML = `${part1}<strong>${match}</strong>${part2}`;
+
+                        suggestionItem.onclick = () => {
+                            nameInput.value = name; // Set input to the suggestion
+                            suggestionsContainer.style.display = 'none';
+                            const priceField = document.getElementById(`price${currentItemIdx}`);
+                            if(priceField) {
+                                priceField.dataset.manualOverride = 'false'; 
+                                priceField.dataset.enteredWithIvaExclusive = 'false'; 
+                            } 
+                            checkPredefinedPrice(currentItemIdx); // Trigger price update
+                        };
+                        suggestionsContainer.appendChild(suggestionItem);
+                    });
+                    suggestionsContainer.style.display = 'block';
+                    suggestionsContainer.style.top = nameInput.offsetHeight + 'px'; // Position below input
+                    suggestionsContainer.style.width = nameInput.offsetWidth + 'px'; // Match input width
+                } else {
+                    suggestionsContainer.style.display = 'none';
+                    // If no suggestions, but user typed something, it might be a manual entry not in list
+                    // Or it could be a partial match not yet completed. 
+                    // We still call checkPredefinedPrice to handle cases where it might clear a previously selected price.
+                    const priceField = document.getElementById(`price${currentItemIdx}`);
+                     if(priceField) {
+                        // If there's text but no match, it's not a predefined price, so it behaves like manual if price is then entered.
+                        // However, changing price is what makes it manual. Here, we ensure original price is cleared if name no longer matches.
+                        priceField.dataset.originalIvaInclusivePrice = '';
+                        if (priceField.dataset.manualOverride !== 'true') {
+                            priceField.value = ''; // Clear price if it was from a predefined and now name doesn't match
+                        }
+                    }
+                    checkPredefinedPrice(currentItemIdx); // Important to call to potentially clear price
+
+                }
+            };
+
+            nameInput.onblur = () => {
+                // Delay hiding to allow click on suggestion
+                setTimeout(() => {
+                    suggestionsContainer.style.display = 'none';
+                }, 150); 
+            };
+            
+            nameLabel.appendChild(nameInput);
+            nameLabel.appendChild(suggestionsContainer); // Append suggestions to the label, which is inside the field-group
+            itemDiv.appendChild(nameLabel);
+
+            const priceLabel = document.createElement('label');
+            priceLabel.innerHTML = 'Preço (€):';
+            const priceInput = document.createElement('input');
+            priceInput.type = 'number';
+            priceInput.id = `price${currentItemIdx}`;
+            priceInput.placeholder = 'Ex: 100';
+            priceInput.dataset.originalIvaInclusivePrice = ''; 
+            priceInput.dataset.manualOverride = 'false'; 
+            priceInput.oninput = () => {
+                const priceInputElement = document.getElementById(`price${currentItemIdx}`);
+                if(priceInputElement) {
+                    priceInputElement.dataset.originalIvaInclusivePrice = ''; 
+                    priceInputElement.dataset.manualOverride = 'true'; 
+                    priceInputElement.dataset.enteredWithIvaExclusive = document.getElementById('iva').checked;
+                    // console.log(`[priceInput.oninput] Alteração manual de preço para item ${currentItemIdx}.`);
+                }
+                update(); 
+            };
+            priceLabel.appendChild(priceInput);
+            itemDiv.appendChild(priceLabel);
+
+            // START: Discount for Base Price
+            const basePriceDiscountContainer = document.createElement('div');
+            basePriceDiscountContainer.className = 'item-discount-container'; // Add a class for styling if needed
+            basePriceDiscountContainer.style.display = 'flex';
+            basePriceDiscountContainer.style.alignItems = 'center';
+            basePriceDiscountContainer.style.gap = '10px';
+            basePriceDiscountContainer.style.marginTop = '5px';
+
+            const basePriceDiscountToggleLabel = document.createElement('label');
+            basePriceDiscountToggleLabel.className = 'checkbox-label';
+            const basePriceDiscountToggleCheckbox = document.createElement('input');
+            basePriceDiscountToggleCheckbox.type = 'checkbox';
+            basePriceDiscountToggleCheckbox.id = `basePriceDiscountToggle${currentItemIdx}`;
+            
+            const basePriceDiscountPercentageInput = document.createElement('input');
+            basePriceDiscountPercentageInput.type = 'number';
+            basePriceDiscountPercentageInput.id = `basePriceDiscountPercentage${currentItemIdx}`;
+            basePriceDiscountPercentageInput.value = '15';
+            basePriceDiscountPercentageInput.min = '0';
+            basePriceDiscountPercentageInput.max = '100';
+            basePriceDiscountPercentageInput.style.width = '70px';
+            basePriceDiscountPercentageInput.style.marginLeft = '5px';
+            basePriceDiscountPercentageInput.style.display = 'none'; // Initially hidden
+
+            basePriceDiscountToggleCheckbox.onchange = function() {
+                basePriceDiscountPercentageInput.style.display = this.checked ? 'inline-block' : 'none';
+                if (!this.checked) basePriceDiscountPercentageInput.value = '15'; // Reset if unchecked
+                update();
+            };
+            basePriceDiscountPercentageInput.oninput = update;
+
+            basePriceDiscountToggleLabel.appendChild(basePriceDiscountToggleCheckbox);
+            basePriceDiscountToggleLabel.appendChild(document.createTextNode(' Desconto (%)'));
+            basePriceDiscountContainer.appendChild(basePriceDiscountToggleLabel);
+            basePriceDiscountContainer.appendChild(basePriceDiscountPercentageInput);
+            itemDiv.appendChild(basePriceDiscountContainer);
+            // END: Discount for Base Price
+            
+            const equipTimingToggleLabel = document.createElement('label');
+            equipTimingToggleLabel.className = 'checkbox-label';
+            equipTimingToggleLabel.style.marginTop = '10px'; 
+            const equipTimingToggleCheckbox = document.createElement('input');
+            equipTimingToggleCheckbox.type = 'checkbox';
+            equipTimingToggleCheckbox.id = `equipTimingToggle${currentItemIdx}`;
+            equipTimingToggleCheckbox.onchange = function() {
+                const equipTimingDiv = document.getElementById(`itemEquipTiming${currentItemIdx}`);
+                if (equipTimingDiv) {
+                    equipTimingDiv.style.display = this.checked ? 'flex' : 'none';
+                }
+                update();
+            };
+            equipTimingToggleLabel.appendChild(equipTimingToggleCheckbox);
+            equipTimingToggleLabel.appendChild(document.createTextNode(' Valor por Bloco de Tempo?')); 
+            itemDiv.appendChild(equipTimingToggleLabel);
+
+            const itemEquipTimingDiv = document.createElement('div');
+            itemEquipTimingDiv.className = 'item-equip-timing-options'; 
+            itemEquipTimingDiv.id = `itemEquipTiming${currentItemIdx}`; 
+
+            const baseHoursEquipLabel = document.createElement('label');
+            baseHoursEquipLabel.innerHTML = 'Horas Base Incl.:';
+            const baseHoursEquipInput = document.createElement('input');
+            baseHoursEquipInput.type = 'number';
+            baseHoursEquipInput.id = `baseHoursEquip${currentItemIdx}`;
+            baseHoursEquipInput.value = '4'; 
+            baseHoursEquipInput.min = '0';
+            baseHoursEquipInput.oninput = update;
+            const baseHoursGroup = document.createElement('div'); baseHoursGroup.className="field-group-inline";
+            baseHoursGroup.appendChild(baseHoursEquipLabel); baseHoursGroup.appendChild(baseHoursEquipInput);
+            itemEquipTimingDiv.appendChild(baseHoursGroup);
+
+            const extraTimeBlockEquipLabel = document.createElement('label');
+            extraTimeBlockEquipLabel.innerHTML = 'Bloco Extra (h):';
+            const extraTimeBlockEquipInput = document.createElement('input');
+            extraTimeBlockEquipInput.type = 'number';
+            extraTimeBlockEquipInput.id = `extraTimeBlockEquip${currentItemIdx}`;
+            extraTimeBlockEquipInput.value = '1'; 
+            extraTimeBlockEquipInput.min = '0.5';
+            extraTimeBlockEquipInput.step = '0.5';
+            extraTimeBlockEquipInput.oninput = update;
+            const extraTimeBlockGroup = document.createElement('div'); extraTimeBlockGroup.className="field-group-inline";
+            extraTimeBlockGroup.appendChild(extraTimeBlockEquipLabel); extraTimeBlockGroup.appendChild(extraTimeBlockEquipInput);
+            itemEquipTimingDiv.appendChild(extraTimeBlockGroup);
+
+            const extraCostBlockEquipLabel = document.createElement('label');
+            extraCostBlockEquipLabel.innerHTML = 'Custo Bloco Extra (€):';
+            const extraCostBlockEquipInput = document.createElement('input');
+            extraCostBlockEquipInput.type = 'number';
+            extraCostBlockEquipInput.id = `extraCostBlockEquip${currentItemIdx}`;
+            extraCostBlockEquipInput.value = '19'; 
+            extraCostBlockEquipInput.min = '0';
+            extraCostBlockEquipInput.oninput = update;
+            const extraCostBlockGroup = document.createElement('div'); extraCostBlockGroup.className="field-group-inline";
+            extraCostBlockGroup.appendChild(extraCostBlockEquipLabel); extraCostBlockGroup.appendChild(extraCostBlockEquipInput);
+            itemEquipTimingDiv.appendChild(extraCostBlockGroup);
+
+            // START: Discount for Extra Cost Block
+            const extraCostDiscountContainer = document.createElement('div');
+            extraCostDiscountContainer.className = 'item-discount-container'; 
+            extraCostDiscountContainer.style.display = 'flex';
+            extraCostDiscountContainer.style.alignItems = 'center';
+            extraCostDiscountContainer.style.gap = '10px';
+            extraCostDiscountContainer.style.marginTop = '5px';
+            extraCostDiscountContainer.style.paddingLeft = '15px'; // Indent slightly under timing options
+
+            const extraCostDiscountToggleLabel = document.createElement('label');
+            extraCostDiscountToggleLabel.className = 'checkbox-label';
+            const extraCostDiscountToggleCheckbox = document.createElement('input');
+            extraCostDiscountToggleCheckbox.type = 'checkbox';
+            extraCostDiscountToggleCheckbox.id = `extraCostDiscountToggle${currentItemIdx}`;
+
+            const extraCostDiscountPercentageInput = document.createElement('input');
+            extraCostDiscountPercentageInput.type = 'number';
+            extraCostDiscountPercentageInput.id = `extraCostDiscountPercentage${currentItemIdx}`;
+            extraCostDiscountPercentageInput.value = '15';
+            extraCostDiscountPercentageInput.min = '0';
+            extraCostDiscountPercentageInput.max = '100';
+            extraCostDiscountPercentageInput.style.width = '70px';
+            extraCostDiscountPercentageInput.style.marginLeft = '5px';
+            extraCostDiscountPercentageInput.style.display = 'none'; // Initially hidden
+
+            extraCostDiscountToggleCheckbox.onchange = function() {
+                extraCostDiscountPercentageInput.style.display = this.checked ? 'inline-block' : 'none';
+                if (!this.checked) extraCostDiscountPercentageInput.value = '15'; // Reset if unchecked
+                // Hide this container if equipTimingToggle is also unchecked
+                const equipTimingToggle = document.getElementById(`equipTimingToggle${currentItemIdx}`);
+                if (equipTimingToggle && !equipTimingToggle.checked) {
+                    extraCostDiscountContainer.style.display = 'none';
+                } else if (this.checked) {
+                     extraCostDiscountContainer.style.display = 'flex'; // Ensure visible if checked
+                }
+                update();
+            };
+            extraCostDiscountPercentageInput.oninput = update;
+            
+            // Ensure this discount section is only visible if the parent timing section is visible
+            const equipTimingToggleForExtraDesc = document.getElementById(`equipTimingToggle${currentItemIdx}`);
+            if (equipTimingToggleForExtraDesc) {
+                 extraCostDiscountContainer.style.display = equipTimingToggleForExtraDesc.checked ? 'flex' : 'none';
+                 // Add listener to parent toggle to also hide/show this discount section
+                 equipTimingToggleForExtraDesc.addEventListener('change', function() {
+                    extraCostDiscountContainer.style.display = this.checked ? 'flex' : 'none';
+                    if (!this.checked) { // If parent is hidden, also uncheck and hide percentage input
+                        extraCostDiscountToggleCheckbox.checked = false;
+                        extraCostDiscountPercentageInput.style.display = 'none';
+                        extraCostDiscountPercentageInput.value = '15';
+                    }
+                });
+            }
+
+            extraCostDiscountToggleLabel.appendChild(extraCostDiscountToggleCheckbox);
+            extraCostDiscountToggleLabel.appendChild(document.createTextNode(' Desconto Bloco Extra (%)'));
+            extraCostDiscountContainer.appendChild(extraCostDiscountToggleLabel);
+            extraCostDiscountContainer.appendChild(extraCostDiscountPercentageInput);
+            // Insert this discount container *inside* itemEquipTimingDiv for better grouping
+            itemEquipTimingDiv.appendChild(extraCostDiscountContainer);
+            // END: Discount for Extra Cost Block
+
+            itemDiv.appendChild(itemEquipTimingDiv);
+
+            const dateTimeTitle = document.createElement('div');
+            dateTimeTitle.className = 'item-section-title';
+            dateTimeTitle.id = `dateTimeTitle${currentItemIdx}`; // Added ID
+            dateTimeTitle.textContent = 'Datas e Horários do Item';
+            itemDiv.appendChild(dateTimeTitle);
+
+            const itemOptionsContainer = document.createElement('div');
+            itemOptionsContainer.className = 'item-options-container';
+            itemOptionsContainer.id = `itemOptionsContainer${currentItemIdx}`; 
+
+            const itemDatesDiv = document.createElement('div');
+            itemDatesDiv.className = 'item-options-row item-dates'; 
+            itemDatesDiv.id = `itemDates${currentItemIdx}`;
+            itemDatesDiv.style.display = document.getElementById('globalDatesApply').checked ? 'none' : 'flex';
+            const itemFromDateLabel = document.createElement('label');
+            itemFromDateLabel.innerHTML = 'De (Item):';
+            const itemFromDateInput = document.createElement('input');
+            itemFromDateInput.type = 'date';
+            itemFromDateInput.id = `itemFromDate${currentItemIdx}`;
+            itemFromDateInput.value = document.getElementById('fromDate').value || today(); 
+            itemFromDateInput.onchange = update; 
+            const fromDateGroup = document.createElement('div'); fromDateGroup.className="field-group";
+            fromDateGroup.appendChild(itemFromDateLabel); fromDateGroup.appendChild(itemFromDateInput);
+            itemDatesDiv.appendChild(fromDateGroup);
+
+            const itemToDateLabel = document.createElement('label');
+            itemToDateLabel.innerHTML = 'Até (Item):';
+            const itemToDateInput = document.createElement('input');
+            itemToDateInput.type = 'date';
+            itemToDateInput.id = `itemToDate${currentItemIdx}`;
+            itemToDateInput.value = document.getElementById('toDate').value || today(); 
+            itemToDateInput.onchange = update; 
+            const toDateGroup = document.createElement('div'); toDateGroup.className="field-group";
+            toDateGroup.appendChild(itemToDateLabel); toDateGroup.appendChild(itemToDateInput);
+            itemDatesDiv.appendChild(toDateGroup);
+            itemOptionsContainer.appendChild(itemDatesDiv);
+
+            const itemTimesDiv = document.createElement('div');
+            itemTimesDiv.className = 'item-options-row item-times'; 
+            itemTimesDiv.id = `itemTimes${currentItemIdx}`;
+            itemTimesDiv.style.display = document.getElementById('globalTimesApply').checked ? 'none' : 'flex';
+            const itemFromTimeLabel = document.createElement('label');
+            itemFromTimeLabel.innerHTML = 'Início (Item):';
+            const itemFromTimeInput = document.createElement('input');
+            itemFromTimeInput.type = 'time';
+            itemFromTimeInput.id = `itemFromTime${currentItemIdx}`;
+            itemFromTimeInput.value = document.getElementById('fromTime').value || ''; 
+            itemFromTimeInput.onchange = update; 
+            const fromTimeGroup = document.createElement('div'); fromTimeGroup.className="field-group";
+            fromTimeGroup.appendChild(itemFromTimeLabel); fromTimeGroup.appendChild(itemFromTimeInput);
+            itemTimesDiv.appendChild(fromTimeGroup);
+
+            const itemToTimeLabel = document.createElement('label');
+            itemToTimeLabel.innerHTML = 'Fim (Item):';
+            const itemToTimeInput = document.createElement('input');
+            itemToTimeInput.type = 'time';
+            itemToTimeInput.id = `itemToTime${currentItemIdx}`;
+            itemToTimeInput.value = document.getElementById('toTime').value || ''; 
+            itemToTimeInput.onchange = update; 
+            const toTimeGroup = document.createElement('div'); toTimeGroup.className="field-group";
+            toTimeGroup.appendChild(itemToTimeLabel); toTimeGroup.appendChild(itemToTimeInput);
+            itemTimesDiv.appendChild(toTimeGroup);
+            itemOptionsContainer.appendChild(itemTimesDiv);
+            itemDiv.appendChild(itemOptionsContainer);
+
+            // Call this to set initial visibility of the date/time section wrapper and title
+            updateItemDateTimeSectionVisibility(currentItemIdx);
+
+            const monitorTitle = document.createElement('div');
+            monitorTitle.className = 'item-section-title';
+            monitorTitle.textContent = 'Monitores';
+            itemDiv.appendChild(monitorTitle);
+
+            const itemMonitorOptionsDiv = document.createElement('div');
+            itemMonitorOptionsDiv.className = 'item-monitor-options';
+            const monFieldGroup = document.createElement('div');
+            monFieldGroup.className = 'field-group';
+            const monLabel = document.createElement('label');
+            monLabel.setAttribute('for', `mon${currentItemIdx}`);
+            monLabel.textContent = 'Nº Monitores:';
+            const monInput = document.createElement('input');
+            monInput.type = 'number';
+            monInput.id = `mon${currentItemIdx}`;
+            monInput.placeholder = '0';
+            monInput.min = '0';
+            monInput.oninput = update;
+            monFieldGroup.appendChild(monLabel);
+            monFieldGroup.appendChild(monInput);
+            itemMonitorOptionsDiv.appendChild(monFieldGroup);
+
+            const monitorIncluidoLabel = document.createElement('label');
+            monitorIncluidoLabel.className = 'checkbox-label'; 
+            const monitorIncluidoCheckbox = document.createElement('input');
+            monitorIncluidoCheckbox.type = 'checkbox';
+            monitorIncluidoCheckbox.id = `monitorIncluido${currentItemIdx}`;
+            monitorIncluidoCheckbox.onchange = update;
+            monitorIncluidoLabel.appendChild(monitorIncluidoCheckbox);
+            monitorIncluidoLabel.appendChild(document.createTextNode(' Monitor Incl.')); 
+            itemMonitorOptionsDiv.appendChild(monitorIncluidoLabel);
+            itemDiv.appendChild(itemMonitorOptionsDiv);
+
+
+            const outputDiv = document.createElement('div');
+            outputDiv.className = 'output';
+            outputDiv.id = `out${currentItemIdx}`;
+            itemDiv.appendChild(outputDiv);
+
+            itemsContainer.appendChild(itemDiv);
+            nameInput.focus();
+            idx++; 
+            update(); 
+        }
+
+        function removeItem(itemIndex) {
+            const itemElement = document.getElementById('item' + itemIndex);
+            if (itemElement) itemElement.remove();
+            update();
+        }
+
+        function resetApp(isLoading = false) {
+            document.getElementById('items').innerHTML = '';
+            idx = 0; 
+            document.getElementById('clientName').value = ''; 
+            document.getElementById('sellerName').value = ''; 
+            document.getElementById('fromDate').value = today();
+            document.getElementById('toDate').value = today();
+            document.getElementById('fromTime').value = '';
+            document.getElementById('toTime').value = '';
+            document.getElementById('globalDatesApply').checked = true; 
+            document.getElementById('globalTimesApply').checked = true;
+            document.getElementById('iva').checked = false;
+            document.getElementById('partner').checked = false;
+            document.getElementById('discount').value = '';
+            document.getElementById('transportLocation').value = "Nenhuma"; 
+            document.getElementById('excludeDetailsCheckbox').checked = false;
+            
+            handleGlobalDatesApplyChange(); // Ensure correct display of item date fields
+            handleGlobalTimesApplyChange(); // Ensure correct display of item time fields
+
+            if (!isLoading) {
+                addItem(); 
+            } else {
+                update(); // If loading, just update the empty summary
+            }
+        }
+
+        function getDaysForItem(itemIndex) {
+            const globalDatesApplyCheckbox = document.getElementById('globalDatesApply');
+            let fromDateStr, toDateStr;
+
+            if (globalDatesApplyCheckbox.checked) {
+                fromDateStr = document.getElementById('fromDate').value;
+                toDateStr = document.getElementById('toDate').value;
+            } else {
+                const itemFromDateInput = document.getElementById(`itemFromDate${itemIndex}`);
+                const itemToDateInput = document.getElementById(`itemToDate${itemIndex}`);
+                if (itemFromDateInput && itemToDateInput && itemFromDateInput.value && itemToDateInput.value) {
+                    fromDateStr = itemFromDateInput.value;
+                    toDateStr = itemToDateInput.value;
+                } else { 
+                    fromDateStr = document.getElementById('fromDate').value;
+                    toDateStr = document.getElementById('toDate').value;
+                }
+            }
+
+            if (!fromDateStr || !toDateStr) return 1; 
+            const f = new Date(fromDateStr);
+            const t = new Date(toDateStr);
+            if (isNaN(f.getTime()) || isNaN(t.getTime())) return 1;
+            const diffTime = t.getTime() - f.getTime();
+            if (diffTime < 0) return 1; 
+            const d = diffTime / (1000 * 60 * 60 * 24) + 1;
+            return d > 0 ? Math.ceil(d) : 1; 
+        }
+        
+        function getDurationInHours(fromTimeStr, toTimeStr) {
+            if (!fromTimeStr || !toTimeStr) return 0; 
+            const [fromHours, fromMinutes] = fromTimeStr.split(':').map(Number);
+            const [toHours, toMinutes] = toTimeStr.split(':').map(Number);
+            if (isNaN(fromHours) || isNaN(fromMinutes) || isNaN(toHours) || isNaN(toMinutes)) return 0;
+            let fromTotalMinutes = fromHours * 60 + fromMinutes;
+            let toTotalMinutes = toHours * 60 + toMinutes;
+            if (toTotalMinutes < fromTotalMinutes) { 
+                 toTotalMinutes += 24 * 60; 
+            }
+            const durationMinutes = toTotalMinutes - fromTotalMinutes;
+            if (durationMinutes < 0) return 0; 
+            return durationMinutes / 60;
+        }
+
+        function getOperationHoursForItem(itemIndex) {
+            const globalTimesApplyCheckbox = document.getElementById('globalTimesApply');
+            let fromTimeStr, toTimeStr;
+
+            if (globalTimesApplyCheckbox.checked) {
+                fromTimeStr = document.getElementById('fromTime').value;
+                toTimeStr = document.getElementById('toTime').value;
+            } else {
+                const itemFromTimeInput = document.getElementById(`itemFromTime${itemIndex}`);
+                const itemToTimeInput = document.getElementById(`itemToTime${itemIndex}`);
+                 if (itemFromTimeInput && itemToTimeInput && itemFromTimeInput.value && itemToTimeInput.value) {
+                    fromTimeStr = itemFromTimeInput.value;
+                    toTimeStr = itemToTimeInput.value;
+                } else { 
+                    fromTimeStr = document.getElementById('fromTime').value;
+                    toTimeStr = document.getElementById('toTime').value;
+                }
+            }
+            return getDurationInHours(fromTimeStr, toTimeStr);
+        }
+
+
+        function update() {
+            const showPricesWithoutIva = document.getElementById('iva').checked; 
+            const globalDiscountPercent = parseFloat(document.getElementById('discount').value) || 0;
+
+            let totalEquipBaseNet = 0; 
+            let totalMonitorsBaseNet = 0;
+            let totalEquipExtraTimeCostNet = 0; 
+
+            for (let i = 0; i < idx; i++) {
+                const nameInput = document.getElementById('name' + i);
+                if (!nameInput) continue;
+                
+                const priceInput = document.getElementById('price' + i);
+                const monInput = document.getElementById('mon' + i);
+                const monitorIncluidoCheckbox = document.getElementById(`monitorIncluido${i}`);
+                const outputDiv = document.getElementById('out' + i);
+                const equipTimingToggleCheckbox = document.getElementById(`equipTimingToggle${i}`);
+                const baseHoursEquipInput = document.getElementById(`baseHoursEquip${i}`);
+                const extraTimeBlockEquipInput = document.getElementById(`extraTimeBlockEquip${i}`);
+                const extraCostBlockEquipInput = document.getElementById(`extraCostBlockEquip${i}`);
+
+                if (!priceInput || !monInput || !outputDiv || !monitorIncluidoCheckbox || 
+                    !baseHoursEquipInput || !extraTimeBlockEquipInput || !extraCostBlockEquipInput || !equipTimingToggleCheckbox) {
+                    continue;
+                }
+
+                const numDays = getDaysForItem(i); 
+                const operationHours = getOperationHoursForItem(i); 
+                
+                let equipmentPriceForCalcIvaInclusive;
+                const enteredPrice = parseFloat(priceInput.value) || 0;
+
+                if (priceInput.dataset.manualOverride === 'true') {
+                    if (priceInput.dataset.enteredWithIvaExclusive === 'true') {
+                        equipmentPriceForCalcIvaInclusive = enteredPrice * (1 + IVA_RATE);
+                    } else {
+                        equipmentPriceForCalcIvaInclusive = enteredPrice;
+                    }
+                } else {
+                    equipmentPriceForCalcIvaInclusive = parseFloat(priceInput.dataset.originalIvaInclusivePrice) || 0;
+                }
+                
+                // This is the equipment's own daily price for its base included hours, after its own discount.
+                let equipmentDailyPriceAfterDiscountsIvaInclusive = equipmentPriceForCalcIvaInclusive;
+                
+                const basePriceDiscountToggle = document.getElementById(`basePriceDiscountToggle${i}`);
+                const basePriceDiscountPercentageInput = document.getElementById(`basePriceDiscountPercentage${i}`);
+                if (basePriceDiscountToggle && basePriceDiscountToggle.checked && basePriceDiscountPercentageInput) {
+                    const discountPercentage = parseFloat(basePriceDiscountPercentageInput.value) || 0;
+                    equipmentDailyPriceAfterDiscountsIvaInclusive *= (1 - (discountPercentage / 100));
+                }
+                
+                // This is used for accumulating the total base equipment cost for global discount calculation.
+                const equipmentBasePriceDailyNet = equipmentDailyPriceAfterDiscountsIvaInclusive / (1 + IVA_RATE);
+                totalEquipBaseNet += equipmentBasePriceDailyNet * numDays; 
+
+                // This is the extra cost for time, after its own discount.
+                let equipmentExtraCostDailyIvaInclusive = 0;
+                let equipmentExtraCostDailyNet = 0;
+                if (equipTimingToggleCheckbox.checked) { 
+                    const baseHoursEquip = parseFloat(baseHoursEquipInput.value) || 0;
+                    const extraTimeBlockEquip = parseFloat(extraTimeBlockEquipInput.value) || 1; 
+                    const extraCostBlockEquip = parseFloat(extraCostBlockEquipInput.value) || 0;
+                    
+                    if (operationHours > baseHoursEquip && extraTimeBlockEquip > 0) {
+                        const extraHoursEquip = operationHours - baseHoursEquip;
+                        const numberOfExtraBlocksEquip = Math.ceil(extraHoursEquip / extraTimeBlockEquip); 
+                        let currentExtraCostBlock = extraCostBlockEquip;
+
+                        const extraCostDiscountToggle = document.getElementById(`extraCostDiscountToggle${i}`);
+                        const extraCostDiscountPercentageInput = document.getElementById(`extraCostDiscountPercentage${i}`);
+                        if (extraCostDiscountToggle && extraCostDiscountToggle.checked && extraCostDiscountPercentageInput) {
+                            const discountPercentage = parseFloat(extraCostDiscountPercentageInput.value) || 0;
+                            currentExtraCostBlock *= (1 - (discountPercentage / 100));
+                        }
+                        equipmentExtraCostDailyIvaInclusive = numberOfExtraBlocksEquip * currentExtraCostBlock;
+                        equipmentExtraCostDailyNet = equipmentExtraCostDailyIvaInclusive / (1 + IVA_RATE);
+                        totalEquipExtraTimeCostNet += equipmentExtraCostDailyNet * numDays; 
+                    }
+                }
+                
+                let monitorBasePriceForItemNet = 0; 
+                const numMonitors = parseInt(monInput.value) || 0;
+                if (numMonitors > 0 && !monitorIncluidoCheckbox.checked) {
+                    const monitorBaseHours = 5;
+                    const extraMonitorHours = Math.max(0, operationHours - monitorBaseHours); 
+                    const calculatedExtraMonitorHoursCostIvaInclusive = Math.ceil(extraMonitorHours) * MONITOR_HOURLY_EXTRA_IVA_INCLUSIVE;
+                    let monitorChargeIvaInclusive = (MONITOR_BASE_CHARGE_IVA_INCLUSIVE + calculatedExtraMonitorHoursCostIvaInclusive) * numMonitors;
+                    monitorBasePriceForItemNet = monitorChargeIvaInclusive / (1 + IVA_RATE);
+                }
+                totalMonitorsBaseNet += monitorBasePriceForItemNet * numDays;
+
+                // Variables for display purposes
+                let equipDisplayPerItemBaseDaily, equipDisplayPerItemExtraDaily;
+                let equipTotalBaseForDisplay, equipTotalExtraForDisplay;
+
+                if (showPricesWithoutIva) {
+                    // Base display uses the equipment's own price (after its discount), net of IVA.
+                    equipDisplayPerItemBaseDaily = equipmentBasePriceDailyNet; 
+                    // Extra display uses the extra time cost (after its discount), net of IVA.
+                    equipDisplayPerItemExtraDaily = equipmentExtraCostDailyNet;
+                } else {
+                    // Base display uses the equipment's own price (after its discount), with IVA.
+                    equipDisplayPerItemBaseDaily = equipmentDailyPriceAfterDiscountsIvaInclusive; 
+                    // Extra display uses the extra time cost (after its discount), with IVA.
+                    equipDisplayPerItemExtraDaily = equipmentExtraCostDailyIvaInclusive;
+                }
+
+                equipTotalBaseForDisplay = equipDisplayPerItemBaseDaily * numDays;
+                equipTotalExtraForDisplay = equipDisplayPerItemExtraDaily * numDays;
+
+                let monitorDisplayPerItemDaily = showPricesWithoutIva ? monitorBasePriceForItemNet : monitorBasePriceForItemNet * (1 + IVA_RATE);
+                
+                const equipDisplayTotalForItem = equipTotalBaseForDisplay + equipTotalExtraForDisplay;
+                const monitorDisplayTotalForItem = monitorDisplayPerItemDaily * numDays;
+                const totalItemDisplay = equipDisplayTotalForItem + monitorDisplayTotalForItem;
+
+                let itemDetails = `Equip.: €${equipDisplayTotalForItem.toFixed(2)}`;
+                itemDetails += ` (€${equipTotalBaseForDisplay.toFixed(2)} Base`;
+                if (basePriceDiscountToggle && basePriceDiscountToggle.checked && basePriceDiscountPercentageInput && parseFloat(basePriceDiscountPercentageInput.value) > 0) {
+                    itemDetails += ` [-${parseFloat(basePriceDiscountPercentageInput.value).toFixed(0)}%]`;
+                }
+                if (equipTimingToggleCheckbox.checked && equipmentExtraCostDailyIvaInclusive > 0) {
+                     itemDetails += ` + €${equipTotalExtraForDisplay.toFixed(2)} Extra`;
+                     const extraCostDiscountToggle = document.getElementById(`extraCostDiscountToggle${i}`);
+                     const extraCostDiscountPercentageInput = document.getElementById(`extraCostDiscountPercentage${i}`);
+                     if (extraCostDiscountToggle && extraCostDiscountToggle.checked && extraCostDiscountPercentageInput && parseFloat(extraCostDiscountPercentageInput.value) > 0) {
+                        itemDetails += ` [-${parseFloat(extraCostDiscountPercentageInput.value).toFixed(0)}%]`;
+                     }
+                }
+                itemDetails += `)`; 
+
+                itemDetails += ` (${numDays} dia(s)`;
+                if (operationHours > 0) itemDetails += `, ${operationHours.toFixed(1)}h/dia`;
+                itemDetails += `)\n`;
+                
+                if (numMonitors > 0) {
+                    itemDetails += `Mon.: ${numMonitors} (€${monitorDisplayTotalForItem.toFixed(2)}`;
+                    if (operationHours > 0) itemDetails += `, ${operationHours.toFixed(1)}h`;
+                    if (monitorIncluidoCheckbox.checked) itemDetails += ", Incluído";
+                    itemDetails += `)\n`;
+                } else if (monitorIncluidoCheckbox.checked) { 
+                     itemDetails += `Mon.: Incluído\n`;
+                }
+
+                itemDetails += `Total Item: €${totalItemDisplay.toFixed(2)}`;
+                outputDiv.innerText = itemDetails;
+            }
+
+            const subTotalEquipMonitorsBaseNet = totalEquipBaseNet + totalMonitorsBaseNet; // This is just a sum before further specific breakdowns for summary display
+            const transportFeeIvaInclusive = transportationFees[document.getElementById('transportLocation').value] || 0;
+            const transportFeeBase = transportFeeIvaInclusive / (1 + IVA_RATE); 
+            
+            const subTotalBeforeGlobalDiscountBaseNet = totalEquipBaseNet; // Global discount applies ONLY to this base equipment sum
+            const globalDiscountAmount = (subTotalBeforeGlobalDiscountBaseNet * (globalDiscountPercent / 100)); 
+            const totalEquipBaseAfterGlobalDiscountNet = subTotalBeforeGlobalDiscountBaseNet - globalDiscountAmount;
+
+            // Final total sums the discounted base equipment, plus non-discounted extra time, monitors, and transport
+            const finalTotalBaseNet = totalEquipBaseAfterGlobalDiscountNet + totalEquipExtraTimeCostNet + totalMonitorsBaseNet + transportFeeBase; 
+            
+            const summaryElement = document.getElementById('summary');
+            summaryElement.innerHTML = ''; 
+
+            function appendSummaryLine(label, value, className = "") {
+                const p = document.createElement('p');
+                if (className) p.className = className;
+                p.innerHTML = `${label}: <span>€${value.toFixed(2)}</span>`;
+                summaryElement.appendChild(p);
+            }
+
+            if (showPricesWithoutIva) {
+                const equipEAnimacoesNet = totalEquipBaseNet + totalEquipExtraTimeCostNet;
+                appendSummaryLine('Equipamentos e Animações', equipEAnimacoesNet);
+                appendSummaryLine('Monitores', totalMonitorsBaseNet);
+                if (transportFeeIvaInclusive > 0) {
+                    appendSummaryLine('Transporte', transportFeeBase);
+                }
+                if (globalDiscountPercent > 0) {
+                    const subtotalAllBeforeDiscount = equipEAnimacoesNet + totalMonitorsBaseNet + transportFeeBase;
+                    appendSummaryLine('SUBTOTAL (Antes Desconto Global)', subtotalAllBeforeDiscount);
+                    appendSummaryLine(`Desconto Global (${globalDiscountPercent}% s/ €${totalEquipBaseNet.toFixed(2)} da componente Equip. Base)`, -globalDiscountAmount, 'discount-line');
+                }
+                appendSummaryLine('VALOR FINAL (s/IVA)', finalTotalBaseNet, 'grand-total');
+            } else { 
+                const equipEAnimacoesComIva = (totalEquipBaseNet + totalEquipExtraTimeCostNet) * (1 + IVA_RATE);
+                appendSummaryLine('Equipamentos e Animações', equipEAnimacoesComIva);
+                appendSummaryLine('Monitores', totalMonitorsBaseNet * (1 + IVA_RATE));
+                if (transportFeeIvaInclusive > 0) {
+                    appendSummaryLine('Transporte', transportFeeIvaInclusive);
+                }
+                 if (globalDiscountPercent > 0) {
+                    const subtotalAllBeforeDiscount = equipEAnimacoesComIva + (totalMonitorsBaseNet * (1+IVA_RATE)) + transportFeeIvaInclusive;
+                    appendSummaryLine('SUBTOTAL (Antes Desconto Global)', subtotalAllBeforeDiscount);
+                    appendSummaryLine(`Desconto Global (${globalDiscountPercent}% s/ €${(totalEquipBaseNet * (1+IVA_RATE)).toFixed(2)} da componente Equip. Base)`, -(globalDiscountAmount * (1 + IVA_RATE)), 'discount-line');
+                }
+                appendSummaryLine('VALOR FINAL (c/IVA)', finalTotalBaseNet * (1 + IVA_RATE), 'grand-total');
+            }
+        }
+
+        function exportQuote() {
+            console.log("[exportQuote] Iniciando exportação para nova janela HTML...");
+
+            const showPricesWithoutIva = document.getElementById('iva').checked; 
+            const globalDiscountPercent = parseFloat(document.getElementById('discount').value) || 0;
+            const selectedTransportLocation = document.getElementById('transportLocation').value;
+            const transportFeeIvaInclusive = transportationFees[selectedTransportLocation] || 0;
+            const globalDatesApplied = document.getElementById('globalDatesApply').checked;
+            const globalTimesApplied = document.getElementById('globalTimesApply').checked;
+            const clientName = document.getElementById('clientName').value.trim();
+            const fromDateGlobal = document.getElementById('fromDate').value;
+            const toDateGlobal = document.getElementById('toDate').value;
+            const fromTimeGlobalVal = document.getElementById('fromTime').value;
+            const toTimeGlobalVal = document.getElementById('toTime').value;
+            const excludeDetails = document.getElementById('excludeDetailsCheckbox').checked;
+            const sellerName = document.getElementById('sellerName').value.trim();
+
+            const includeCondPagamento = document.getElementById('includeCondPagamentoExport').checked;
+            const includeMetPagamento = document.getElementById('includeMetPagamentoExport').checked;
+            let condPagamentoSelecionada = '';
+            if (includeCondPagamento) {
+                const condPagRadios = document.getElementsByName('condPagamento');
+                for (const radio of condPagRadios) {
+                    if (radio.checked) {
+                        // Map value to full text for export
+                        if (radio.value === '50/50') condPagamentoSelecionada = '50% na adjudicação e 50% até à montagem';
+                        else if (radio.value === 'ateMontagem') condPagamentoSelecionada = 'Até à data da montagem';
+                        else if (radio.value === '30dias') condPagamentoSelecionada = 'Até 30 dias, após conclusão da actividade';
+                        else condPagamentoSelecionada = radio.labels[0].innerText.trim(); // Fallback, though should not be needed
+                        break;
+                    }
+                }
+            }
+
+            const metodosPagamentoSelecionados = [];
+            if (includeMetPagamento) {
+                // Map ID to full text for export
+                if (document.getElementById('metPagDinheiro').checked) metodosPagamentoSelecionados.push("Dinheiro");
+                if (document.getElementById('metPagMbway').checked) metodosPagamentoSelecionados.push("Mbway (918 789 192)");
+                if (document.getElementById('metPagCheque').checked) metodosPagamentoSelecionados.push("Cheque à ordem de My Dynamic, Lda.");
+                if (document.getElementById('metPagTransf').checked) metodosPagamentoSelecionados.push("Transferência bancária para o NIB do Montepio 0036.0179.9910.0052.0857.2 com envio do comprovativo para geral@mydynamic.pt");
+            }
+
+            const quoteWindow = window.open('', '_blank');
+            if (!quoteWindow) {
+                console.error("Pop-up bloqueado. Por favor, permita pop-ups para este site.");
+                alert("Pop-up bloqueado. Por favor, permita pop-ups para este site para exportar o orçamento.");
+                return;
+            }
+
+            let htmlContent = `<html><head><title>Orçamento de Animação</title>`;
+            htmlContent += `
+<style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; font-size: 10pt; line-height: 1.4; } 
+    .export-container {
+        width: 180mm;
+        max-width: 180mm;
+        margin: 20mm auto; 
+        padding: 10mm;
+        background-color: #fff;
+    }
+    .export-logo { max-height: 100px; margin-bottom: 8mm; display: block; margin-left: auto; margin-right: auto;}
+    .header { text-align: center; padding-bottom: 8mm; border-bottom: 1px solid #ccc; margin-bottom: 8mm; }
+    .header h1 { margin: 0 0 4px 0; font-size: 20pt; color: #333; font-weight: bold; } 
+    .header .client-info { font-size: 11pt; color: #555; margin-top: 3px; text-align:center;}
+    .header .date-info { font-size: 11pt; color: #555; margin-top: 2px; text-align:center;}
+    .quote-details { margin-bottom: 8mm; padding-bottom: 4mm; border-bottom: 1px dashed #eee;}
+    .quote-details p { margin: 3px 0; font-size: 9pt; } 
+    .quote-details strong { font-weight: bold; }
+    .equipment-catalog-section { } 
+    .equipment-detail-item-wrapper { margin-bottom: 10mm; }
+    .equipment-detail-item { display: flex; flex-direction: row; align-items: flex-start; gap: 7mm; padding: 7mm 0; border-bottom: 1px dotted #e0e0e0; }
+    .equipment-detail-item:last-child { border-bottom: none; }
+    .equipment-detail-image-column { flex: 0 0 50mm; text-align: center; margin-top: 3mm; }
+    .equipment-detail-image-column img { max-width: 100%; max-height: 50mm; height: auto; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); object-fit: contain;}
+    .equipment-detail-info-column { flex: 1; text-align: left; }
+    .equipment-detail-info-column h2 { font-size: 15pt; color: #2c3e50; margin-top: 0; margin-bottom: 3mm; padding-bottom: 1.5mm; border-bottom: 1px solid #3498db; }
+    .equipment-detail-info-column .description { font-size: 9.5pt; color: #34495e; white-space: pre-line; line-height: 1.5;}
+    .summary-table-wrapper { padding-top:10mm;} 
+    table { width: 100%; border-collapse: collapse; margin-bottom: 15px; margin-top: 5mm; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; font-size: 9pt; vertical-align: top; } 
+    th { background-color: #f0f0f0; color: #333; font-weight: bold; text-transform: uppercase; font-size: 8pt;} 
+    tr:nth-child(even) td { background-color: #f9f9f9; }
+    td small { font-size: 0.85em; color: #555; display: block; margin-top: 1px;}
+    .summary-section { margin-top: 15px; padding: 12px; background-color: #f9f9f9; border: 1px solid #eee; border-radius: 3px; }
+    .summary-section p { margin: 5px 0; font-size: 0.95em; } 
+    .summary-section strong { font-weight: bold; }
+    .summary-section .discount-line { font-size: 0.95em; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #d0d0d0;}
+    p.grand-total-final { font-size: 1em !important; font-weight: bold !important; color: #333 !important; margin-top: 7px !important; padding-top: 7px !important; border-top: 1px solid #aaa !important;}
+    p.grand-total-final strong { color: #333 !important; font-weight: bold !important; }
+    .footer { text-align: center; margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee; font-size: 1em; color: #555; } 
+    .footer p { margin: 3px 0; font-size: 1.1em; }
+    .seller-signature { margin-top: 10mm; padding-top: 5mm; border-top: 1px solid #ccc; font-size: 9pt; color: #555; white-space: pre-line; text-align: center; }
+    .item-notes { font-size: 0.9em; color: #555; margin-top: 10px; font-style: italic; } 
+    .general-conditions-section { margin-top: 15mm; padding-top: 5mm; border-top: 1px solid #ccc; font-size: 9pt; }
+    .general-conditions-section h3 { font-size: 11pt; color: #333; margin-bottom: 3mm; }
+    .general-conditions-section p, .general-conditions-section ul { margin-bottom: 2mm; line-height: 1.4; }
+    .general-conditions-section ul { padding-left: 5mm; list-style-type: disc; }
+    .general-conditions-section ul li { margin-bottom: 1mm; }
+
+     @media print { 
+        html, body {
+            font-size: 10pt; 
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact;
+            margin: 0; 
+            padding: 0;
+            height: auto !important;
+            overflow: visible !important;
+        } 
+        .export-container { 
+            box-shadow: none; 
+            border: none;
+            width: 180mm;
+            margin: 20mm auto; 
+            padding: 10mm; 
+            background-color: #fff !important; 
+            max-width: none; 
+            height: auto !important;
+            overflow: visible !important;
+            page-break-inside: avoid !important;
+        }
+        .equipment-catalog-section { 
+            page-break-after: auto; 
+            page-break-inside: avoid !important;
+        } 
+        .equipment-detail-item-wrapper {
+            page-break-after: auto !important; 
+            page-break-inside: avoid !important; 
+            margin-bottom: 10mm; 
+        }
+        .equipment-detail-item-wrapper:last-of-type {
+            page-break-after: auto; 
+        }
+        .equipment-detail-item {
+            border-bottom: 1px dotted #eee; 
+        }
+        .equipment-detail-image-column img {
+            max-width: 100%;
+            max-height: 50mm;
+        }
+        .equipment-detail-info-column h2 {
+             font-size: 13pt;
+        }
+        .equipment-detail-info-column .description {
+            font-size: 9pt;
+        }
+        .summary-table-wrapper { 
+            page-break-before: auto !important; 
+        }
+        table { font-size: 8pt; }
+        th, td { padding: 4px 6px; }
+        .summary-section { font-size: 0.9em; page-break-inside: avoid !important; }
+        .summary-section .grand-total-final { font-size: 0.95em; color: #333 !important; }
+        .summary-section .grand-total-final strong { color: #333 !important; } 
+        .no-print { display: none !important; } 
+    }
+</style>
+`;
+            htmlContent += `</head><body><div class="export-container">`; 
+            
+            htmlContent += `<div class="header"><img src="imagens/logo.png" alt="My Dynamic Logo" class="export-logo" onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<p style=\'color:red; text-align:center;\'>Logo não encontrado em imagens/logo.png</p>');"><h1>Orçamento de Animação</h1>`; 
+            if (clientName) {
+                htmlContent += `<p class="client-info">${clientName}</p>`;
+            }
+            if (globalDatesApplied && fromDateGlobal && toDateGlobal) {
+                 htmlContent += `<p class="date-info">Datas: De ${fromDateGlobal} até ${toDateGlobal}</p>`;
+            }
+            htmlContent += `</div>`;
+            
+            htmlContent += `<div class="quote-details">`;
+            if (globalTimesApplied && (fromTimeGlobalVal || toTimeGlobalVal)) {
+                htmlContent += `<p><strong>Horário:</strong> Das ${fromTimeGlobalVal || "N/A"} às ${toTimeGlobalVal || "N/A"}</p>`;
+            }
+            if (selectedTransportLocation !== "Nenhuma" && transportFeeIvaInclusive > 0) {
+                 htmlContent += `<p><strong>Localidade:</strong> ${selectedTransportLocation}</p>`;
+            }
+            htmlContent += `</div>`;
+
+            if (!excludeDetails) {
+                htmlContent += `<div class="equipment-catalog-section">`; 
+                for (let i = 0; i < idx; i++) {
+                    const nameInput = document.getElementById('name' + i);
+                    if (!nameInput) continue;
+                    const itemName = nameInput.value.trim();
+                    const details = equipmentDetails[itemName]; 
+                    if (details) { 
+                        htmlContent += `<div class="equipment-detail-item-wrapper">`; 
+                        htmlContent += `<div class="equipment-detail-item">`; 
+                        htmlContent += `<div class="equipment-detail-image-column">`;
+                        if (details.image_url) {
+                            htmlContent += `<img src="${details.image_url}" alt="Imagem de ${itemName}" onerror="this.style.display='none'; this.parentElement.innerHTML += '<p style=\'color:red;\'>ERRO: Imagem não encontrada em ${details.image_url}</p>';">`;
+                        } else {
+                            htmlContent += `<p><em>(Sem imagem)</em></p>`;
+                        }
+                        htmlContent += `</div>`; 
+                        htmlContent += `<div class="equipment-detail-info-column">`;
+                        htmlContent += `<h2>${itemName}</h2>`;
+                        if (details.description) {
+                            htmlContent += `<div class="description">${details.description.replace(/\n/g, '<br>')}</div>`;
+                        } else {
+                            htmlContent += `<div class="description"><em>(Sem descrição)</em></div>`;
+                        }
+                        htmlContent += `</div>`; 
+                        htmlContent += `</div>`; 
+                        htmlContent += `</div>`; 
+                    }
+                }
+                htmlContent += `</div>`; 
+            }
+
+            htmlContent += `<div class="summary-table-wrapper">`; 
+            htmlContent += `<table><thead><tr>
+                <th>Item</th>
+                <th>Preço Unit. Dia</th>
+                <th>Dias</th>
+                ${!globalDatesApplied ? '<th>Período Item</th>' : ''}
+                ${!globalTimesApplied ? '<th>Horário Item</th>' : ''}
+                <th>Nº Monitores</th>
+                <th>Duração (h)</th>
+                <th>Subtotal Equip.</th>
+                <th>Subtotal Monit.</th>
+                <th>Total Item</th>
+            </tr></thead><tbody>`;
+
+            let overallTotalEquipBaseNetExport = 0;
+            let overallTotalMonitorsBaseNetExport = 0;
+            let overallTotalEquipExtraTimeCostNetExport = 0; // New for export
+            
+            for (let i = 0; i < idx; i++) {
+                const nameInput = document.getElementById('name' + i);
+                if (!nameInput) continue; 
+                const itemName = nameInput.value.trim() || "N/A";
+                const priceInput = document.getElementById('price' + i);
+                const monInput = document.getElementById('mon' + i);
+                const monitorIncluidoCheckbox = document.getElementById(`monitorIncluido${i}`);
+                const baseHoursEquipInput = document.getElementById(`baseHoursEquip${i}`);
+                const equipTimingToggleCheckbox = document.getElementById(`equipTimingToggle${i}`);
+                const numDaysForItem = getDaysForItem(i);
+                const operationHours = getOperationHoursForItem(i);
+                let itemPeriodText = '';
+                if(!globalDatesApplied) {
+                    const itemFromDateVal = document.getElementById(`itemFromDate${i}`)?.value || 'N/A';
+                    const itemToDateVal = document.getElementById(`itemToDate${i}`)?.value || 'N/A';
+                    itemPeriodText = `<td>De ${itemFromDateVal}<br>Até ${itemToDateVal}</td>`;
+                }
+                let itemTimeText = '';
+                if(!globalTimesApplied) {
+                    const itemFromTimeVal = document.getElementById(`itemFromTime${i}`)?.value || 'N/A';
+                    const itemToTimeVal = document.getElementById(`itemToTime${i}`)?.value || 'N/A';
+                    itemTimeText = `<td>${itemFromTimeVal} - ${itemToTimeVal}</td>`;
+                }
+
+                let equipmentOriginalDailyPriceIvaInclusive;
+                const enteredPriceExport = parseFloat(priceInput.value) || 0;
+                if (priceInput.dataset.manualOverride === 'true') {
+                    if (priceInput.dataset.enteredWithIvaExclusive === 'true') {
+                        equipmentOriginalDailyPriceIvaInclusive = enteredPriceExport * (1 + IVA_RATE);
+                    } else {
+                        equipmentOriginalDailyPriceIvaInclusive = enteredPriceExport;
+                    }
+                } else {
+                    equipmentOriginalDailyPriceIvaInclusive = parseFloat(priceInput.dataset.originalIvaInclusivePrice) || 0;
+                }
+
+                let equipmentDailyPriceAfterPartnerIvaInclusive = equipmentOriginalDailyPriceIvaInclusive;
+                
+                // Apply base price discount for export
+                const basePriceDiscountToggleExport = document.getElementById(`basePriceDiscountToggle${i}`);
+                const basePriceDiscountPercentageInputExport = document.getElementById(`basePriceDiscountPercentage${i}`);
+                let basePriceDiscountAppliedInfo = "";
+                if (basePriceDiscountToggleExport && basePriceDiscountToggleExport.checked && basePriceDiscountPercentageInputExport) {
+                    const discountPercentage = parseFloat(basePriceDiscountPercentageInputExport.value) || 0;
+                    equipmentDailyPriceAfterPartnerIvaInclusive *= (1 - (discountPercentage / 100)); // This variable name is a bit misleading now partner is removed, but it holds base price before extra
+                    if (discountPercentage > 0) basePriceDiscountAppliedInfo = ` <small>(-${discountPercentage}%)</small>`;
+                }
+
+                const equipmentBasePriceDailyIvaInclusiveExport = equipmentDailyPriceAfterPartnerIvaInclusive;
+                const equipmentBasePriceDailyNetExport = equipmentBasePriceDailyIvaInclusiveExport / (1 + IVA_RATE);
+                overallTotalEquipBaseNetExport += equipmentBasePriceDailyNetExport * numDaysForItem;
+
+                let equipmentExtraCostDailyIvaInclusiveExport = 0;
+                let equipmentExtraCostDailyNetExport = 0;
+                let baseHoursEquipVal = 0; 
+                let extraCostAppliedInfo = ""; // For export table
+
+                if (equipTimingToggleCheckbox.checked) {
+                    baseHoursEquipVal = parseFloat(baseHoursEquipInput.value) || 0;
+                    const extraTimeBlockEquip = parseFloat(document.getElementById(`extraTimeBlockEquip${i}`).value) || 1;
+                    const extraCostBlockEquip = parseFloat(document.getElementById(`extraCostBlockEquip${i}`).value) || 0;
+                    if (operationHours > baseHoursEquipVal && extraTimeBlockEquip > 0) {
+                        const extraHoursEquip = operationHours - baseHoursEquipVal;
+                        const numberOfExtraBlocksEquip = Math.ceil(extraHoursEquip / extraTimeBlockEquip);
+                        let currentExtraCostBlockForExport = extraCostBlockEquip;
+
+                        // Apply extra cost discount for export
+                        const extraCostDiscountToggleExport = document.getElementById(`extraCostDiscountToggle${i}`);
+                        const extraCostDiscountPercentageInputExport = document.getElementById(`extraCostDiscountPercentage${i}`);
+                        if (extraCostDiscountToggleExport && extraCostDiscountToggleExport.checked && extraCostDiscountPercentageInputExport) {
+                            const discountPercentage = parseFloat(extraCostDiscountPercentageInputExport.value) || 0;
+                            currentExtraCostBlockForExport *= (1 - (discountPercentage / 100));
+                            // Optionally add info to the export table if needed here
+                            if (discountPercentage > 0) extraCostAppliedInfo = ` <small>(-${discountPercentage}%)</small>`;
+                        }
+                        equipmentExtraCostDailyIvaInclusiveExport = numberOfExtraBlocksEquip * currentExtraCostBlockForExport;
+                        equipmentExtraCostDailyNetExport = equipmentExtraCostDailyIvaInclusiveExport / (1+IVA_RATE);
+                        overallTotalEquipExtraTimeCostNetExport += equipmentExtraCostDailyNetExport * numDaysForItem;
+                    }
+                }
+                // const totalEffectiveDailyEquipCostIvaInclusive = equipmentDailyPriceAfterPartnerIvaInclusive + equipmentExtraCostDailyIvaInclusiveExport; // Old
+                const itemEquipTotalDisplayNet = equipmentBasePriceDailyNetExport + equipmentExtraCostDailyNetExport;
+                const itemEquipTotalDisplayIvaIncl = equipmentBasePriceDailyIvaInclusiveExport + equipmentExtraCostDailyIvaInclusiveExport;
+                const itemEquipTotalForTable = (showPricesWithoutIva ? itemEquipTotalDisplayNet : itemEquipTotalDisplayIvaIncl) * numDaysForItem;
+
+                const priceUnitDayDisplay = showPricesWithoutIva ? equipmentBasePriceDailyNetExport : equipmentBasePriceDailyIvaInclusiveExport;
+                const extraCostUnitDayDisplay = showPricesWithoutIva ? equipmentExtraCostDailyNetExport : equipmentExtraCostDailyIvaInclusiveExport;
+                
+                let monitorBasePriceForItemNetExport = 0;
+                const numMonitorsExport = parseInt(monInput.value) || 0;
+                if (numMonitorsExport > 0 && !monitorIncluidoCheckbox.checked) {
+                    const monitorBaseHoursExport = 5;
+                    const extraMonitorHoursExport = Math.max(0, operationHours - monitorBaseHoursExport);
+                    const calculatedExtraMonitorHoursCostIvaInclusiveExport = Math.ceil(extraMonitorHoursExport) * MONITOR_HOURLY_EXTRA_IVA_INCLUSIVE;
+                    let monitorChargeIvaInclusiveExport = (MONITOR_BASE_CHARGE_IVA_INCLUSIVE + calculatedExtraMonitorHoursCostIvaInclusiveExport) * numMonitorsExport;
+                    monitorBasePriceForItemNetExport = monitorChargeIvaInclusiveExport / (1 + IVA_RATE);
+                }
+                overallTotalMonitorsBaseNetExport += monitorBasePriceForItemNetExport * numDaysForItem;
+                const itemMonitorTotalDisplay = (showPricesWithoutIva ? monitorBasePriceForItemNetExport : monitorBasePriceForItemNetExport * (1 + IVA_RATE)) * numDaysForItem;
+                const totalItemForRowDisplay = itemEquipTotalForTable + itemMonitorTotalDisplay;
+                htmlContent += `<tr>
+                    <td>${itemName}</td>
+                    <td>`;
+                htmlContent += `€${priceUnitDayDisplay.toFixed(2)}${basePriceDiscountAppliedInfo}`;
+                if (equipTimingToggleCheckbox.checked) {
+                    htmlContent += ` <small>(Base ${baseHoursEquipVal}h)</small>`;
+                    if (equipmentExtraCostDailyIvaInclusiveExport > 0) {
+                        htmlContent += `<br>+ Extra €${extraCostUnitDayDisplay.toFixed(2)}${extraCostAppliedInfo} <small>(p/bloco)</small>`;
+                    }
+                }
+                htmlContent += `</td>
+                    <td>${numDaysForItem}</td>
+                    ${itemPeriodText}
+                    ${itemTimeText}
+                    <td>${numMonitorsExport > 0 ? numMonitorsExport : "-"} ${monitorIncluidoCheckbox.checked && numMonitorsExport > 0 ? "<small>(Incluído)</small>" : ""} ${ (numMonitorsExport > 0 && operationHours > 0) ? `<small>(${operationHours.toFixed(1)}h)</small>` : ""}</td>
+                    <td>${operationHours.toFixed(1)}h</td>
+                    <td>€${itemEquipTotalForTable.toFixed(2)}</td>
+                    <td>€${itemMonitorTotalDisplay.toFixed(2)}</td>
+                    <td>€${totalItemForRowDisplay.toFixed(2)}</td>
+                </tr>`;
+            }
+            htmlContent += `</tbody></table></div>`;
+
+            const subTotalEquipMonitorsBaseNetExport = overallTotalEquipBaseNetExport + overallTotalMonitorsBaseNetExport; // This line is not quite right anymore, global discount logic below changes
+            const transportFeeBaseExport = transportFeeIvaInclusive / (1 + IVA_RATE); 
+            
+            const subTotalBeforeGlobalDiscountNetExport = overallTotalEquipBaseNetExport; // Global discount applies only to this
+            const globalDiscountAmountBaseExport = (subTotalBeforeGlobalDiscountNetExport * (globalDiscountPercent / 100)); 
+            const totalAfterGlobalDiscountNetExport = subTotalBeforeGlobalDiscountNetExport - globalDiscountAmountBaseExport;
+
+            const finalTotalBaseNetExport = totalAfterGlobalDiscountNetExport + overallTotalEquipExtraTimeCostNetExport + overallTotalMonitorsBaseNetExport + transportFeeBaseExport; 
+            const finalTotalExportDisplay = showPricesWithoutIva ? finalTotalBaseNetExport : finalTotalBaseNetExport * (1 + IVA_RATE);
+
+            htmlContent += `<div class="summary-section"><p><strong>Resumo do Orçamento:</strong></p>`;
+            const ivaTextForSummary = showPricesWithoutIva ? " +IVA" : "";
+            
+            const equipEAnimacoesNetExport = overallTotalEquipBaseNetExport + overallTotalEquipExtraTimeCostNetExport;
+            const equipEAnimacoesComIvaExport = equipEAnimacoesNetExport * (1 + IVA_RATE);
+
+            htmlContent += `<p>Equipamentos e Animações: €${(showPricesWithoutIva ? equipEAnimacoesNetExport : equipEAnimacoesComIvaExport).toFixed(2)}${ivaTextForSummary}</p>`;
+            htmlContent += `<p>Total Monitores: €${(showPricesWithoutIva ? overallTotalMonitorsBaseNetExport : overallTotalMonitorsBaseNetExport * (1+IVA_RATE)).toFixed(2)}${ivaTextForSummary}</p>`;
+            if (transportFeeIvaInclusive > 0) {
+                 htmlContent += `<p>Transporte (${selectedTransportLocation}): €${(showPricesWithoutIva ? transportFeeBaseExport : transportFeeIvaInclusive).toFixed(2)}${ivaTextForSummary}</p>`;
+            }
+            if (globalDiscountPercent > 0) {
+                const subtotalAllBeforeDiscountExportNet = equipEAnimacoesNetExport + overallTotalMonitorsBaseNetExport + transportFeeBaseExport;
+                const subtotalAllBeforeDiscountExportComIva = equipEAnimacoesComIvaExport + (overallTotalMonitorsBaseNetExport * (1+IVA_RATE)) + transportFeeIvaInclusive;
+                htmlContent += `<p>SUBTOTAL (Antes Desconto Global): €${(showPricesWithoutIva ? subtotalAllBeforeDiscountExportNet : subtotalAllBeforeDiscountExportComIva).toFixed(2)}${ivaTextForSummary}</p>`;
+                
+                const baseValueForDiscountTextNet = overallTotalEquipBaseNetExport;
+                const baseValueForDiscountTextComIva = overallTotalEquipBaseNetExport * (1+IVA_RATE);
+                htmlContent += `<p class="discount-line">Desconto Global (${globalDiscountPercent}% s/ €${(showPricesWithoutIva ? baseValueForDiscountTextNet : baseValueForDiscountTextComIva).toFixed(2)} da componente Equip. Base): -€${(showPricesWithoutIva ? globalDiscountAmountBaseExport : globalDiscountAmountBaseExport * (1+IVA_RATE)).toFixed(2)}${ivaTextForSummary}</p>`;
+            }
+            htmlContent += `<p class="grand-total-final"><strong>VALOR FINAL: €${finalTotalExportDisplay.toFixed(2)}</strong></p>`;
+            if (showPricesWithoutIva) {
+                htmlContent += `<p class="item-notes">A todos os valores apresentados acresce IVA à taxa legal em vigor (${(IVA_RATE*100).toFixed(0)}%).</p>`;
+            } else {
+                htmlContent += `<p class="item-notes">Valores com IVA incluído à taxa legal em vigor (${(IVA_RATE*100).toFixed(0)}%).</p>`;
+            }
+            htmlContent += `</div>`; 
+            
+            htmlContent += `<div class="general-conditions-section">`;
+            htmlContent += `<h3>Condições Gerais:</h3>`;
+            htmlContent += `<ul>`;
+            if (showPricesWithoutIva) {
+                htmlContent += `<li>A todos os valores acima mencionados acresce IVA à taxa legal em vigor (${(IVA_RATE*100).toFixed(0)}%).</li>`;
+            } else {
+                htmlContent += `<li>Os valores apresentados já incluem o IVA à taxa legal em vigor (${(IVA_RATE*100).toFixed(0)}%).</li>`;
+            }
+            htmlContent += `<li>O local da actividade será a designar atempadamente pelo Cliente.</li>`;
+            htmlContent += `<li>Os valores apresentados são válidos durante o ano de 2025.</li>`;
+            htmlContent += `<li>A disponibilidade das actividades referidas nesta proposta só poderá ser confirmada aquando da adjudicação por escrito.</li>`;
+            htmlContent += `</ul>`;
+
+            if (includeCondPagamento && condPagamentoSelecionada) {
+                htmlContent += `<h3>Condições de Pagamento:</h3>`;
+                htmlContent += `<p>${condPagamentoSelecionada}</p>`;
+            }
+
+            if (includeMetPagamento && metodosPagamentoSelecionados.length > 0) {
+                htmlContent += `<h3>Método de pagamento:</h3>`;
+                htmlContent += `<p>O pagamento no valor total de €${finalTotalExportDisplay.toFixed(2)} deverá ser efetuado até ao ato da montagem numa das seguintes formas:</p>`;
+                htmlContent += `<ul>`;
+                metodosPagamentoSelecionados.forEach(metodo => {
+                    htmlContent += `<li>${metodo}</li>`;
+                });
+                htmlContent += `</ul>`;
+                htmlContent += `<p>Caso pretenda número de contribuinte na fatura, por favor, envie-nos os seus dados fiscais.</p>`;
+            }
+            htmlContent += `</div>`;
+
+            const sellerSignatureDetails = sellerSignatures[sellerName];
+            if (sellerSignatureDetails) {
+                htmlContent += `<div class="seller-signature">${sellerSignatureDetails.replace(/\n/g, '<br>')}</div>`;
+            }
+            htmlContent += `</div>`; 
+            htmlContent += `<div class="footer page-footer"><p style="font-size: 1.2em; font-weight: bold;">MY DYNAMIC</p><p style="font-size: 1.1em;">www.dynamickids.pt</p></div>`;
+
+            htmlContent += `</div></body></html>`; 
+
+            quoteWindow.document.write(htmlContent);
+            quoteWindow.document.close();
+            quoteWindow.focus(); 
+        }
+
+        function saveQuoteData() {
+            console.log("[saveQuoteData] Iniciando gravação do orçamento...");
+            const quoteData = {};
+
+            // Global fields
+            quoteData.clientName = document.getElementById('clientName').value.trim();
+            quoteData.sellerName = document.getElementById('sellerName').value.trim();
+            quoteData.fromDate = document.getElementById('fromDate').value;
+            quoteData.toDate = document.getElementById('toDate').value;
+            quoteData.fromTime = document.getElementById('fromTime').value;
+            quoteData.toTime = document.getElementById('toTime').value;
+            quoteData.globalDatesApply = document.getElementById('globalDatesApply').checked;
+            quoteData.globalTimesApply = document.getElementById('globalTimesApply').checked;
+            quoteData.iva = document.getElementById('iva').checked;
+            quoteData.partner = document.getElementById('partner').checked;
+            quoteData.discount = document.getElementById('discount').value;
+            quoteData.transportLocation = document.getElementById('transportLocation').value;
+            quoteData.excludeDetailsCheckbox = document.getElementById('excludeDetailsCheckbox').checked;
+
+            quoteData.items = [];
+            for (let i = 0; i < idx; i++) {
+                const nameInput = document.getElementById(`name${i}`);
+                if (!nameInput) continue; // Skip if item was removed but idx not decremented (shouldn't happen with current removeItem)
+
+                const item = {};
+                item.name = nameInput.value.trim();
+                const priceInput = document.getElementById(`price${i}`);
+                item.price = priceInput.value; // Store the displayed value, will be re-evaluated on load
+                item.originalIvaInclusivePrice = priceInput.dataset.originalIvaInclusivePrice || '';
+                item.manualOverride = priceInput.dataset.manualOverride === 'true';
+                item.enteredWithIvaExclusive = priceInput.dataset.enteredWithIvaExclusive === 'true'; // Save this flag
+
+                item.equipTimingToggle = document.getElementById(`equipTimingToggle${i}`).checked;
+                item.baseHoursEquip = document.getElementById(`baseHoursEquip${i}`).value;
+                item.extraTimeBlockEquip = document.getElementById(`extraTimeBlockEquip${i}`).value;
+                item.extraCostBlockEquip = document.getElementById(`extraCostBlockEquip${i}`).value;
+
+                // Save item-specific discount states
+                const basePriceDiscountToggleSave = document.getElementById(`basePriceDiscountToggle${i}`);
+                item.basePriceDiscountApplied = basePriceDiscountToggleSave ? basePriceDiscountToggleSave.checked : false;
+                const basePriceDiscountPercentageSave = document.getElementById(`basePriceDiscountPercentage${i}`);
+                item.basePriceDiscountPercentage = basePriceDiscountPercentageSave ? basePriceDiscountPercentageSave.value : '15';
+
+                const extraCostDiscountToggleSave = document.getElementById(`extraCostDiscountToggle${i}`);
+                item.extraCostDiscountApplied = extraCostDiscountToggleSave ? extraCostDiscountToggleSave.checked : false;
+                const extraCostDiscountPercentageSave = document.getElementById(`extraCostDiscountPercentage${i}`);
+                item.extraCostDiscountPercentage = extraCostDiscountPercentageSave ? extraCostDiscountPercentageSave.value : '15';
+
+                if (!quoteData.globalDatesApply) {
+                    item.itemFromDate = document.getElementById(`itemFromDate${i}`).value;
+                    item.itemToDate = document.getElementById(`itemToDate${i}`).value;
+                }
+                if (!quoteData.globalTimesApply) {
+                    item.itemFromTime = document.getElementById(`itemFromTime${i}`).value;
+                    item.itemToTime = document.getElementById(`itemToTime${i}`).value;
+                }
+
+                item.monitors = document.getElementById(`mon${i}`).value;
+                item.monitorIncluido = document.getElementById(`monitorIncluido${i}`).checked;
+                
+                quoteData.items.push(item);
+            }
+
+            const jsonData = JSON.stringify(quoteData, null, 2); // Pretty print JSON
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const safeClientName = quoteData.clientName.replace(/[^a-z0-9]/gi, '_').toLowerCase() || 'Orcamento';
+            const filenameDate = new Date().toISOString().slice(0,10);
+            a.download = `${safeClientName}_${filenameDate}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            console.log("[saveQuoteData] Orçamento guardado como " + a.download);
+        }
+
+        function loadQuoteData(event) {
+            console.log("[loadQuoteData] Iniciando carregamento do orçamento...");
+            const file = event.target.files[0];
+            if (!file) {
+                console.log("[loadQuoteData] Nenhum ficheiro selecionado.");
+                return;
+            }
+            if (file.type !== "application/json") {
+                alert("Por favor, selecione um ficheiro .json válido.");
+                console.warn("[loadQuoteData] Tipo de ficheiro inválido: " + file.type);
+                event.target.value = null; // Reset file input
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const loadedData = JSON.parse(e.target.result);
+                    console.log("[loadQuoteData] Dados carregados: ", loadedData);
+
+                    resetApp(true); // Reset form without adding initial item
+
+                    // Populate global fields
+                    document.getElementById('clientName').value = loadedData.clientName || '';
+                    document.getElementById('sellerName').value = loadedData.sellerName || '';
+                    document.getElementById('fromDate').value = loadedData.fromDate || today();
+                    document.getElementById('toDate').value = loadedData.toDate || today();
+                    document.getElementById('fromTime').value = loadedData.fromTime || '';
+                    document.getElementById('toTime').value = loadedData.toTime || '';
+                    document.getElementById('globalDatesApply').checked = typeof loadedData.globalDatesApply === 'boolean' ? loadedData.globalDatesApply : true;
+                    document.getElementById('globalTimesApply').checked = typeof loadedData.globalTimesApply === 'boolean' ? loadedData.globalTimesApply : true;
+                    document.getElementById('iva').checked = !!loadedData.iva;
+                    document.getElementById('partner').checked = !!loadedData.partner;
+                    document.getElementById('discount').value = loadedData.discount || '';
+                    document.getElementById('transportLocation').value = loadedData.transportLocation || "Nenhuma";
+                    document.getElementById('excludeDetailsCheckbox').checked = !!loadedData.excludeDetailsCheckbox;
+
+                    // Populate items
+                    if (loadedData.items && Array.isArray(loadedData.items)) {
+                        loadedData.items.forEach(itemData => {
+                            addItem(); // Creates a new blank item, idx is incremented
+                            const currentItemIdx = idx - 1; // Get the index of the item just added
+
+                            const nameInput = document.getElementById(`name${currentItemIdx}`);
+                            const priceInput = document.getElementById(`price${currentItemIdx}`);
+                            
+                            if (nameInput) nameInput.value = itemData.name || '';
+                            if (priceInput) {
+                                priceInput.value = itemData.price || ''; // Set displayed price first
+                                priceInput.dataset.originalIvaInclusivePrice = itemData.originalIvaInclusivePrice || '';
+                                priceInput.dataset.manualOverride = itemData.manualOverride ? 'true' : 'false';
+                                priceInput.dataset.enteredWithIvaExclusive = itemData.enteredWithIvaExclusive ? 'true' : 'false'; // Load this flag
+                            }
+                            
+                            // Trigger price check after name and dataset are set, critical for predefined prices
+                            if (nameInput && priceInput && !itemData.manualOverride) {
+                                checkPredefinedPrice(currentItemIdx);
+                            } else if (priceInput && itemData.manualOverride) {
+                                // If manual override, the stored price is what we use (after IVA/partner adjustments)
+                                // updateOneDisplayedItemPrice will handle this when update() is called
+                            }
+
+                            const equipTimingToggle = document.getElementById(`equipTimingToggle${currentItemIdx}`);
+                            if(equipTimingToggle) equipTimingToggle.checked = !!itemData.equipTimingToggle;
+                            document.getElementById(`baseHoursEquip${currentItemIdx}`).value = itemData.baseHoursEquip || '4';
+                            document.getElementById(`extraTimeBlockEquip${currentItemIdx}`).value = itemData.extraTimeBlockEquip || '1';
+                            document.getElementById(`extraCostBlockEquip${currentItemIdx}`).value = itemData.extraCostBlockEquip || '19';
+                            if (equipTimingToggle) {
+                                const equipTimingDiv = document.getElementById(`itemEquipTiming${currentItemIdx}`);
+                                if (equipTimingDiv) equipTimingDiv.style.display = equipTimingToggle.checked ? 'flex' : 'none';
+                            }
+
+                            if (!document.getElementById('globalDatesApply').checked) {
+                                document.getElementById(`itemFromDate${currentItemIdx}`).value = itemData.itemFromDate || document.getElementById('fromDate').value;
+                                document.getElementById(`itemToDate${currentItemIdx}`).value = itemData.itemToDate || document.getElementById('toDate').value;
+                            }
+                            if (!document.getElementById('globalTimesApply').checked) {
+                                document.getElementById(`itemFromTime${currentItemIdx}`).value = itemData.itemFromTime || document.getElementById('fromTime').value;
+                                document.getElementById(`itemToTime${currentItemIdx}`).value = itemData.itemToTime || document.getElementById('toTime').value;
+                            }
+                            // Ensure item-specific date/time fields visibility is correct after global settings are applied
+                            toggleItemSpecificOptions(currentItemIdx, !document.getElementById('globalDatesApply').checked, !document.getElementById('globalTimesApply').checked);
+
+                            document.getElementById(`mon${currentItemIdx}`).value = itemData.monitors || '0';
+                            document.getElementById(`monitorIncluido${currentItemIdx}`).checked = !!itemData.monitorIncluido;
+
+                            // Load item-specific discount states
+                            const basePriceDiscountToggleLoad = document.getElementById(`basePriceDiscountToggle${currentItemIdx}`);
+                            if (basePriceDiscountToggleLoad) basePriceDiscountToggleLoad.checked = !!itemData.basePriceDiscountApplied;
+                            const basePriceDiscountPercentageLoad = document.getElementById(`basePriceDiscountPercentage${currentItemIdx}`);
+                            if (basePriceDiscountPercentageLoad) {
+                                basePriceDiscountPercentageLoad.value = itemData.basePriceDiscountPercentage || '15';
+                                basePriceDiscountPercentageLoad.style.display = basePriceDiscountToggleLoad.checked ? 'inline-block' : 'none';
+                            }
+
+                            const extraCostDiscountToggleLoad = document.getElementById(`extraCostDiscountToggle${currentItemIdx}`);
+                            if (extraCostDiscountToggleLoad) extraCostDiscountToggleLoad.checked = !!itemData.extraCostDiscountApplied;
+                            const extraCostDiscountPercentageLoad = document.getElementById(`extraCostDiscountPercentage${currentItemIdx}`);
+                            if (extraCostDiscountPercentageLoad) {
+                                extraCostDiscountPercentageLoad.value = itemData.extraCostDiscountPercentage || '15';
+                                extraCostDiscountPercentageLoad.style.display = extraCostDiscountToggleLoad.checked ? 'inline-block' : 'none';
+                            }
+
+                            // Ensure extra cost discount section visibility based on parent toggle
+                            const equipTimingToggleLoad = document.getElementById(`equipTimingToggle${currentItemIdx}`);
+                            const extraCostDiscountContainerLoad = extraCostDiscountToggleLoad ? extraCostDiscountToggleLoad.closest('.item-discount-container') : null;
+                            if (equipTimingToggleLoad && extraCostDiscountContainerLoad) {
+                                extraCostDiscountContainerLoad.style.display = equipTimingToggleLoad.checked ? 'flex' : 'none';
+                            }
+
+                            if (equipTimingToggle) { // This 'equipTimingToggle' is from the outer scope, should be 'equipTimingToggleLoad'
+                                const equipTimingDiv = document.getElementById(`itemEquipTiming${currentItemIdx}`);
+                                if (equipTimingDiv) equipTimingDiv.style.display = equipTimingToggle.checked ? 'flex' : 'none';
+                            }
+                        });
+                    }
+                    
+                    handleGlobalDatesApplyChange(); // Ensure item date fields visibility is correct
+                    handleGlobalTimesApplyChange(); // Ensure item time fields visibility is correct
+                    update(); // Recalculate all prices and summary
+                    console.log("[loadQuoteData] Orçamento carregado com sucesso.");
+
+                } catch (error) {
+                    console.error("[loadQuoteData] ERRO ao fazer parse do JSON ou ao aplicar dados:", error);
+                    alert("Erro ao carregar o ficheiro do orçamento. O ficheiro pode estar corrompido ou num formato inválido.");
+                }
+            };
+            reader.onerror = function() {
+                console.error("[loadQuoteData] ERRO ao ler o ficheiro.");
+                alert("Ocorreu um erro ao ler o ficheiro.");
+            };
+            reader.readAsText(file);
+            event.target.value = null; // Reset file input so same file can be loaded again if needed
+        }
+
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordError = document.getElementById('passwordError');
+            const appContainer = document.getElementById('appContainer');
+            const passwordSection = document.getElementById('passwordSection');
+
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                passwordSection.style.display = 'none';
+                appContainer.style.display = 'block';
+                document.body.style.alignItems = 'flex-start'; 
+                document.body.style.justifyContent = 'flex-start'; 
+                document.body.style.minHeight = 'auto'; 
+                initializeApp(); 
+            } else {
+                passwordError.style.display = 'block';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('passwordInput').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        });
+
+        function initializeApp() {
+            populateTransportLocations(); 
+            document.getElementById('fromDate').value = today();
+            document.getElementById('toDate').value = today();
+            
+            document.getElementById('globalDatesApply').addEventListener('change', handleGlobalDatesApplyChange);
+            document.getElementById('globalTimesApply').addEventListener('change', handleGlobalTimesApplyChange); 
+            document.getElementById('iva').addEventListener('change', handleGlobalPriceControlsChange);
+            
+            document.getElementById('transportLocation').addEventListener('change', update); 
+            document.getElementById('clientName').addEventListener('input', update); 
+            document.getElementById('sellerName').addEventListener('input', update); 
+            document.getElementById('loadQuoteFile').addEventListener('change', loadQuoteData);
+            
+            document.getElementById('fromDate').addEventListener('change', update);
+            document.getElementById('toDate').addEventListener('change', update);
+            document.getElementById('fromTime').addEventListener('change', update); 
+            document.getElementById('toTime').addEventListener('change', update);   
+            document.getElementById('discount').addEventListener('input', update);
+            
+            document.getElementById('items').addEventListener('input', function(event) {
+                const target = event.target;
+                if (target.matches('input[type="number"]') && 
+                    !target.id.startsWith('price') && 
+                    target.id !== 'discount' && 
+                    !target.id.startsWith('name') &&
+                    !target.id.startsWith('mon') && 
+                    !target.id.startsWith('baseHoursEquip') && 
+                    !target.id.startsWith('extraTimeBlockEquip') &&
+                    !target.id.startsWith('extraCostBlockEquip') 
+                    ) { 
+                    update();
+                }
+            });
+            addItem(); // Adiciona o primeiro item quando a app é inicializada
+        }
+
+        function updateItemDateTimeSectionVisibility(itemIndex) {
+            const titleElement = document.getElementById(`dateTimeTitle${itemIndex}`);
+            const containerElement = document.getElementById(`itemOptionsContainer${itemIndex}`);
+            const globalDatesChecked = document.getElementById('globalDatesApply').checked;
+            const globalTimesChecked = document.getElementById('globalTimesApply').checked;
+
+            if (titleElement && containerElement) {
+                if (globalDatesChecked && globalTimesChecked) {
+                    titleElement.classList.add('section-hidden');
+                    containerElement.classList.add('section-hidden');
+                } else {
+                    titleElement.classList.remove('section-hidden');
+                    containerElement.classList.remove('section-hidden');
+                    // Ensure the container is not inline if it needs to be block or flex
+                    // This handles the case where it might have been set to display:none previously
+                    // and then needs to revert to its default display type (block or flex)
+                    // However, the .section-hidden class with !important should generally handle this.
+                    // We might still want to ensure it has its original display type if not hidden.
+                    // For itemOptionsContainer, it's typically display: block or flex (from item-options-container class, not inline).
+                    // The item-section-title (dateTimeTitle) is a div, so it's block by default.
+                    // This part might be redundant if classList works as expected with !important.
+                }
+            }
+        }
+    </script>
+</body>
+</html>
