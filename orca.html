@@ -188,12 +188,19 @@
             justify-content: flex-start;
             align-items: stretch;
         }
-        .export-group { 
+        .export-group {
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: nowrap; 
-            flex: 0 1 auto; 
+            flex-wrap: nowrap;
+            flex: 0 1 auto;
+        }
+        .local-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: nowrap;
+            margin-top: 10px;
         }
         button {
             flex: 0 1 auto;
@@ -613,6 +620,12 @@
             <button class="save" onclick="saveQuoteData()">Guardar Orçamento</button>
             <input type="file" id="loadQuoteFile" accept=".json" style="display: none;" />
             <button class="load" onclick="document.getElementById('loadQuoteFile').click()">Carregar Orçamento</button>
+            <div class="local-group">
+                <input type="text" id="localQuoteName" placeholder="Nome na App">
+                <button class="save" onclick="saveQuoteToLocal()">Guardar na App</button>
+                <select id="savedQuotesList"></select>
+                <button class="load" onclick="loadQuoteFromLocal()">Carregar da App</button>
+            </div>
             <div class="export-group">
                 <button class="export" onclick="exportQuote()">Exportar Orçamento</button>
                 <label class="checkbox-label" style="margin-left: 5px; font-size: 0.85em !important;">
@@ -2350,8 +2363,7 @@
             quoteWindow.focus(); 
         }
 
-        function saveQuoteData() {
-            console.log("[saveQuoteData] Iniciando gravação do orçamento...");
+        function collectQuoteData() {
             const quoteData = {};
 
             // Global fields
@@ -2413,6 +2425,13 @@
                 quoteData.items.push(item);
             }
 
+            return quoteData;
+        }
+
+        function saveQuoteData() {
+            console.log("[saveQuoteData] Iniciando gravação do orçamento...");
+            const quoteData = collectQuoteData();
+
             const jsonData = JSON.stringify(quoteData, null, 2); // Pretty print JSON
             const blob = new Blob([jsonData], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -2426,6 +2445,87 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             console.log("[saveQuoteData] Orçamento guardado como " + a.download);
+        }
+
+        function applyLoadedQuote(loadedData) {
+            resetApp(true); // Reset form without adding initial item
+
+            document.getElementById('clientName').value = loadedData.clientName || '';
+            document.getElementById('sellerName').value = loadedData.sellerName || '';
+            document.getElementById('fromDate').value = loadedData.fromDate || today();
+            document.getElementById('toDate').value = loadedData.toDate || today();
+            document.getElementById('fromTime').value = loadedData.fromTime || '';
+            document.getElementById('toTime').value = loadedData.toTime || '';
+            document.getElementById('globalDatesApply').checked = typeof loadedData.globalDatesApply === 'boolean' ? loadedData.globalDatesApply : true;
+            document.getElementById('globalTimesApply').checked = typeof loadedData.globalTimesApply === 'boolean' ? loadedData.globalTimesApply : true;
+            document.getElementById('iva').checked = !!loadedData.iva;
+            document.getElementById('partner').checked = !!loadedData.partner;
+            document.getElementById('discount').value = loadedData.discount || '';
+            document.getElementById('transportLocation').value = loadedData.transportLocation || "Nenhuma";
+            document.getElementById('excludeDetailsCheckbox').checked = !!loadedData.excludeDetailsCheckbox;
+
+            if (loadedData.items && Array.isArray(loadedData.items)) {
+                loadedData.items.forEach(itemData => {
+                    addItem();
+                    const currentItemIdx = idx - 1;
+                    const nameInput = document.getElementById(`name${currentItemIdx}`);
+                    const priceInput = document.getElementById(`price${currentItemIdx}`);
+                    if (nameInput) nameInput.value = itemData.name || '';
+                    if (priceInput) {
+                        priceInput.value = itemData.price || '';
+                        priceInput.dataset.originalIvaInclusivePrice = itemData.originalIvaInclusivePrice || '';
+                        priceInput.dataset.manualOverride = itemData.manualOverride ? 'true' : 'false';
+                        priceInput.dataset.enteredWithIvaExclusive = itemData.enteredWithIvaExclusive ? 'true' : 'false';
+                    }
+                    if (nameInput && priceInput && !itemData.manualOverride) {
+                        checkPredefinedPrice(currentItemIdx);
+                    }
+                    const equipTimingToggle = document.getElementById(`equipTimingToggle${currentItemIdx}`);
+                    if(equipTimingToggle) equipTimingToggle.checked = !!itemData.equipTimingToggle;
+                    document.getElementById(`baseHoursEquip${currentItemIdx}`).value = itemData.baseHoursEquip || '4';
+                    document.getElementById(`extraTimeBlockEquip${currentItemIdx}`).value = itemData.extraTimeBlockEquip || '1';
+                    document.getElementById(`extraCostBlockEquip${currentItemIdx}`).value = itemData.extraCostBlockEquip || '19';
+                    if (equipTimingToggle) {
+                        const equipTimingDiv = document.getElementById(`itemEquipTiming${currentItemIdx}`);
+                        if (equipTimingDiv) equipTimingDiv.style.display = equipTimingToggle.checked ? 'flex' : 'none';
+                    }
+                    if (!document.getElementById('globalDatesApply').checked) {
+                        document.getElementById(`itemFromDate${currentItemIdx}`).value = itemData.itemFromDate || document.getElementById('fromDate').value;
+                        document.getElementById(`itemToDate${currentItemIdx}`).value = itemData.itemToDate || document.getElementById('toDate').value;
+                    }
+                    if (!document.getElementById('globalTimesApply').checked) {
+                        document.getElementById(`itemFromTime${currentItemIdx}`).value = itemData.itemFromTime || document.getElementById('fromTime').value;
+                        document.getElementById(`itemToTime${currentItemIdx}`).value = itemData.itemToTime || document.getElementById('toTime').value;
+                    }
+                    toggleItemSpecificOptions(currentItemIdx, !document.getElementById('globalDatesApply').checked, !document.getElementById('globalTimesApply').checked);
+                    document.getElementById(`mon${currentItemIdx}`).value = itemData.monitors || '0';
+                    document.getElementById(`monitorIncluido${currentItemIdx}`).checked = !!itemData.monitorIncluido;
+
+                    const basePriceDiscountToggleLoad = document.getElementById(`basePriceDiscountToggle${currentItemIdx}`);
+                    if (basePriceDiscountToggleLoad) basePriceDiscountToggleLoad.checked = !!itemData.basePriceDiscountApplied;
+                    const basePriceDiscountPercentageLoad = document.getElementById(`basePriceDiscountPercentage${currentItemIdx}`);
+                    if (basePriceDiscountPercentageLoad) {
+                        basePriceDiscountPercentageLoad.value = itemData.basePriceDiscountPercentage || '15';
+                        basePriceDiscountPercentageLoad.style.display = basePriceDiscountToggleLoad.checked ? 'inline-block' : 'none';
+                    }
+                    const extraCostDiscountToggleLoad = document.getElementById(`extraCostDiscountToggle${currentItemIdx}`);
+                    if (extraCostDiscountToggleLoad) extraCostDiscountToggleLoad.checked = !!itemData.extraCostDiscountApplied;
+                    const extraCostDiscountPercentageLoad = document.getElementById(`extraCostDiscountPercentage${currentItemIdx}`);
+                    if (extraCostDiscountPercentageLoad) {
+                        extraCostDiscountPercentageLoad.value = itemData.extraCostDiscountPercentage || '15';
+                        extraCostDiscountPercentageLoad.style.display = extraCostDiscountToggleLoad.checked ? 'inline-block' : 'none';
+                    }
+                    const equipTimingToggleLoad = document.getElementById(`equipTimingToggle${currentItemIdx}`);
+                    const extraCostDiscountContainerLoad = extraCostDiscountToggleLoad ? extraCostDiscountToggleLoad.closest('.item-discount-container') : null;
+                    if (equipTimingToggleLoad && extraCostDiscountContainerLoad) {
+                        extraCostDiscountContainerLoad.style.display = equipTimingToggleLoad.checked ? 'flex' : 'none';
+                    }
+                });
+            }
+
+            handleGlobalDatesApplyChange();
+            handleGlobalTimesApplyChange();
+            update();
         }
 
         function loadQuoteData(event) {
@@ -2447,107 +2547,7 @@
                 try {
                     const loadedData = JSON.parse(e.target.result);
                     console.log("[loadQuoteData] Dados carregados: ", loadedData);
-
-                    resetApp(true); // Reset form without adding initial item
-
-                    // Populate global fields
-                    document.getElementById('clientName').value = loadedData.clientName || '';
-                    document.getElementById('sellerName').value = loadedData.sellerName || '';
-                    document.getElementById('fromDate').value = loadedData.fromDate || today();
-                    document.getElementById('toDate').value = loadedData.toDate || today();
-                    document.getElementById('fromTime').value = loadedData.fromTime || '';
-                    document.getElementById('toTime').value = loadedData.toTime || '';
-                    document.getElementById('globalDatesApply').checked = typeof loadedData.globalDatesApply === 'boolean' ? loadedData.globalDatesApply : true;
-                    document.getElementById('globalTimesApply').checked = typeof loadedData.globalTimesApply === 'boolean' ? loadedData.globalTimesApply : true;
-                    document.getElementById('iva').checked = !!loadedData.iva;
-                    document.getElementById('partner').checked = !!loadedData.partner;
-                    document.getElementById('discount').value = loadedData.discount || '';
-                    document.getElementById('transportLocation').value = loadedData.transportLocation || "Nenhuma";
-                    document.getElementById('excludeDetailsCheckbox').checked = !!loadedData.excludeDetailsCheckbox;
-
-                    // Populate items
-                    if (loadedData.items && Array.isArray(loadedData.items)) {
-                        loadedData.items.forEach(itemData => {
-                            addItem(); // Creates a new blank item, idx is incremented
-                            const currentItemIdx = idx - 1; // Get the index of the item just added
-
-                            const nameInput = document.getElementById(`name${currentItemIdx}`);
-                            const priceInput = document.getElementById(`price${currentItemIdx}`);
-                            
-                            if (nameInput) nameInput.value = itemData.name || '';
-                            if (priceInput) {
-                                priceInput.value = itemData.price || ''; // Set displayed price first
-                                priceInput.dataset.originalIvaInclusivePrice = itemData.originalIvaInclusivePrice || '';
-                                priceInput.dataset.manualOverride = itemData.manualOverride ? 'true' : 'false';
-                                priceInput.dataset.enteredWithIvaExclusive = itemData.enteredWithIvaExclusive ? 'true' : 'false'; // Load this flag
-                            }
-                            
-                            // Trigger price check after name and dataset are set, critical for predefined prices
-                            if (nameInput && priceInput && !itemData.manualOverride) {
-                                checkPredefinedPrice(currentItemIdx);
-                            } else if (priceInput && itemData.manualOverride) {
-                                // If manual override, the stored price is what we use (after IVA/partner adjustments)
-                                // updateOneDisplayedItemPrice will handle this when update() is called
-                            }
-
-                            const equipTimingToggle = document.getElementById(`equipTimingToggle${currentItemIdx}`);
-                            if(equipTimingToggle) equipTimingToggle.checked = !!itemData.equipTimingToggle;
-                            document.getElementById(`baseHoursEquip${currentItemIdx}`).value = itemData.baseHoursEquip || '4';
-                            document.getElementById(`extraTimeBlockEquip${currentItemIdx}`).value = itemData.extraTimeBlockEquip || '1';
-                            document.getElementById(`extraCostBlockEquip${currentItemIdx}`).value = itemData.extraCostBlockEquip || '19';
-                            if (equipTimingToggle) {
-                                const equipTimingDiv = document.getElementById(`itemEquipTiming${currentItemIdx}`);
-                                if (equipTimingDiv) equipTimingDiv.style.display = equipTimingToggle.checked ? 'flex' : 'none';
-                            }
-
-                            if (!document.getElementById('globalDatesApply').checked) {
-                                document.getElementById(`itemFromDate${currentItemIdx}`).value = itemData.itemFromDate || document.getElementById('fromDate').value;
-                                document.getElementById(`itemToDate${currentItemIdx}`).value = itemData.itemToDate || document.getElementById('toDate').value;
-                            }
-                            if (!document.getElementById('globalTimesApply').checked) {
-                                document.getElementById(`itemFromTime${currentItemIdx}`).value = itemData.itemFromTime || document.getElementById('fromTime').value;
-                                document.getElementById(`itemToTime${currentItemIdx}`).value = itemData.itemToTime || document.getElementById('toTime').value;
-                            }
-                            // Ensure item-specific date/time fields visibility is correct after global settings are applied
-                            toggleItemSpecificOptions(currentItemIdx, !document.getElementById('globalDatesApply').checked, !document.getElementById('globalTimesApply').checked);
-
-                            document.getElementById(`mon${currentItemIdx}`).value = itemData.monitors || '0';
-                            document.getElementById(`monitorIncluido${currentItemIdx}`).checked = !!itemData.monitorIncluido;
-
-                            // Load item-specific discount states
-                            const basePriceDiscountToggleLoad = document.getElementById(`basePriceDiscountToggle${currentItemIdx}`);
-                            if (basePriceDiscountToggleLoad) basePriceDiscountToggleLoad.checked = !!itemData.basePriceDiscountApplied;
-                            const basePriceDiscountPercentageLoad = document.getElementById(`basePriceDiscountPercentage${currentItemIdx}`);
-                            if (basePriceDiscountPercentageLoad) {
-                                basePriceDiscountPercentageLoad.value = itemData.basePriceDiscountPercentage || '15';
-                                basePriceDiscountPercentageLoad.style.display = basePriceDiscountToggleLoad.checked ? 'inline-block' : 'none';
-                            }
-
-                            const extraCostDiscountToggleLoad = document.getElementById(`extraCostDiscountToggle${currentItemIdx}`);
-                            if (extraCostDiscountToggleLoad) extraCostDiscountToggleLoad.checked = !!itemData.extraCostDiscountApplied;
-                            const extraCostDiscountPercentageLoad = document.getElementById(`extraCostDiscountPercentage${currentItemIdx}`);
-                            if (extraCostDiscountPercentageLoad) {
-                                extraCostDiscountPercentageLoad.value = itemData.extraCostDiscountPercentage || '15';
-                                extraCostDiscountPercentageLoad.style.display = extraCostDiscountToggleLoad.checked ? 'inline-block' : 'none';
-                            }
-
-                            // Ensure extra cost discount section visibility based on parent toggle
-                            const equipTimingToggleLoad = document.getElementById(`equipTimingToggle${currentItemIdx}`);
-                            const extraCostDiscountContainerLoad = extraCostDiscountToggleLoad ? extraCostDiscountToggleLoad.closest('.item-discount-container') : null;
-                            if (equipTimingToggleLoad && extraCostDiscountContainerLoad) {
-                                extraCostDiscountContainerLoad.style.display = equipTimingToggleLoad.checked ? 'flex' : 'none';
-                            }
-
-                            if (equipTimingToggle) { // This 'equipTimingToggle' is from the outer scope, should be 'equipTimingToggleLoad'
-                                const equipTimingDiv = document.getElementById(`itemEquipTiming${currentItemIdx}`);
-                                if (equipTimingDiv) equipTimingDiv.style.display = equipTimingToggle.checked ? 'flex' : 'none';
-                            }
-                        });
-                    }
-                    
-                    handleGlobalDatesApplyChange(); // Ensure item date fields visibility is correct
-                    handleGlobalTimesApplyChange(); // Ensure item time fields visibility is correct
-                    update(); // Recalculate all prices and summary
+                    applyLoadedQuote(loadedData);
                     console.log("[loadQuoteData] Orçamento carregado com sucesso.");
 
                 } catch (error) {
@@ -2561,6 +2561,43 @@
             };
             reader.readAsText(file);
             event.target.value = null; // Reset file input so same file can be loaded again if needed
+        }
+
+        function saveQuoteToLocal() {
+            const nameInput = document.getElementById('localQuoteName');
+            const name = nameInput.value.trim();
+            if (!name) {
+                alert('Indique um nome para guardar.');
+                return;
+            }
+            const saved = JSON.parse(localStorage.getItem('savedQuotes') || '{}');
+            saved[name] = collectQuoteData();
+            localStorage.setItem('savedQuotes', JSON.stringify(saved));
+            nameInput.value = '';
+            renderSavedQuotesList();
+        }
+
+        function loadQuoteFromLocal() {
+            const select = document.getElementById('savedQuotesList');
+            const name = select.value;
+            if (!name) return;
+            const saved = JSON.parse(localStorage.getItem('savedQuotes') || '{}');
+            if (saved[name]) {
+                applyLoadedQuote(saved[name]);
+            }
+        }
+
+        function renderSavedQuotesList() {
+            const select = document.getElementById('savedQuotesList');
+            if (!select) return;
+            const saved = JSON.parse(localStorage.getItem('savedQuotes') || '{}');
+            select.innerHTML = '<option value="">Escolha...</option>';
+            Object.keys(saved).forEach(key => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = key;
+                select.appendChild(opt);
+            });
         }
 
         function checkPassword() {
@@ -2626,6 +2663,7 @@
                     update();
                 }
             });
+            renderSavedQuotesList();
             addItem(); // Adiciona o primeiro item quando a app é inicializada
         }
 
