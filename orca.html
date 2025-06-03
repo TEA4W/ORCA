@@ -311,6 +311,15 @@
         .remove:hover {
             background: #C62828;
         }
+
+        .remove-product {
+            background: var(--red);
+            color: #fff;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
         .output {
             font-size: 0.95em; 
             margin-top: 15px;
@@ -334,9 +343,36 @@
         .summary p { 
             margin: 8px 0;
         }
-        .summary span { 
+        .summary span {
             font-weight: bold;
             color: var(--dark-grey);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab {
+            background: var(--blue);
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .tab.active {
+            background: var(--green);
+        }
+        #productManagerContainer table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        #productManagerContainer th, #productManagerContainer td {
+            border: 1px solid #ccc;
+            padding: 6px 8px;
+            font-size: 0.9em;
         }
         .summary .discount-line { 
             margin-top: 10px;
@@ -538,6 +574,11 @@
         <p id="passwordError" class="password-error" style="display:none;">Senha incorreta!</p>
     </div>
 
+    <div id="tabs" class="tabs" style="display:none;">
+        <button id="calcTab" class="tab active" onclick="showCalcTab()">Orçamentos</button>
+        <button id="productsTab" class="tab" onclick="showProductsTab()">Produtos</button>
+    </div>
+
     <div id="appContainer" class="container" style="display:none;"> <h1>Calculadora de Orçamentos</h1>
         <div class="row">
             <div class="field-group">
@@ -620,6 +661,23 @@
                 </label>
             </div>
         </div>
+
+    </div>
+
+    <div id="productManagerContainer" class="container" style="display:none;">
+        <h1>Gestão de Produtos</h1>
+        <table>
+            <thead>
+                <tr><th>Nome</th><th>Descrição</th><th>Imagem</th><th>Ações</th></tr>
+            </thead>
+            <tbody id="productListBody"></tbody>
+        </table>
+        <div class="row">
+            <div class="field-group"><label for="newProductName">Nome</label><input type="text" id="newProductName"></div>
+            <div class="field-group full-width"><label for="newProductDescription">Descrição</label><input type="text" id="newProductDescription"></div>
+            <div class="field-group"><label for="newProductImage">URL Imagem</label><input type="text" id="newProductImage"></div>
+        </div>
+        <button class="add" onclick="addProductToDB()">Adicionar Produto</button>
     </div>
 
     <script>
@@ -749,7 +807,7 @@
             "Braga": 89, "Viana do Castelo": 149
         };
 
-        const equipmentDetails = {
+        let equipmentDetails = {
             "Piscina de Bolas": { description: "Dimensões: C 1.8m x L 1.8m x A 0.4m\nLotação: 4 utilizadores", image_url: "imagens/piscina-de-bolas.png" },
             "Mar de Bolas": { description: "Dimensões: C 3.5m x L 4m x A 0.8m\nLotação: 8 utilizadores", image_url: "imagens/mar-de-bolas.png" },
             "Mergulho de Bolas": { description: "Dimensões: C 9.5m x L 4.5m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/mergulho-de-bolas.png" },
@@ -2571,11 +2629,13 @@
 
             if (passwordInput.value === CORRECT_PASSWORD) {
                 passwordSection.style.display = 'none';
+                document.getElementById('tabs').style.display = 'flex';
                 appContainer.style.display = 'block';
-                document.body.style.alignItems = 'flex-start'; 
-                document.body.style.justifyContent = 'flex-start'; 
-                document.body.style.minHeight = 'auto'; 
-                initializeApp(); 
+                document.body.style.alignItems = 'flex-start';
+                document.body.style.justifyContent = 'flex-start';
+                document.body.style.minHeight = 'auto';
+                loadEquipmentDetailsFromStorage();
+                initializeApp();
             } else {
                 passwordError.style.display = 'block';
                 passwordInput.value = '';
@@ -2652,6 +2712,64 @@
                     // This part might be redundant if classList works as expected with !important.
                 }
             }
+        }
+
+        function loadEquipmentDetailsFromStorage() {
+            const saved = localStorage.getItem('equipmentDetails');
+            if (saved) {
+                try { equipmentDetails = JSON.parse(saved); } catch (e) { console.error(e); }
+            }
+        }
+
+        function saveEquipmentDetailsToStorage() {
+            localStorage.setItem('equipmentDetails', JSON.stringify(equipmentDetails));
+        }
+
+        function renderProductList() {
+            const tbody = document.getElementById('productListBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            for (const [name, info] of Object.entries(equipmentDetails)) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${name}</td><td>${info.description || ''}</td><td>${info.image_url || ''}</td><td><button class="remove-product" onclick="removeProduct('${name.replace(/'/g, "\'")}')">Remover</button></td>`;
+                tbody.appendChild(tr);
+            }
+        }
+
+        function addProductToDB() {
+            const name = document.getElementById('newProductName').value.trim();
+            if (!name) return;
+            const desc = document.getElementById('newProductDescription').value.trim();
+            const img = document.getElementById('newProductImage').value.trim();
+            equipmentDetails[name] = { description: desc, image_url: img };
+            saveEquipmentDetailsToStorage();
+            renderProductList();
+            document.getElementById('newProductName').value = '';
+            document.getElementById('newProductDescription').value = '';
+            document.getElementById('newProductImage').value = '';
+        }
+
+        function removeProduct(name) {
+            if (confirm('Remover ' + name + '?')) {
+                delete equipmentDetails[name];
+                saveEquipmentDetailsToStorage();
+                renderProductList();
+            }
+        }
+
+        function showCalcTab() {
+            document.getElementById('appContainer').style.display = 'block';
+            document.getElementById('productManagerContainer').style.display = 'none';
+            document.getElementById('calcTab').classList.add('active');
+            document.getElementById('productsTab').classList.remove('active');
+        }
+
+        function showProductsTab() {
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('productManagerContainer').style.display = 'block';
+            document.getElementById('calcTab').classList.remove('active');
+            document.getElementById('productsTab').classList.add('active');
+            renderProductList();
         }
     </script>
 </body>
