@@ -627,93 +627,25 @@
         let idx = 0;
         const IVA_RATE = 0.23; 
         const CORRECT_PASSWORD = "Mddkdsds1"; 
+        let equipmentData = {};
+        let predefinedPrices = {};
+        let equipmentDetails = {};
+        function loadEquipmentData() {
+            return fetch("equipmentData.json")
+                .then(response => response.json())
+                .then(data => {
+                    equipmentData = data;
+                    equipmentDetails = data;
+                    predefinedPrices = {};
+                    for (const [name, info] of Object.entries(data)) {
+                        if (info.price !== undefined) {
+                            predefinedPrices[name] = info.price;
+                        }
+                    }
+                });
+        }
 
-        const predefinedPrices = {
-            "Piscina de Bolas": 49, "Mar de Bolas": 89, "Mergulho de Bolas": 249, "Bolobstacle": 299,
-            "Oceano de Bolas": 399, "Casa das Bolas": 399, "Lago de Bolas": 79, "Space Balls": 249,
-            "Slide Ball": 299, "Aquário de Bolas": 449, "Quintinha": 49, "Forty": 79, "Índios": 79,
-            "Aquário": 79, "Kids Park": 89, "Castelinho": 89, "Funny": 89, "Macacada": 99,
-            "Amazónia": 99, "Escorrega das Princesas": 129, "Trono Insuflável": 49, "Jumpy": 79,
-            "Safari Park": 99, "Unicórnio das Princesas": 149, "Palhaços": 69, "Party Clown": 79,
-            "Fundo do Mar": 99, "Dynamickids": 99, "Barco Pirata": 99, "Ilha dos Piratas": 119,
-            "Escorregão": 119, "Aventura no Mar": 129, "Girafa": 139, "Super Obstacle": 139,
-            "T-Rex": 139, "Kids Obstacle": 139, "Fun Island": 159, "Palácio das Princesas": 169,
-            "Jumper": 109, "Egípcio": 119, "Fun Obstacle": 129, "Texas": 139, "Avião": 149,
-            "Ilha dos Flamingos": 149, "Ocean Park": 159, "Space Jump": 179, "Princelândia": 189,
-            "Jungle": 99, "Selva": 139, "Junior Park": 139, "Fortaleza": 149, "Jump n Slide": 159,
-            "Castelo": 159, "Spin Slide": 169, "Fun Gym": 169, "Crazy Obstacle": 179,
-            "Disco Dome": 199, "Vale Encantado": 159, "Double Fun": 159, "Castelo do Dragão": 159,
-            "Ninja": 189, "Coche Encantado das Princesas": 199, "Radical Obstacle": 199,
-            "Submarino": 159, "Panda": 179, "Extreme Obstacle": 199, "Balloon Obstacle": 199,
-            "Navio Piratas das Caraíbas": 239, "Xtreme Park": 249, "Clown Land": 249,
-            "Obstacle Slide": 249, "Tall Slide": 449, "Jangada Slide": 349, "Crazy Train": 349,
-            "Giant Obstacle": 349, "Giant Slide": 359, "Double Slide": 399, "Bamboo": 449,
-            "Little Builders": 449, "Obstacle Run": 199, "Take Down": 199, "Slide": 239,
-            "Paraíso dos Macacos": 349, "Jungle Slide": 359, "Missão a Marte": 389,
-            "Twin Slide": 399, "Run n Slide": 399, "Mega Slide": 449, "Climb n Slide": 449,
-            "Volcano": 499, "Music Land": 559, "Parque Divertido": 599, "Transformer": 599,
-            "Banzai": 699, "Quartel dos Bombeiros": 799, "Polar Express": 799, "Adrenaline": 799,
-            "Colossus": 1299, "Spartan": 199, "Samurai": 199, "Up and Down": 199, "Tropical": 299,
-            "Extreme Slide": 349, "Treasure Slide": 369, "Kraken": 399, "Space X": 499,
-            "Runner": 799, "Kamikaze": 899, "Trampolim": 99, "Touro Mecânico": 299,
-            "Surf Mecânico": 299, "Onda Mecânica": 299, "Airbourne": 299, "BOOT": 299,
-            "Xtreme Challenge": 349, "Cone de Escalada": 379, "Eliminator": 399,
-            "BootCamp (18 metros)": 399, "Dynamicbungee": 449, "Extreme Fun Run": 599,
-            "Bag Jump": 599, "Target Jump": 699, "BootCamp (35 metros)": 799,
-            "Xtreme Jump": 1299, "BootCamp (50 metros)": 1499, "Parede Escalada com Slide": 1699,
-            "BootCamp (75 metros)": 1899, "Circuito Arborismo": 1899, "BootCamp (100 metros)": 2499,
-            "Parede Anti-Gravidade": 189, "Bungee Basket": 249, "Snowboard Mecânico": 299,
-            "Bola Mecânica": 299, "BootCamp (12 metros)": 299, "Bowling Humano": 399, "HOP": 399,
-            "Torre de Escalada": 449, "Boom!": 99, "Ténis de Mesa": 99, "Alley Oop": 149,
-            "Alvo Gigante": 149, "Wakka Wall": 149, "4 em linha": 149, "Golf Shot": 199,
-            "Conjunto 4 Jogos": 249, "Foot Pool": 299, "Mega Buzz": 149, "Twist Air": 89,
-            "Air Ball": 89, "Tiro com Arco": 149, "Tola Toupeira": 199, "Cash Cube": 159,
-            "Ring Toss": 149, "Mesa de Matraquilhos": 79, "Shoot Out": 129, "Golooo!": 129,
-            "Air Football": 149, "Penalti": 199, "Chuto ao Alvo": 199, "Campo de Futebol": 199,
-            "Bubble Football": 199, "Speed Shot": 199, "Matrecos Humanos": 249,
-            "Arena de Futebol": 349, "Foot Bump": 399, "Foot Bump Arena": 599,
-            "Double Penalty": 199, "Futebol de Sabão": 349, "Lutadores de Sumo": 159,
-            "Gladiadores": 159, "Ringue de Box": 199, "Luta de Almofadas": 249,
-            "Guerreiros": 159, "Fun&Cycle": 179, "Circuito Karts": 399, "Circuito F1": 599,
-            "Dynamic Train": 599, "TGV Comboio Eléctrico": 999, "Bouncy Pool": 89,
-            "Aqua Castle": 199, "Rolo": 199, "Dynamicboats": 199, "Piscina 6mx5mx0,65m": 199,
-            "Aqua Slide": 249, "Palm Splash": 249, "Crocodilo": 249, "Barco Capitão Gancho": 249,
-            "Cova dos Piratas": 249, "Piscina 8mx6mx0,65m": 249, "Water House": 299,
-            "Kongro": 299, "Obstacle Splash": 299, "Piscina 10mx8mx0,65m": 349,
-            "Swimming Balls": 349, "Castle Splash": 389, "Paraíso Aquático": 499,
-            "Piscina 12mx10mx0,65m": 499, "Giant Obstacle Splash": 499, "Volcano Splash": 499,
-            "Slip & Splash": 559, "Run n Splash": 599, "Banzai Splash": 899,
-            "Adrenaline Splash": 999, "Ilha do Surf": 1299, "Kamikaze Splash": 1599,
-            "Piscina Gigante": 1899, "Colossus Splash": 1899, "Splash Slide": 179,
-            "Space Splash": 229, "Splash": 249, "Wild Splash": 249, "Shark Splash": 349,
-            "Dunk Tank": 399, "Splash Race": 449, "Slide Splash": 699, "Jungle Splash": 699,
-            "River Run": 1199, 
-            "Ringue de Espuma": 299, "Aqua Foam": 299, "Foam Slide": 349, "Piscina de Espuma": 399,
-            "Foam House": 399, "Castle Foam": 449, "Giant Obstacle Foam": 699, "Volcano Foam": 899,
-            "Banzai Foam": 999, "Wild Foam Splash": 299, "Foam Park": 399, "Slide Foam": 399,
-            "Kongro Foam": 399, "Twin Slide Foam": 499, "Extreme Foam": 599, "Extreme Foam com Bóias": 699,
-            "Run n Foam": 599, "Ilha da Espuma": 1299,
-            "Dynamickids Personalizado": 199, "Jump n Slide Personalizado": 249,
-            "Jumper Personalizado": 199, "Ninja Personalizado": 299, "Submarino Personalizado": 259,
-            "Totem Cónico": 59, "Tenda de Montagem Rápida": 69, "Letras Insufláveis": 89,
-            "Tenda com Laterais": 99, "Totem Iluminado": 99, "Sky Dancer": 99,
-            "Pórtico Iluminado": 129, "Quiosque Insuflável": 159, "Pórtico Meta": 159,
-            "Pórtico Gigante": 229, "Iglo": 239, "Tenda Insuflável": 249,
-            "Balão Personalizado": 249, "Pórtico Complete": 249,
-            "Torre de Escalada Personalizada": 449, "Dynamicbungee Personalizado": 449,
-            "Xtreme Jump Personalizado": 1299, "Globo Personalizado": 1499, "Color Park": 159,
-            "Arco de Balões": 189, "2 Colunas de Balões": 189, "Arco de Flores + 6 Flores": 289,
-            "Gerador": 99, "TV Led 55 com tripé": 159, "Canhão Lança T-Shirts": 159,
-            "Máquina de Fumo": 199, "Canhão de Confettis Pressão de Ar": 269,
-            "Canhão de Confettis Eléctrico": 299, "Canhão de Neve": 299, "Canhão de Espuma": 339,
-            "Tela de Cinema": 349, "Mascotes": 129, "Pinturas Faciais": 199,
-            "Modelagem de Balões": 199, "Origami Colorido": 199, "Crachás": 199,
-            "Faz o teu Slime": 249, "Smart Tattoo": 249, "Penteados Malucos": 299,
-            "Laboratório Divertido": 299, "Kinetic Sand": 299, "Fotos Loucas": 349,
-            "Salão de Beleza": 399, "Algodão Doce": 169, "Pipocas": 169, "Granizados": 199,
-            "Candy Bar": 239, "Crepes": 249, "Gelados": 299, "Pórtico Standar": 189,
-            "FASTER": 199, "Tropical Splash": 349
-        };
+
         const MONITOR_BASE_CHARGE_IVA_INCLUSIVE = 89; 
         const MONITOR_HOURLY_EXTRA_IVA_INCLUSIVE = 19; 
 
@@ -749,392 +681,65 @@
             "Braga": 89, "Viana do Castelo": 149
         };
 
-        const equipmentDetails = {
-            "Piscina de Bolas": { description: "Dimensões: C 1.8m x L 1.8m x A 0.4m\nLotação: 4 utilizadores", image_url: "imagens/piscina-de-bolas.png" },
-            "Mar de Bolas": { description: "Dimensões: C 3.5m x L 4m x A 0.8m\nLotação: 8 utilizadores", image_url: "imagens/mar-de-bolas.png" },
-            "Mergulho de Bolas": { description: "Dimensões: C 9.5m x L 4.5m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/mergulho-de-bolas.png" },
-            "Bolobstacle": { description: "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/bolobstacle.png" },
-            "Oceano de Bolas": { description: "Dimensões: C 6m x L 5m x A 0.6m\nLotação: 16 utilizadores", image_url: "imagens/oceano-de-bolas.png" },
-            "Casa das Bolas": { description: "Dimensões: C 7m x L 7m x A 4m\nLotação: 14 utilizadores", image_url: "imagens/casa-das-bolas.png" },
-            "Lago de Bolas": { description: "Dimensões: C 3.5m x L 4m x A 0.8m\nLotação: 8 utilizadores", image_url: "imagens/lago-de-bolas.png" },
-            "Space Balls": { description: "Dimensões: C 5.5m x L 5m x A 3.5m\nLotação: 10 utilizadores", image_url: "imagens/space-balls.png" },
-            "Slide Ball": { description: "Dimensões: C 9,5m x L 3m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/slide-ball.png" },
-            "Aquário de Bolas": { description: "Dimensões: C 3m x L 4.5m x A 3m\nLotação: 2 utilizadores", image_url: "imagens/aquario-de-bolas.png" }, 
-            "Quintinha": { description: "Dimensões: C 2m x L 3m x A 2.4m\nLotação: 4 utilizadores", image_url: "imagens/quintinha.png" },
-            "Forty": { description: "Dimensões: C 3m x L 3.5m x A 2.5m\nLotação: 5 utilizadores", image_url: "imagens/forty.png" },
-            "Índios": { description: "Dimensões: C 3m x L 3,8m x A 2,8m\nLotação: 5 utilizadores", image_url: "imagens/indios.png" }, 
-            "Aquário": { description: "Dimensões: C 3,5m x L 3,5m x A 2,2m\nLotação: 6 utilizadores", image_url: "imagens/aquario.png" }, 
-            "Kids Park": { description: "Dimensões: C 3.5m x L 4m x A 3m\nLotação: 5 utilizadores", image_url: "imagens/kids-park.png" },
-            "Castelinho": { description: "Dimensões: C 3.5m x L 4m x A 3.5m\nLotação: 5 utilizadores", image_url: "imagens/castelinho.png" },
-            "Funny": { description: "Dimensões: C 3.5m x L 3.5m x A 2.5m\nLotação: 7 utilizadores", image_url: "imagens/funny.png" },
-            "Macacada": { description: "Dimensões: C 4m x L 4m x A 4m\nLotação: 7 utilizadores", image_url: "imagens/macacada.png" },
-            "Amazónia": { description: "Dimensões: C 4m x L 4m x A 2.6m\nLotação: 7 utilizadores", image_url: "imagens/amazonia.png" }, 
-            "Escorrega das Princesas": { description: "Dimensões: C 3.5m x L 3.5m x A 2.5m\nLotação: 7 utilizadores", image_url: "imagens/escorrega-das-princesas.png" },
-            "Trono Insuflável": { description: "Dimensões: C 1.2m x L 1m x A 2.5m\nLotação: 1 utilizadores", image_url: "imagens/trono-insuflavel.png" },
-            "Jumpy": { description: "Dimensões: C 3m x L 2m x A 2m\nLotação: 8 utilizadores", image_url: "imagens/jumpy.png" },
-            "Safari Park": { description: "Dimensões: C 4m x L 3.5m x A 3m\nLotação: 7 utilizadores", image_url: "imagens/safari-park.png" },
-            "Unicórnio das Princesas": { description: "Dimensões: C 4m x L 4m x A 3,5m\nLotação: 8 utilizadores", image_url: "imagens/unicornio-das-princesas.png" },
-            "Palhaços": { description: "Dimensões: C 4m x L 3.5m x A 3m\nLotação: 5 utilizadores", image_url: "imagens/palhacos.png" }, 
-            "Party Clown": { description: "Dimensões: C 3m x L 3.8m x A 2.8m\nLotação: 5 utilizadores", image_url: "imagens/party-clown.png" },
-            "Fundo do Mar": { description: "Dimensões: C 3mx L 4mx A 2.7m\nLotação: 7 utilizadores", image_url: "imagens/fundo-do-mar.png" },
-            "Dynamickids": { description: "Dimensões: C 4m x L 4m x A 2.8m\nLotação: 7 utilizadores", image_url: "imagens/dynamickids.png" },
-            "Barco Pirata": { description: "Dimensões: C 6m x L 3m x A 3m\nLotação: 8 utilizadores", image_url: "imagens/barco-pirata.png" },
-            "Ilha dos Piratas": { description: "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores", image_url: "imagens/ilha-dos-piratas.png" },
-            "Escorregão": { description: "Dimensões: C 4m x L 6m x A 3m\nLotação: 10 utilizadores", image_url: "imagens/escorregao.png" }, 
-            "Aventura no Mar": { description: "Dimensões: C 4.5m x L 6m x A 3m\nLotação: 10 utilizadores", image_url: "imagens/aventura-no-mar.png" },
-            "Girafa": { description: "Dimensões: C 5m x L 5,5m x A 5m\nLotação: 10 utilizadores", image_url: "imagens/girafa.png" },
-            "Super Obstacle": { description: "Dimensões: C 6m x L 3m x A 2,5m\nLotação: 6 utilizadores", image_url: "imagens/super-obstacle.png" },
-            "T-Rex": { description: "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 9 utilizadores", image_url: "imagens/t-rex.png" },
-            "Kids Obstacle": { description: "Dimensões: C 6m x L 2,5m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/kids-obstacle.png" },
-            "Fun Island": { description: "Dimensões: C 6m x L 6m x A 3,5m\nLotação: 12 utilizadores", image_url: "imagens/fun-island.png" },
-            "Palácio das Princesas": { description: "Dimensões: C 5,5m x L 5,5m x A 6m\nLotação: 8 utilizadores", image_url: "imagens/palacio-das-princesas.png" }, 
-            "Jumper": { description: "Dimensões: C 5.5m x L 4.5m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/jumper.png" },
-            "Egípcio": { description: "Dimensões: C 4m x L 5m x A 3.5m\nLotação: 7 utilizadores", image_url: "imagens/egipcio.png" }, 
-            "Fun Obstacle": { description: "Dimensões: C 5m x L 3m x A 2,8m\nLotação: 8 utilizadores", image_url: "imagens/fun-obstacle.png" },
-            "Texas": { description: "Dimensões: C 5m x L 5.5m x A 4m\nLotação: 10 utilizadores", image_url: "imagens/texas.png" },
-            "Avião": { description: "Dimensões: C 6m x L 5m x A 3,5m\nLotação: 8 utilizadores", image_url: "imagens/aviao.png" }, 
-            "Ilha dos Flamingos": { description: "Dimensões: C 5m x L 5m x A 3,5m\nLotação: 10 utilizadores", image_url: "imagens/ilha-dos-flamingos.png" },
-            "Ocean Park": { description: "Dimensões: C 5m x L 5,5m x A 3,5m\nLotação: 10 utilizadores", image_url: "imagens/ocean-park.png" },
-            "Space Jump": { description: "Dimensões: C 5.5m x L 5m x A 3,5m\nLotação: 10 utilizadores", image_url: "imagens/space-jump.png" },
-            "Princelândia": { description: "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores", image_url: "imagens/princelandia.png" }, 
-            "Jungle": { description: "Dimensões: C 4m x L 3.5m x A 2.2m\nLotação: 7 utilizadores", image_url: "imagens/jungle.png" },
-            "Selva": { description: "Dimensões: C 5m x L 4m x A 3,9m\nLotação: 8 utilizadores", image_url: "imagens/selva.png" },
-            "Junior Park": { description: "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores", image_url: "imagens/junior-park.png" },
-            "Fortaleza": { description: "Dimensões: C 5m x L 7m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/fortaleza.png" },
-            "Jump n Slide": { description: "Dimensões: C 4m x L 7m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/jump-n-slide.png" },
-            "Castelo": { description: "Dimensões: C 5m x L 8.5m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/castelo.png" },
-            "Spin Slide": { description: "Dimensões: C 7m x L 6m x A 5m\nLotação: 10 utilizadores", image_url: "imagens/spin-slide.png" },
-            "Fun Gym": { description: "Dimensões: C 6m x L 5m x A 3.5m\nLotação: 12 utilizadores", image_url: "imagens/fun-gym.png" },
-            "Crazy Obstacle": { description: "Dimensões: C 8m x L 3m x A 3m\nLotação: 6 utilizadores", image_url: "imagens/crazy-obstacle.png" },
-            "Disco Dome": { description: "Dimensões: C 6m x L 5m x A 4,2m\nLotação: 12 utilizadores", image_url: "imagens/disco-dome.png" },
-            "Vale Encantado": { description: "Dimensões: C 5,5m x L 5,5m x A 5m\nLotação: 10 utilizadores", image_url: "imagens/vale-encantado.png" },
-            "Double Fun": { description: "Dimensões: C 6,5m x L 4,5m x A 3m\nLotação: 10 utilizadores", image_url: "imagens/double-fun.png" },
-            "Castelo do Dragão": { description: "Dimensões: C 6m x L 5m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/castelo_do_dragão.png" },
-            "Ninja": { description: "Dimensões: C 5m x L 6m x A 3,5m\nLotação: 12 utilizadores", image_url: "imagens/ninja.png" },
-            "Coche Encantado das Princesas": { description: "Dimensões: C 4m x L 6m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/coche_encantado_das_princesas.png" },
-            "Radical Obstacle": { description: "Dimensões: C 8,5m x L 4m x A 4,5m\nLotação: 10 utilizadores", image_url: "imagens/radical_obstacle.png" },
-            "Submarino": { description: "Dimensões: C 5,5m x L 5,5m x A 5,5m\nLotação: 12 utilizadores", image_url: "imagens/submarino.png" },
-            "Panda": { description: "Dimensões: C 6m x L 7m x A 5,5m\nLotação: 12 utilizadores", image_url: "imagens/panda.png" },
-            "Extreme Obstacle": { description: "Dimensões: C 12m x L 3m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/extreme-obstacle.png" },
-            "Balloon Obstacle": { description: "Dimensões: C 3.5m x L 12m x A 3.5m\nLotação: 8 utilizadores", image_url: "imagens/balloon-obstacle.png" },
-            "Navio Piratas das Caraíbas": { description: "Dimensões: C 8,5m x L 5m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/navio-piratas-das-caraibas.png" },
-            "Xtreme Park": { description: "Dimensões: C 9m x L 5m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/xtreme-park.png" },
-            "Clown Land": { description: "Dimensões: C 7m x L 5m x A 4m\nLotação: 16 utilizadores", image_url: "imagens/clown-land.png" },
-            "Obstacle Slide": { description: "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/obstacle-slide.png" },
-            "Tall Slide": { description: "Dimensões: C 12m x L 5m x A 9m\nLotação: 4 utilizadores", image_url: "imagens/tall-slide.png" },
-            "Jangada Slide": { description: "Dimensões: C 8m x L 6,5m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/jangada-slide.png" },
-            "Crazy Train": { description: "Dimensões: C 5m x L 14m x A 3m\nLotação: 10 utilizadores", image_url: "imagens/crazy-train.png" },
-            "Giant Obstacle": { description: "Dimensões: C 18m x L 4m x A 5m\nLotação: 12 utilizadores", image_url: "imagens/giant-obstacle.png" },
-            "Giant Slide": { description: "Dimensões: C 9m x L 6m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/giant-slide.png" },
-            "Double Slide": { description: "Dimensões: C 9m x L 6m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/double-slide.png" },
-            "Bamboo": { description: "Dimensões: C 8m x L 8,5m x A 8m\nLotação: 16 utilizadores", image_url: "imagens/bamboo.png" },
-            "Little Builders": { description: "Dimensões: C 10m x L 5m x A 9m\nLotação: 16 utilizadores", image_url: "imagens/little-builders.png" },
-            "Obstacle Run": { description: "Dimensões: C 11m x L 3,5m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/obstacle-run.png" },
-            "Take Down": { description: "Dimensões: C 11m x L 3,5m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/take-down.png" },
-            "Slide": { description: "Dimensões: C 6m x L 3m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/slide.png" },
-            "Paraíso dos Macacos": { description: "Dimensões: C 7m x L 8m x A 8m\nLotação: 16 utilizadores", image_url: "imagens/paraiso_dos_macacos.png" },
-            "Jungle Slide": { description: "Dimensões: C 7m x L 11m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/jungle-slide.png" },
-            "Missão a Marte": { description: "Dimensões: C 12m x L 6m x A 7m\nLotação: 18 utilizadores", image_url: "imagens/missao_a_marte.png" },
-            "Twin Slide": { description: "Dimensões: C 11,5m x L 7m x A 7m\nLotação: 4 utilizadores", image_url: "imagens/twin-slide.png" },
-            "Run n Slide": { description: "Dimensões: C 11m x L 5,5m x A 6m\nLotação: 8 utilizadores", image_url: "imagens/run-n-slide.png" },
-            "Mega Slide": { description: "Dimensões: C 15m x L 7m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/mega-slide.png" },
-            "Climb n Slide": { description: "Dimensões: C 11m x L 5,5m x A 6m\nLotação: 8 utilizadores", image_url: "imagens/climb-n-slide.png" },
-            "Volcano": { description: "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores", image_url: "imagens/volcano.png" },
-            "Music Land": { description: "Dimensões: C 12m x L 7m x A 4,5m\nLotação: 20 utilizadores", image_url: "imagens/music-land.png" },
-            "Parque Divertido": { description: "Dimensões: C 12m x L 9m x A 5m\nLotação: 24 utilizadores", image_url: "imagens/parque-divertido.png" },
-            "Transformer": { description: "Dimensões: C 12m x L 8m x A 6,5m\nLotação: 22 utilizadores", image_url: "imagens/transformer.png" },
-            "Banzai": { description: "Dimensões: C 26m x L 7m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/banzai.png" },
-            "Quartel dos Bombeiros": { description: "Dimensões: C 11m x L 11m x A 7,5m\nLotação: 30 utilizadores", image_url: "imagens/quartel_dos_bombeiros.png" },
-            "Polar Express": { description: "Dimensões: C 20m x L 4m x A 4,5m\nLotação: 18 utilizadores", image_url: "imagens/polar-express.png" },
-            "Adrenaline": { description: "Dimensões: C 21m x L 5.5m x A 6m\nLotação: 16 utilizadores", image_url: "imagens/adrenaline.png" },
-            "Colossus": { description: "Dimensões: C 30m x L 8m x A 12m\nLotação: 8 utilizadores", image_url: "imagens/colossus.png" },
-            "Spartan": { description: "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/spartan.png" },
-            "Samurai": { description: "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/samurai.png" },
-            "Up and Down": { description: "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/up-and-down.png" },
-            "Tropical": { description: "Dimensões: C 4m x L 4,5m x A 3,5m\nLotação: 16 utilizadores", image_url: "imagens/tropical.png" },
-            "Extreme Slide": { description: "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/extreme-slide.png" },
-            "Treasure Slide": { description: "Dimensões: C 9m x L 6m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/treasure-slide.png" },
-            "Kraken": { description: "Dimensões: C 10m x L 7m x A 6,5m\nLotação: 16 utilizadores", image_url: "imagens/kraken.png" },
-            "Space X": { description: "Dimensões: C 6m x L 8m x A 6m\nLotação: 18 utilizadores", image_url: "imagens/space-x.png" },
-            "Runner": { description: "Dimensões: C 25m x L 9m x A 4,5m\nLotação: 20 utilizadores", image_url: "imagens/runner.png" },
-            "Kamikaze": { description: "Dimensões: C 30m x L 10m x A 10m\nLotação: 4 utilizadores", image_url: "imagens/kamikaze.png" },
-            "Trampolim": { description: "Dimensões: C 4,3m x L 4,3m x A 2,7m\nLotação: 4 utilizadores", image_url: "imagens/trampolim.png" },
-            "Touro Mecânico": { description: "Dimensões: C 5m x L 5m x A 2m\nLotação: 1 utilizador", image_url: "imagens/touro-mecanico.png" },
-            "Surf Mecânico": { description: "Dimensões: C 5m x L 5m x A 2m\nLotação: 1 utilizadores", image_url: "imagens/surf-mecanico.png" },
-            "Onda Mecânica": { description: "Dimensões: C 5.5m x L 5.5m x A 5m\nLotação: 1 utilizadores", image_url: "imagens/onda-mecanica.png" },
-            "Airbourne": { description: "Dimensões: C 4,5m x L 4,5m x A 6,5m\nLotação: 1 utilizadores", image_url: "imagens/airbourne.png" },
-            "BOOT": { description: "Dimensões: C 12m x L 3.5m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/boot.png" },
-            "Xtreme Challenge": { description: "Dimensões: C 8m x L 8,5m x A 5,5m\nLotação: 8 utilizadores", image_url: "imagens/xtreme-challenge.png" },
-            "Cone de Escalada": { description: "Dimensões: C 8m x L 8m x A 6m\nLotação: 2 utilizadores", image_url: "imagens/cone-de-escalada.png" },
-            "Eliminator": { description: "Dimensões: C 7m x L 7m x A 2m\nLotação: 6 utilizadores", image_url: "imagens/eliminator.png" },
-            "BootCamp (18 metros)": { description: "Dimensões: C 18m x L 3.5m x A 4.5m\nLotação: 12 utilizadores", image_url: "imagens/bootcamp-18-metros.png" },
-            "Dynamicbungee": { description: "Dimensões: C 9m x L 9m x A 7m\nLotação: 4 utilizadores", image_url: "imagens/dynamicbungee.png" },
-            "Extreme Fun Run": { description: "Dimensões: C 15.5m x L 7m x A 4.5m\nLotação: 20 utilizadores", image_url: "imagens/extreme-fun-run.png" },
-            "Bag Jump": { description: "Dimensões: C 9m x L 10m x A 2m\nLotação: 1 utilizadores", image_url: "imagens/bag-jump.png" },
-            "Target Jump": { description: "Dimensões: C 8,5m x L 6,5m x A 7m\nLotação: 6 utilizadores", image_url: "imagens/target-jump.png" },
-            "BootCamp (35 metros)": { description: "Dimensões: C 35m x L 3.5m x A 4.5m\nLotação: 24 utilizadores", image_url: "imagens/bootcamp-35-metros.png" },
-            "Xtreme Jump": { description: "Dimensões: C 20m x L 10m x A 9m\nLotação: 6 utilizadores", image_url: "imagens/xtreme-jump.png" },
-            "BootCamp (50 metros)": { description: "Dimensões: C 50m x L 3.5m x A 4.5m\nLotação: 36 utilizadores", image_url: "imagens/bootcamp-50-metros.png" },
-            "Parede Escalada com Slide": { description: "Dimensões: C 50m x L 3.5m x A 8m\nLotação: 5 utilizadores", image_url: "imagens/parede-escalada-com-slide.png" },
-            "BootCamp (75 metros)": { description: "Dimensões: C 75m x L 3.5m x A 4.5m\nLotação: 45 utilizadores", image_url: "imagens/bootcamp-75-metros.png" },
-            "Circuito Arborismo": { description: "Dimensões: C 12m x L 4m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/circuito-arborismo.png" },
-            "BootCamp (100 metros)": { description: "Dimensões: C 100m x L 3.5m x A 4.5m\nLotação: 60 utlizadores", image_url: "imagens/bootcamp-100-metros.png" }, 
-            "Parede Anti-Gravidade": { description: "Dimensões: C 8m x L 4m x A 4m\nLotação: 2 utilizadores", image_url: "imagens/parede-anti-gravidade.png" },
-            "Bungee Basket": { description: "Dimensões: C 11m x L 4,5m x A 2,5m\nLotação: 3 utilizadores", image_url: "imagens/bungee-basket.png" },
-            "Snowboard Mecânico": { description: "Dimensões: C 5.5m x L 5.5m x A 5m\nLotação: 1 utilizadores", image_url: "imagens/snowboard-mecanico.png" },
-            "Bola Mecânica": { description: "Dimensões: C 6.5m x L 6.5m x A 2m\nLotação: 1 utilizadores", image_url: "imagens/bola-mecanica.png" },
-            "BootCamp (12 metros)": { description: "Dimensões: C 12m x L 3.5m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/bootcamp-12-metros.png" },
-            "Bowling Humano": { description: "Dimensões: C 10m x L 4.5m x A 2.1m\nLotação: 1 utilizadores", image_url: "imagens/bowling-humano.png" },
-            "HOP": { description: "Dimensões: C 17m x L 5m x A 5.5m\nLotação: 4 utilizadores", image_url: "imagens/hop.png" },
-            "Torre de Escalada": { description: "Dimensões: C 8m x L 8m x A 8m\nLotação: 2 utilizadores", image_url: "imagens/torre-de-escalada.png" },
-            "Boom!": { description: "Dimensões: C 2m x L 5m x A 1.5m\nLotação: 2 utilizadores", image_url: "imagens/boom!.png" },
-            "Ténis de Mesa": { description: "Dimensões: C 3,5m x L 1,6m x A 0,75m\nLotação: 4 utilizadores", image_url: "imagens/tenis-de-mesa.png" },
-            "Alley Oop": { description: "Dimensões: C 2m x L 3,1m x A 4m\nLotação: 3 utilizadores", image_url: "imagens/alley-oop.png" },
-            "Alvo Gigante": { description: "Dimensões: C 2.5m x L 3m x A 3m\nLotação: 1 utilizadores", image_url: "imagens/alvo-gigante.png" },
-            "Wakka Wall": { description: "Dimensões: C 2,6m x L 4m x A 2,1m\nLotação: 2 utilizadores", image_url: "imagens/wakka-wall.png" },
-            "4 em linha": { description: "Dimensões: C 2,5m x L 4m x A 2,8m\nLotação: 2 utilizadores", image_url: "imagens/4-em-linha.png" },
-            "Golf Shot": { description: "Dimensões: C 4m x L 3m x A 3.5m\nLotação: 1 utilizadores", image_url: "imagens/golf-shot.png" },
-            "Conjunto 4 Jogos": { description: "Dimensões: C 6m x L 1.5m x A 2m\nLotação: 4 utilizadores", image_url: "imagens/conjunto-4-jogos.png" },
-            "Foot Pool": { description: "Dimensões: C 9m x L 5,5m x A 1m\nLotação: 2 utilizadores", image_url: "imagens/foot-pool.png" },
-            "Mega Buzz": { description: "Dimensões: C 0,5m x L 3,5m x A 1,5m\nLotação: 1 utilizadores", image_url: "imagens/mega-buzz.png" },
-            "Twist Air": { description: "Dimensões: C 1.2m x L 1.2m x A 1.75m\nLotação: 2 utilizadores", image_url: "imagens/twist-air.png" },
-            "Air Ball": { description: "Dimensões: C 4.5m x L 1.5m x A 1.5m\nLotação: 6 utilizadores", image_url: "imagens/air-ball.png" },
-            "Tiro com Arco": { description: "Dimensões: C 3m x L 2m x A 2.5m\nLotação: 2 utilizadores", image_url: "imagens/tiro-com-arco.png" },
-            "Tola Toupeira": { description: "Dimensões: C 5m x L 5m x A 2.5m\nLotação: 7 utilizadores", image_url: "imagens/tola-toupeira.png" },
-            "Cash Cube": { description: "Dimensões: C 1.5m x L 1.5m x A 2.2m\nLotação: 1 utilizador", image_url: "imagens/cash-cube.png" },
-            "Ring Toss": { description: "Dimensões: C 4m x L 2,5m x A 2,8m\nLotação: 2 utilizadores", image_url: "imagens/ring-toss.png" },
-            "Mesa de Matraquilhos": { description: "Dimensões: C 1.5m x L 1.3m x A 0.9m\nLotação: 4 utilizadores", image_url: "imagens/mesa-de-matraquilhos.png" },
-            "Shoot Out": { description: "Dimensões: C 4.5m x L 2.5m x A 3.5m\nLotação: 2 utilizadores", image_url: "imagens/shoot-out.png" },
-            "Golooo!": { description: "Dimensões: C 4m x L 2m x A 2m\nLotação: 2 utilizadores", image_url: "imagens/golooo!.png" },
-            "Air Football": { description: "Dimensões: C 4.5m x L 2.4m x A 1.2m\nLotação: 6 utilizadores", image_url: "imagens/air-football.png" },
-            "Penalti": { description: "Dimensões: C 7m x L 4m x A 2.5m\nLotação: 2 utilizadores", image_url: "imagens/penalti.png" },
-            "Chuto ao Alvo": { description: "Dimensões: C 4m x L 2.5m x A 5m\nLotação: 1 utilizadores", image_url: "imagens/chuto-ao-alvo.png" },
-            "Campo de Futebol": { description: "Dimensões: C 13m x L 7m x A 2.4m\nLotação: 10 utilizadores", image_url: "imagens/campo-de-futebol.png" },
-            "Bubble Football": { description: "Dimensões: a partir de 50m2\nLotação: 6 utilizadores", image_url: "imagens/bubble-football.png" },
-            "Speed Shot": { description: "Dimensões: C 4m x L 7m x A 2.4m\nLotação: 1 utilizadores", image_url: "imagens/speed-shot.png" },
-            "Matrecos Humanos": { description: "Dimensões: C 13.5m x L 6m x A 2m\nLotação: 12 utilizadores", image_url: "imagens/matrecos-humanos.png" },
-            "Arena de Futebol": { description: "Dimensões: C 20m x L 10m x A 2.4m\nLotação: 12 utilizadores", image_url: "imagens/arena-de-futebol.png" },
-            "Foot Bump": { description: "Dimensões: C 13m x L 7m x A 2.4m\nLotação: 6 utilizadores", image_url: "imagens/foot-bump.png" },
-            "Foot Bump Arena": { description: "Dimensões: C 20m x L 10m x A 2.4m\nLotação: 6 utilizadores", image_url: "imagens/foot-bump-arena.png" },
-            "Double Penalty": { description: "Dimensões: C 4,5m x L 6m x A 3,7m\nLotação: 2 utilizadores", image_url: "imagens/double-penalty.png" },
-            "Futebol de Sabão": { description: "Dimensões: C 13m x L 6m x A 2m\nLotação: 10 utilizadores", image_url: "imagens/futebol_de_sabão.png" },
-            "Lutadores de Sumo": { description: "Dimensões: C 5m x L 5m x A 2m\nLotação: 2 utilizadores", image_url: "imagens/lutadores_de_sumo.png" },
-            "Gladiadores": { description: "Dimensões: C 5m x L 5m x A 2.5m\nLotação: 2 utilizadores", image_url: "imagens/gladiadores.png" },
-            "Ringue de Box": { description: "Dimensões: C 6m x L 6m x A 2.2m\nLotação: 2 utilizadores", image_url: "imagens/ringue_de_box.png" },
-            "Luta de Almofadas": { description: "Dimensões: C 6m x L 6m x A 2.2m\nLotação: 4 utilizadores", image_url: "imagens/luta_de_almofadas.png" },
-            "Guerreiros": { description: "Dimensões: C 5m x L 5m x A 2m\nLotação: 2 utilizadores", image_url: "imagens/guerreiros.png" },
-            "Fun&Cycle": { description: "Dimensões: a partir de 40m2\nLotação: 4 utilizadores", image_url: "imagens/fun&cycle.png" },
-            "Circuito Karts": { description: "Dimensões: C 20m x L 10m x A 3,5m\nLotação: 8 utilizadores", image_url: "imagens/circuito-karts.png" },
-            "Circuito F1": { description: "Dimensões: C 30m x L 15m x A 3m\nLotação: 8 utilizadores", image_url: "imagens/circuito-f1.png" },
-            "Dynamic Train": { description: "Dimensões: C 10m x L 1.5m x A 2m\nLotação: 10 utilizadores", image_url: "imagens/dynamic-train.png" },
-            "TGV Comboio Eléctrico": { description: "Dimensões: C 10m x L 0.6m x A 0.6m\nLotação: 8 utilizadores", image_url: "imagens/tgv-comboio-electrico.png" },
-            "Bouncy Pool": { description: "Dimensões: C 3,5m x L 4m x A 0,8m\nLotação: 8 utilizadores", image_url: "imagens/bouncy-pool.png" },
-            "Aqua Castle": { description: "Dimensões: C 4m x L x 7m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/aqua-castle.png" }, 
-            "Rolo": { description: "Dimensões: C 3m x L 2m x A 2m\nLotação: 1 utilizador", image_url: "imagens/rolo.png" },
-            "Dynamicboats": { description: "Dimensões: a partir de 40m2\nLotação: 4 utilizadores", image_url: "imagens/dynamicboats.png" },
-            "Piscina 6mx5mx0,65m": { description: "Dimensões: C 6m x L 5m x A 0,65m\nLotação: 10 utilizadores", image_url: "imagens/piscina-6mx5mx0_65m.png" },
-            "Aqua Slide": { description: "Dimensões: C 4,5m x L 9,5m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/aqua-slide.png" },
-            "Palm Splash": { description: "Dimensões: C 10m x L 3m x A 4m\nLotação: 4 utilizadores", image_url: "imagens/palm-splash.png" },
-            "Crocodilo": { description: "Dimensões: C 8m x L 3m x A 3m\nLotação: 12 utilizadores", image_url: "imagens/crocodilo.png" },
-            "Barco Capitão Gancho": { description: "Dimensões: C 7m x L 3,5m x A 3m\nLotação: 12 utilizadores", image_url: "imagens/barco-capitao-gancho.png" },
-            "Cova dos Piratas": { description: "Dimensões: C 4,5m x L 3,5m x A 3,5m\nLotação: 6 utilizadores", image_url: "imagens/cova_dos_piratas.png" },
-            "Piscina 8mx6mx0,65m": { description: "Dimensões: C 8m x L 6m x A 0,65m\nLotação: 16 utilizadores", image_url: "imagens/piscina_8mx6mx0_65m.png" },
-            "Water House": { description: "Dimensões: C 7m x L 7m x A 4m\nLotação: 14 utilizadores", image_url: "imagens/water-house.png" },
-            "Kongro": { description: "Dimensões: C 13,5m x L 4,5m x A 5,5m\nLotação: 5 utilizadores", image_url: "imagens/kongro.png" },
-            "Obstacle Splash": { description: "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/obstacle-splash.png" },
-            "Piscina 10mx8mx0,65m": { description: "Dimensões: C 10m x L 8m x A 0,65m\nLotação: 24 utilizadores", image_url: "imagens/piscina_10mx8mx0_65m.png" },
-            "Swimming Balls": { description: "Dimensões: C 10m x L 8m x A 0.33m\nLotação: 20 utilizadores", image_url: "imagens/swimming-balls.png" },
-            "Castle Splash": { description: "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores", image_url: "imagens/castle-splash.png" },
-            "Paraíso Aquático": { description: "Dimensões: C 15m x L 3m x A 4m\nLotação: 16 utilizadores", image_url: "imagens/paraiso-aquatico.png" },
-            "Piscina 12mx10mx0,65m": { description: "Dimensões: C 12m x L 10m x A 0,65m\nLotação: 40 utilizadores", image_url: "imagens/piscina_12mx10mx0_65m.png" },
-            "Giant Obstacle Splash": { description: "Dimensões: C 26m x L 6m x A 4m\nLotação: 12 utilizadores", image_url: "imagens/giant-obstacle-splash.png" },
-            "Volcano Splash": { description: "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores", image_url: "imagens/volcano-splash.png" },
-            "Slip & Splash": { description: "Dimensões: C 19m x L 4,5m x A 7m\nLotação: 6 utilizadores", image_url: "imagens/slip_&_splash.png" },
-            "Run n Splash": { description: "Dimensões: C 17m x L 5.5m x A 6m\nLotação: 12 utilizadores", image_url: "imagens/run-n-splash.png" },
-            "Banzai Splash": { description: "Dimensões: C 20m x L 10m x A 10m\nLotação: 6 utilizadores", image_url: "imagens/banzai-splash.png" },
-            "Adrenaline Splash": { description: "Dimensões: C 27m x L 5.5m x A 6m\nLotação: 20 utilizadores", image_url: "imagens/adrenaline-splash.png" },
-            "Ilha do Surf": { description: "Dimensões: C 14m x L 14m x A 6m\nLotação: 32 utilizadores", image_url: "imagens/ilha_do_surf.png" },
-            "Kamikaze Splash": { description: "Dimensões: C 34m x L 10m x A 10m\nLotação: 10 utilizadores", image_url: "imagens/kamikaze-splash.png" },
-            "Piscina Gigante": { description: "Dimensões: C 30m x L 15m x A 1,5m\nLotação: 75 utilizadores", image_url: "imagens/piscina-gigante.png" },
-            "Colossus Splash": { description: "Dimensões: C 35m x L 8m x A 12m\nLotação: 12 utilizadores", image_url: "imagens/colossus-splash.png" },
-            "Splash Slide": { description: "Dimensões: C 7m x L 4m x A 4m\nLotação: 4 utilizadores", image_url: "imagens/splash-slide.png" },
-            "Space Splash": { description: "Dimensões: C 5.5m x L 5m x A 3.5m\nLotação: 10 utilizadores", image_url: "imagens/space-splash.png" },
-            "Splash": { description: "Dimensões: C 9m x L 4m x A 4m\nLotação: 6 utilizadores", image_url: "imagens/splash.png" },
-            "Wild Splash": { description: "Dimensões: C 8.5m x L 2.5m x A 2m\nLotação: 1 utilizador", image_url: "imagens/wild-splash.png" },
-            "Shark Splash": { description: "Dimensões: C 15m x L 2.6m x A 3m\nLotação: 1 utilizador", image_url: "imagens/shark-splash.png" },
-            "Dunk Tank": { description: "Dimensões: C 3m x L 4,5m x A 3m\nLotação: 2 utilizadores", image_url: "imagens/dunk-tank.png" },
-            "Splash Race": { description: "Dimensões: C 12m x L 5m x A 4,5m\nLotação: 6 utilizadores", image_url: "imagens/splash-race.png" },
-            "Jungle Splash": { description: "Dimensões: C 17m x L 8m x A 8m\nLotação: 4 utilizadores", image_url: "imagens/jungle-splash.png" },
-            "River Run": { description: "Dimensões: C 14m x L 4m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/river-run.png" },
-            "Ringue de Espuma": { description: "Dimensões: C 6m x L 6m x A 2,2m\nLotação: 2 utilizadores", image_url: "imagens/ringue_de_espuma.png" },
-            "Aqua Foam": { description: "Dimensões: C 4m x L 7m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/aqua-foam.png" },
-            "Foam Slide": { description: "Dimensões: C 4,5m x L 9,5m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/foam-slide.png" },
-            "Piscina de Espuma": { description: "Dimensões: C 8m x L 6m x A 0,65m\nLotação: 16 utilizadores", image_url: "imagens/piscina_de_espuma.png" },
-            "Foam House": { description: "Dimensões: C 6,5m x L 7m x A4,5m\nLotação: 14 utilizadores", image_url: "imagens/foam-house.png" },
-            "Castle Foam": { description: "Dimensões: C 13,5m x L 6m x A 5m\nLotação: 8 utilizadores", image_url: "imagens/castle-foam.png" },
-            "Giant Obstacle Foam": { description: "Dimensões: C 26m x L 6m x A 4m\nLotação: 12 utilizadores", image_url: "imagens/giant-obstacle-foam.png" },
-            "Volcano Foam": { description: "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores", image_url: "imagens/volcano-foam.png" },
-            "Banzai Foam": { description: "Dimensões: C 20m x L 10m x A 10m\nLotação: 4 utilizadores", image_url: "imagens/banzai-foam.png" },
-            "Wild Foam Splash": { description: "Dimensões: C 8,5m x L 2,5m x A2m\nLotação: 1 utilizador", image_url: "imagens/wild-foam-splash.png" },
-            "Foam Park": { description: "Dimensões: C 10m x L 10m x A 2,5m\nLotação: 10 utilizadores", image_url: "imagens/foam-park.png" },
-            "Slide Foam": { description: "Dimensões: C 9,5m x L 3m x A 6m\nLotação: 4 utilizadores", image_url: "imagens/slide-foam.png" },
-            "Kongro Foam": { description: "Dimensões: C 13,5m x L 4,5m x A 5,5m\nLotação: 5 utilizadores", image_url: "imagens/kongro-foam.png" },
-            "Twin Slide Foam": { description: "Dimensões: C 11,5m x L 7m x A 7m\nLotação: 4 utilizadores", image_url: "imagens/twin-slide-foam.png" },
-            "Extreme Foam": { description: "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/extreme-foam.png" },
-            "Extreme Foam com Bóias": { description: "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores", image_url: "imagens/extreme-foam-com-boias.png" },
-            "Dynamickids Personalizado": { description: "Dimensões: C 4m x L 4m x A 2.8m\nLotação: 7 utilizadores", image_url: "imagens/dynamickids-personalizado.png" },
-            "Jump n Slide Personalizado": { description: "Dimensões: C 4m x L 7m x A 4,5m\nLotação: 8 utilizadores", image_url: "imagens/jump-n-slide-personalizado.png" },
-            "Jumper Personalizado": { description: "Dimensões: C 5.5m x L 4.5m x A 4.5m\nLotação: 8 utilizadores", image_url: "imagens/jumper-personalizado.png" },
-            "Ninja Personalizado": { description: "Dimensões: C 5m x L 6m x A 3.5m\nLotação: 12 utilizadores", image_url: "imagens/ninja-personalizado.png" },
-            "Submarino Personalizado": { description: "Dimensões: C 5,5m x L 5,5m x A 5,5m\nLotação: 12 utilizadores", image_url: "imagens/submarino-personalizado.png" },
-            "Totem Cónico": { description: "Dimensões: C 0.65m x L 0.65m x A 2.6m\nLotação: ", image_url: "imagens/totem-conico.png" },
-            "Tenda de Montagem Rápida": { description: "Dimensões: C 3m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/tenda-de-montagem-rapida.png" },
-            "Letras Insufláveis": { description: "Dimensões: C 1.5m x L 0.5m x A 4m\nLotação: ", image_url: "imagens/letras-insuflaveis.png" },
-            "Tenda com Laterais": { description: "Dimensões: C 3m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/tenda-com-laterais.png" },
-            "Totem Iluminado": { description: "Dimensões: C 0.65m x L 0.65m x A 3m\nLotação: ", image_url: "imagens/totem-iluminado.png" },
-            "Sky Dancer": { description: "Dimensões: C 0.5m x L 0.5m x A 4m\nLotação: ", image_url: "imagens/sky-dancer.png" },
-            "Pórtico Iluminado": { description: "Dimensões: C 0.8m x L 6m x A 3.5m\nLotação: ", image_url: "imagens/portico-iluminado.png" },
-            "Quiosque Insuflável": { description: "Dimensões: C 3m x L 3m x A 4m\nLotação: ", image_url: "imagens/quiosque-insuflavel.png" },
-            "Pórtico Meta": { description: "Dimensões: C 6m x L 1m x A 4m\nLotação: ", image_url: "imagens/portico-meta.png" },
-            "Pórtico Gigante": { description: "Dimensões: C 3m x L 10m x A 7m\nLotação: ", image_url: "imagens/portico-gigante.png" },
-            "Iglo": { description: "Dimensões: C 5.8m x L 5m x A 3m\nLotação: ", image_url: "imagens/iglo.png" },
-            "Tenda Insuflável": { description: "Dimensões: C 10m x L 10m x A 6m\nLotação: ", image_url: "imagens/tenda-insuflavel.png" },
-            "Balão Personalizado": { description: "Dimensões: C 3m x L 3m x A 6m\nLotação: ", image_url: "imagens/balao-personalizado.png" },
-            "Pórtico Complete": { description: "Dimensões: C 4m x L 8m x A 7m\nLotação: ", image_url: "imagens/portico-complete.png" },
-            "Torre de Escalada Personalizada": { description: "Dimensões: C 8m x L 8m x A 8m\nLotação: 2 utilizadores", image_url: "imagens/torre_de_escalada_personalizada.png" },
-            "Dynamicbungee Personalizado": { description: "Dimensões: C 9m x L 9m x A 7m\nLotação: 4 utilizadores", image_url: "imagens/dynamicbungee_personalizado.png" },
-            "Xtreme Jump Personalizado": { description: "Dimensões: C 20m x L 10m x A 9m\nLotação: 6 utilizadores", image_url: "imagens/xtreme_jump_personalizado.png" },
-            "Globo Personalizado": { description: "Dimensões: C 4m x L 4m x A 4m\nLotação: ", image_url: "imagens/globo_personalizado.png" },
-            "Color Park": { description: "Dimensões: C 10m x L 10m x A 2.5m\nLotação: ", image_url: "imagens/color_park.png" },
-            "Arco de Balões": { description: "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/arco_de_baloes.png" },
-            "2 Colunas de Balões": { description: "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/2_colunas_de_baloes.png" },
-            "Arco de Flores + 6 Flores": { description: "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ", image_url: "imagens/arco_de_flores_+_6_flores.png" },
-            "Gerador": { description: "Dimensões: C 0.5m x L 0.5m x A 0.6m\nLotação: ", image_url: "imagens/gerador.png" },
-            "TV Led 55 com tripé": { description: "Dimensões: C 0.5m x L 1m x A 2m\nLotação: ", image_url: "imagens/tv_led_55_com_tripe.png" },
-            "Canhão Lança T-Shirts": { description: "Dimensões: C 1m x L 1m x A 1m\nLotação: ", image_url: "imagens/canhao-lanca-t-shirts.png" },
-            "Máquina de Fumo": { description: "Dimensões: C 0.6m x L 0.3m x A 0.4m\nLotação: ", image_url: "imagens/maquina_de_fumo.png" },
-            "Canhão de Confettis Pressão de Ar": { description: "Dimensões: C 1m x L 1m x A 1m\nLotação: ", image_url: "imagens/canhao_de_confettis_pressao_de_ar.png" },
-            "Canhão de Confettis Eléctrico": { description: "Dimensões: C 1m x L 1.5m x A 1m\nLotação: ", image_url: "imagens/canhao_de_confettis_electrico.png" },
-            "Canhão de Neve": { description: "Dimensões: C 1.5m x L 1.5m x A 2m\nLotação: ", image_url: "imagens/canhao_de_neve.png" },
-            "Canhão de Espuma": { description: "Dimensões: C 1.5m x L 1.5m x A 2m\nLotação: ", image_url: "imagens/canhao_de_espuma.png" },
-            "Tela de Cinema": { description: "Dimensões: C 7m x L 3m x A 5.5m\nLotação: ", image_url: "imagens/tela_de_cinema.png" },
-            "Mascotes": { description: "Dimensões: \nLotação: ", image_url: "imagens/mascotes.png" },
-            "Pinturas Faciais": { description: "Dimensões: \nLotação: 1 utilizador", image_url: "imagens/pinturas_faciais.png" },
-            "Modelagem de Balões": { description: "Dimensões: \nLotação: 1 utilizador", image_url: "imagens/modelagem_de_baloes.png" },
-            "Origami Colorido": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/origami_colorido.png" },
-            "Crachás": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/crachas.png" },
-            "Faz o teu Slime": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/faz_o_teu_slime.png" },
-            "Smart Tattoo": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador", image_url: "imagens/smart_tattoo.png" },
-            "Penteados Malucos": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador", image_url: "imagens/penteados_malucos.png" },
-            "Laboratório Divertido": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/laboratorio_divertido.png" },
-            "Kinetic Sand": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/kinetic_sand.png" },
-            "Fotos Loucas": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores", image_url: "imagens/fotos_loucas.png" },
-            "Salão de Beleza": { description: "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador", image_url: "imagens/salao_de_beleza.png" },
-            "Algodão Doce": { description: "Dimensões: C 0.7m x L 0.5m x A 1.5m\nLotação: ", image_url: "imagens/algodao_doce.png" },
-            "Pipocas": { description: "Dimensões: C 0.7m x L 0.5m x A 1.9m\nLotação: ", image_url: "imagens/pipocas.png" },
-            "Granizados": { description: "Dimensões: C 0.5m x L 0.5m x A 2m\nLotação: ", image_url: "imagens/granizados.png" },
-            "Candy Bar": { description: "Dimensões: C 2m x L 1m x A 2m\nLotação: ", image_url: "imagens/candy_bar.png" },
-            "Crepes": { description: "Dimensões: C 2m x L 1m x A 2m\nLotação: ", image_url: "imagens/crepes.png" },
-            "Gelados": { description: "Dimensões: C 2m x L 1,5m x A 2m\nLotação: ", image_url: "imagens/gelados.png" },
-            "Pórtico Standar": { description: "Dimensões: \nLotação: ", image_url: "imagens/portico_standar.png" },
-             "FASTER": { description: "Dimensões: C 10m x L 3m x A 2,2m\nLotação: 2 Utilizadores", image_url: "imagens/faster.png" },
-            "Tropical Splash": { description: "Dimensões: C 12m x L 5.5m x A 6m\nLotação: 8 utilizadores", image_url: "imagens/tropical_splash.png" }
-        };
+function today() {
+    return new Date().toISOString().substr(0, 10);
+}
 
-        const sellerSignatures = {
-            "Armando Alves": "Armando Alves\n913313174\narmando.alves@mydynamic.pt",
-            "Ângelo Lobo": "Ângelo Lobo\n918789192\nangelo.lobo@mydynamic.pt",
-            "Carla Loução": "Carla Loução\n915832584\ngeral@mydynamic.pt",
-            "Valeriya Ishchenko": "Valeriya Ishchenko\n918379037\nwww.mydynamic.pt",
-            "Gonçalo Alves": "Gonçalo A.V. Alves\n912030078\ninfo.mydynamic@gmail.com"
-        };
+function handleGlobalPriceControlsChange() {
+    update();
+}
 
+function toggleItemSpecificOptions(itemIndex, showDates, showTimes) {
+    const itemDatesDiv = document.getElementById(`itemDates${itemIndex}`);
+    const itemTimesDiv = document.getElementById(`itemTimes${itemIndex}`);
 
-        function populateTransportLocations() {
-            // console.log("[populateTransportLocations] Iniciando população de localidades.");
-            const selectElement = document.getElementById('transportLocation');
-            if (!selectElement) {
-                console.error("[populateTransportLocations] ERRO: Elemento select 'transportLocation' não encontrado.");
-                return;
+    if (itemDatesDiv) {
+        itemDatesDiv.style.display = showDates ? 'flex' : 'none';
+        if (showDates) {
+            const itemFromDateInput = document.getElementById(`itemFromDate${itemIndex}`);
+            const itemToDateInput = document.getElementById(`itemToDate${itemIndex}`);
+            if (itemFromDateInput && !itemFromDateInput.value) {
+                itemFromDateInput.value = document.getElementById('fromDate').value || today();
             }
-            selectElement.innerHTML = ''; 
-            const defaultOption = document.createElement('option');
-            defaultOption.value = "Nenhuma";
-            defaultOption.textContent = "Selecionar localidade...";
-            selectElement.appendChild(defaultOption);
-            
-            const sortedLocations = Object.keys(transportationFees).filter(loc => loc !== "Nenhuma").sort();
-            // console.log(`[populateTransportLocations] Número de localidades para adicionar: ${sortedLocations.length}`);
-
-            sortedLocations.forEach(locationName => {
-                const option = document.createElement('option');
-                option.value = locationName;
-                option.textContent = locationName;
-                selectElement.appendChild(option);
-            });
-            // console.log("[populateTransportLocations] População de localidades concluída.");
-        }
-
-        function today() {
-            return new Date().toISOString().substr(0, 10);
-        }
-        
-        function handleGlobalPriceControlsChange() { 
-            update();
-        }
-        
-        function toggleItemSpecificOptions(itemIndex, showDates, showTimes) {
-            const itemDatesDiv = document.getElementById(`itemDates${itemIndex}`);
-            const itemTimesDiv = document.getElementById(`itemTimes${itemIndex}`);
-
-            if (itemDatesDiv) {
-                itemDatesDiv.style.display = showDates ? 'flex' : 'none';
-                if (showDates) {
-                    const itemFromDateInput = document.getElementById(`itemFromDate${itemIndex}`);
-                    const itemToDateInput = document.getElementById(`itemToDate${itemIndex}`);
-                    if (itemFromDateInput && !itemFromDateInput.value) {
-                        itemFromDateInput.value = document.getElementById('fromDate').value || today();
-                    }
-                    if (itemToDateInput && !itemToDateInput.value) {
-                        itemToDateInput.value = document.getElementById('toDate').value || today();
-                    }
-                }
-            }
-            if (itemTimesDiv) {
-                itemTimesDiv.style.display = showTimes ? 'flex' : 'none';
-                 if (showTimes) {
-                    const itemFromTimeInput = document.getElementById(`itemFromTime${itemIndex}`);
-                    const itemToTimeInput = document.getElementById(`itemToTime${itemIndex}`);
-                    if (itemFromTimeInput && !itemFromTimeInput.value) {
-                        itemFromTimeInput.value = document.getElementById('fromTime').value || '';
-                    }
-                    if (itemToTimeInput && !itemToTimeInput.value) {
-                        itemToTimeInput.value = document.getElementById('toTime').value || '';
-                    }
-                }
+            if (itemToDateInput && !itemToDateInput.value) {
+                itemToDateInput.value = document.getElementById('toDate').value || today();
             }
         }
-
-        function handleGlobalDatesApplyChange() {
-            const showItemDates = !document.getElementById('globalDatesApply').checked;
-            const showItemTimes = !document.getElementById('globalTimesApply').checked; 
-            for (let i = 0; i < idx; i++) {
-                toggleItemSpecificOptions(i, showItemDates, showItemTimes);
-                updateItemDateTimeSectionVisibility(i); // Added call
+    }
+    if (itemTimesDiv) {
+        itemTimesDiv.style.display = showTimes ? 'flex' : 'none';
+        if (showTimes) {
+            const itemFromTimeInput = document.getElementById(`itemFromTime${itemIndex}`);
+            const itemToTimeInput = document.getElementById(`itemToTime${itemIndex}`);
+            if (itemFromTimeInput && !itemFromTimeInput.value) {
+                itemFromTimeInput.value = document.getElementById('fromTime').value || '';
             }
-            update();
-        }
-        
-        function handleGlobalTimesApplyChange() {
-            const showItemDates = !document.getElementById('globalDatesApply').checked; 
-            const showItemTimes = !document.getElementById('globalTimesApply').checked;
-            for (let i = 0; i < idx; i++) {
-                 toggleItemSpecificOptions(i, showItemDates, showItemTimes);
-                 updateItemDateTimeSectionVisibility(i); // Added call
+            if (itemToTimeInput && !itemToTimeInput.value) {
+                itemToTimeInput.value = document.getElementById('toTime').value || '';
             }
-            update();
         }
+    }
+}
 
+function handleGlobalDatesApplyChange() {
+    const showItemDates = !document.getElementById('globalDatesApply').checked;
+    const showItemTimes = !document.getElementById('globalTimesApply').checked;
+    for (let i = 0; i < idx; i++) {
+        toggleItemSpecificOptions(i, showItemDates, showItemTimes);
+        updateItemDateTimeSectionVisibility(i); // Added call
+    }
+    update();
+}
+
+function handleGlobalTimesApplyChange() {
+    const showItemDates = !document.getElementById('globalDatesApply').checked;
+    const showItemTimes = !document.getElementById('globalTimesApply').checked;
+    for (let i = 0; i < idx; i++) {
+        toggleItemSpecificOptions(i, showItemDates, showItemTimes);
+        updateItemDateTimeSectionVisibility(i); // Added call
+    }
+    update();
+}
 
         function checkPredefinedPrice(itemIndex) {
             const nameInput = document.getElementById(`name${itemIndex}`);
@@ -2570,12 +2175,17 @@
             const passwordSection = document.getElementById('passwordSection');
 
             if (passwordInput.value === CORRECT_PASSWORD) {
-                passwordSection.style.display = 'none';
-                appContainer.style.display = 'block';
-                document.body.style.alignItems = 'flex-start'; 
-                document.body.style.justifyContent = 'flex-start'; 
-                document.body.style.minHeight = 'auto'; 
-                initializeApp(); 
+                loadEquipmentData().then(() => {
+                    passwordSection.style.display = 'none';
+                    appContainer.style.display = 'block';
+                    document.body.style.alignItems = 'flex-start';
+                    document.body.style.justifyContent = 'flex-start';
+                    document.body.style.minHeight = 'auto';
+                    initializeApp();
+                }).catch(err => {
+                    console.error('Erro ao carregar dados de equipamentos:', err);
+                    alert('Erro ao carregar dados do equipamento.');
+                });
             } else {
                 passwordError.style.display = 'block';
                 passwordInput.value = '';
