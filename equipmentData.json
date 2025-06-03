@@ -1,0 +1,1447 @@
+{
+    "Piscina de Bolas": {
+        "description": "Dimensões: C 1.8m x L 1.8m x A 0.4m\nLotação: 4 utilizadores",
+        "image_url": "imagens/piscina-de-bolas.png",
+        "price": 49
+    },
+    "Mar de Bolas": {
+        "description": "Dimensões: C 3.5m x L 4m x A 0.8m\nLotação: 8 utilizadores",
+        "image_url": "imagens/mar-de-bolas.png",
+        "price": 89
+    },
+    "Mergulho de Bolas": {
+        "description": "Dimensões: C 9.5m x L 4.5m x A 5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/mergulho-de-bolas.png",
+        "price": 249
+    },
+    "Bolobstacle": {
+        "description": "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores",
+        "image_url": "imagens/bolobstacle.png",
+        "price": 299
+    },
+    "Oceano de Bolas": {
+        "description": "Dimensões: C 6m x L 5m x A 0.6m\nLotação: 16 utilizadores",
+        "image_url": "imagens/oceano-de-bolas.png",
+        "price": 399
+    },
+    "Casa das Bolas": {
+        "description": "Dimensões: C 7m x L 7m x A 4m\nLotação: 14 utilizadores",
+        "image_url": "imagens/casa-das-bolas.png",
+        "price": 399
+    },
+    "Lago de Bolas": {
+        "description": "Dimensões: C 3.5m x L 4m x A 0.8m\nLotação: 8 utilizadores",
+        "image_url": "imagens/lago-de-bolas.png",
+        "price": 79
+    },
+    "Space Balls": {
+        "description": "Dimensões: C 5.5m x L 5m x A 3.5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/space-balls.png",
+        "price": 249
+    },
+    "Slide Ball": {
+        "description": "Dimensões: C 9,5m x L 3m x A 6m\nLotação: 4 utilizadores",
+        "image_url": "imagens/slide-ball.png",
+        "price": 299
+    },
+    "Aquário de Bolas": {
+        "description": "Dimensões: C 3m x L 4.5m x A 3m\nLotação: 2 utilizadores",
+        "image_url": "imagens/aquario-de-bolas.png",
+        "price": 449
+    },
+    "Quintinha": {
+        "description": "Dimensões: C 2m x L 3m x A 2.4m\nLotação: 4 utilizadores",
+        "image_url": "imagens/quintinha.png",
+        "price": 49
+    },
+    "Forty": {
+        "description": "Dimensões: C 3m x L 3.5m x A 2.5m\nLotação: 5 utilizadores",
+        "image_url": "imagens/forty.png",
+        "price": 79
+    },
+    "Índios": {
+        "description": "Dimensões: C 3m x L 3,8m x A 2,8m\nLotação: 5 utilizadores",
+        "image_url": "imagens/indios.png",
+        "price": 79
+    },
+    "Aquário": {
+        "description": "Dimensões: C 3,5m x L 3,5m x A 2,2m\nLotação: 6 utilizadores",
+        "image_url": "imagens/aquario.png",
+        "price": 79
+    },
+    "Kids Park": {
+        "description": "Dimensões: C 3.5m x L 4m x A 3m\nLotação: 5 utilizadores",
+        "image_url": "imagens/kids-park.png",
+        "price": 89
+    },
+    "Castelinho": {
+        "description": "Dimensões: C 3.5m x L 4m x A 3.5m\nLotação: 5 utilizadores",
+        "image_url": "imagens/castelinho.png",
+        "price": 89
+    },
+    "Funny": {
+        "description": "Dimensões: C 3.5m x L 3.5m x A 2.5m\nLotação: 7 utilizadores",
+        "image_url": "imagens/funny.png",
+        "price": 89
+    },
+    "Macacada": {
+        "description": "Dimensões: C 4m x L 4m x A 4m\nLotação: 7 utilizadores",
+        "image_url": "imagens/macacada.png",
+        "price": 99
+    },
+    "Amazónia": {
+        "description": "Dimensões: C 4m x L 4m x A 2.6m\nLotação: 7 utilizadores",
+        "image_url": "imagens/amazonia.png",
+        "price": 99
+    },
+    "Escorrega das Princesas": {
+        "description": "Dimensões: C 3.5m x L 3.5m x A 2.5m\nLotação: 7 utilizadores",
+        "image_url": "imagens/escorrega-das-princesas.png",
+        "price": 129
+    },
+    "Trono Insuflável": {
+        "description": "Dimensões: C 1.2m x L 1m x A 2.5m\nLotação: 1 utilizadores",
+        "image_url": "imagens/trono-insuflavel.png",
+        "price": 49
+    },
+    "Jumpy": {
+        "description": "Dimensões: C 3m x L 2m x A 2m\nLotação: 8 utilizadores",
+        "image_url": "imagens/jumpy.png",
+        "price": 79
+    },
+    "Safari Park": {
+        "description": "Dimensões: C 4m x L 3.5m x A 3m\nLotação: 7 utilizadores",
+        "image_url": "imagens/safari-park.png",
+        "price": 99
+    },
+    "Unicórnio das Princesas": {
+        "description": "Dimensões: C 4m x L 4m x A 3,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/unicornio-das-princesas.png",
+        "price": 149
+    },
+    "Palhaços": {
+        "description": "Dimensões: C 4m x L 3.5m x A 3m\nLotação: 5 utilizadores",
+        "image_url": "imagens/palhacos.png",
+        "price": 69
+    },
+    "Party Clown": {
+        "description": "Dimensões: C 3m x L 3.8m x A 2.8m\nLotação: 5 utilizadores",
+        "image_url": "imagens/party-clown.png",
+        "price": 79
+    },
+    "Fundo do Mar": {
+        "description": "Dimensões: C 3mx L 4mx A 2.7m\nLotação: 7 utilizadores",
+        "image_url": "imagens/fundo-do-mar.png",
+        "price": 99
+    },
+    "Dynamickids": {
+        "description": "Dimensões: C 4m x L 4m x A 2.8m\nLotação: 7 utilizadores",
+        "image_url": "imagens/dynamickids.png",
+        "price": 99
+    },
+    "Barco Pirata": {
+        "description": "Dimensões: C 6m x L 3m x A 3m\nLotação: 8 utilizadores",
+        "image_url": "imagens/barco-pirata.png",
+        "price": 99
+    },
+    "Ilha dos Piratas": {
+        "description": "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/ilha-dos-piratas.png",
+        "price": 119
+    },
+    "Escorregão": {
+        "description": "Dimensões: C 4m x L 6m x A 3m\nLotação: 10 utilizadores",
+        "image_url": "imagens/escorregao.png",
+        "price": 119
+    },
+    "Aventura no Mar": {
+        "description": "Dimensões: C 4.5m x L 6m x A 3m\nLotação: 10 utilizadores",
+        "image_url": "imagens/aventura-no-mar.png",
+        "price": 129
+    },
+    "Girafa": {
+        "description": "Dimensões: C 5m x L 5,5m x A 5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/girafa.png",
+        "price": 139
+    },
+    "Super Obstacle": {
+        "description": "Dimensões: C 6m x L 3m x A 2,5m\nLotação: 6 utilizadores",
+        "image_url": "imagens/super-obstacle.png",
+        "price": 139
+    },
+    "T-Rex": {
+        "description": "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 9 utilizadores",
+        "image_url": "imagens/t-rex.png",
+        "price": 139
+    },
+    "Kids Obstacle": {
+        "description": "Dimensões: C 6m x L 2,5m x A 2,5m\nLotação: 4 utilizadores",
+        "image_url": "imagens/kids-obstacle.png",
+        "price": 139
+    },
+    "Fun Island": {
+        "description": "Dimensões: C 6m x L 6m x A 3,5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/fun-island.png",
+        "price": 159
+    },
+    "Palácio das Princesas": {
+        "description": "Dimensões: C 5,5m x L 5,5m x A 6m\nLotação: 8 utilizadores",
+        "image_url": "imagens/palacio-das-princesas.png",
+        "price": 169
+    },
+    "Jumper": {
+        "description": "Dimensões: C 5.5m x L 4.5m x A 4.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/jumper.png",
+        "price": 109
+    },
+    "Egípcio": {
+        "description": "Dimensões: C 4m x L 5m x A 3.5m\nLotação: 7 utilizadores",
+        "image_url": "imagens/egipcio.png",
+        "price": 119
+    },
+    "Fun Obstacle": {
+        "description": "Dimensões: C 5m x L 3m x A 2,8m\nLotação: 8 utilizadores",
+        "image_url": "imagens/fun-obstacle.png",
+        "price": 129
+    },
+    "Texas": {
+        "description": "Dimensões: C 5m x L 5.5m x A 4m\nLotação: 10 utilizadores",
+        "image_url": "imagens/texas.png",
+        "price": 139
+    },
+    "Avião": {
+        "description": "Dimensões: C 6m x L 5m x A 3,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/aviao.png",
+        "price": 149
+    },
+    "Ilha dos Flamingos": {
+        "description": "Dimensões: C 5m x L 5m x A 3,5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/ilha-dos-flamingos.png",
+        "price": 149
+    },
+    "Ocean Park": {
+        "description": "Dimensões: C 5m x L 5,5m x A 3,5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/ocean-park.png",
+        "price": 159
+    },
+    "Space Jump": {
+        "description": "Dimensões: C 5.5m x L 5m x A 3,5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/space-jump.png",
+        "price": 179
+    },
+    "Princelândia": {
+        "description": "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/princelandia.png",
+        "price": 189
+    },
+    "Jungle": {
+        "description": "Dimensões: C 4m x L 3.5m x A 2.2m\nLotação: 7 utilizadores",
+        "image_url": "imagens/jungle.png",
+        "price": 99
+    },
+    "Selva": {
+        "description": "Dimensões: C 5m x L 4m x A 3,9m\nLotação: 8 utilizadores",
+        "image_url": "imagens/selva.png",
+        "price": 139
+    },
+    "Junior Park": {
+        "description": "Dimensões: C 5m x L 4m x A 3.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/junior-park.png",
+        "price": 139
+    },
+    "Fortaleza": {
+        "description": "Dimensões: C 5m x L 7m x A 5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/fortaleza.png",
+        "price": 149
+    },
+    "Jump n Slide": {
+        "description": "Dimensões: C 4m x L 7m x A 4,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/jump-n-slide.png",
+        "price": 159
+    },
+    "Castelo": {
+        "description": "Dimensões: C 5m x L 8.5m x A 5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/castelo.png",
+        "price": 159
+    },
+    "Spin Slide": {
+        "description": "Dimensões: C 7m x L 6m x A 5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/spin-slide.png",
+        "price": 169
+    },
+    "Fun Gym": {
+        "description": "Dimensões: C 6m x L 5m x A 3.5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/fun-gym.png",
+        "price": 169
+    },
+    "Crazy Obstacle": {
+        "description": "Dimensões: C 8m x L 3m x A 3m\nLotação: 6 utilizadores",
+        "image_url": "imagens/crazy-obstacle.png",
+        "price": 179
+    },
+    "Disco Dome": {
+        "description": "Dimensões: C 6m x L 5m x A 4,2m\nLotação: 12 utilizadores",
+        "image_url": "imagens/disco-dome.png",
+        "price": 199
+    },
+    "Vale Encantado": {
+        "description": "Dimensões: C 5,5m x L 5,5m x A 5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/vale-encantado.png",
+        "price": 159
+    },
+    "Double Fun": {
+        "description": "Dimensões: C 6,5m x L 4,5m x A 3m\nLotação: 10 utilizadores",
+        "image_url": "imagens/double-fun.png",
+        "price": 159
+    },
+    "Castelo do Dragão": {
+        "description": "Dimensões: C 6m x L 5m x A 5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/castelo_do_dragão.png",
+        "price": 159
+    },
+    "Ninja": {
+        "description": "Dimensões: C 5m x L 6m x A 3,5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/ninja.png",
+        "price": 189
+    },
+    "Coche Encantado das Princesas": {
+        "description": "Dimensões: C 4m x L 6m x A 4m\nLotação: 8 utilizadores",
+        "image_url": "imagens/coche_encantado_das_princesas.png",
+        "price": 199
+    },
+    "Radical Obstacle": {
+        "description": "Dimensões: C 8,5m x L 4m x A 4,5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/radical_obstacle.png",
+        "price": 199
+    },
+    "Submarino": {
+        "description": "Dimensões: C 5,5m x L 5,5m x A 5,5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/submarino.png",
+        "price": 159
+    },
+    "Panda": {
+        "description": "Dimensões: C 6m x L 7m x A 5,5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/panda.png",
+        "price": 179
+    },
+    "Extreme Obstacle": {
+        "description": "Dimensões: C 12m x L 3m x A 4.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/extreme-obstacle.png",
+        "price": 199
+    },
+    "Balloon Obstacle": {
+        "description": "Dimensões: C 3.5m x L 12m x A 3.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/balloon-obstacle.png",
+        "price": 199
+    },
+    "Navio Piratas das Caraíbas": {
+        "description": "Dimensões: C 8,5m x L 5m x A 5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/navio-piratas-das-caraibas.png",
+        "price": 239
+    },
+    "Xtreme Park": {
+        "description": "Dimensões: C 9m x L 5m x A 5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/xtreme-park.png",
+        "price": 249
+    },
+    "Clown Land": {
+        "description": "Dimensões: C 7m x L 5m x A 4m\nLotação: 16 utilizadores",
+        "image_url": "imagens/clown-land.png",
+        "price": 249
+    },
+    "Obstacle Slide": {
+        "description": "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores",
+        "image_url": "imagens/obstacle-slide.png",
+        "price": 249
+    },
+    "Tall Slide": {
+        "description": "Dimensões: C 12m x L 5m x A 9m\nLotação: 4 utilizadores",
+        "image_url": "imagens/tall-slide.png",
+        "price": 449
+    },
+    "Jangada Slide": {
+        "description": "Dimensões: C 8m x L 6,5m x A 6m\nLotação: 4 utilizadores",
+        "image_url": "imagens/jangada-slide.png",
+        "price": 349
+    },
+    "Crazy Train": {
+        "description": "Dimensões: C 5m x L 14m x A 3m\nLotação: 10 utilizadores",
+        "image_url": "imagens/crazy-train.png",
+        "price": 349
+    },
+    "Giant Obstacle": {
+        "description": "Dimensões: C 18m x L 4m x A 5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/giant-obstacle.png",
+        "price": 349
+    },
+    "Giant Slide": {
+        "description": "Dimensões: C 9m x L 6m x A 8m\nLotação: 4 utilizadores",
+        "image_url": "imagens/giant-slide.png",
+        "price": 359
+    },
+    "Double Slide": {
+        "description": "Dimensões: C 9m x L 6m x A 6m\nLotação: 6 utilizadores",
+        "image_url": "imagens/double-slide.png",
+        "price": 399
+    },
+    "Bamboo": {
+        "description": "Dimensões: C 8m x L 8,5m x A 8m\nLotação: 16 utilizadores",
+        "image_url": "imagens/bamboo.png",
+        "price": 449
+    },
+    "Little Builders": {
+        "description": "Dimensões: C 10m x L 5m x A 9m\nLotação: 16 utilizadores",
+        "image_url": "imagens/little-builders.png",
+        "price": 449
+    },
+    "Obstacle Run": {
+        "description": "Dimensões: C 11m x L 3,5m x A 4,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/obstacle-run.png",
+        "price": 199
+    },
+    "Take Down": {
+        "description": "Dimensões: C 11m x L 3,5m x A 4,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/take-down.png",
+        "price": 199
+    },
+    "Slide": {
+        "description": "Dimensões: C 6m x L 3m x A 6m\nLotação: 4 utilizadores",
+        "image_url": "imagens/slide.png",
+        "price": 239
+    },
+    "Paraíso dos Macacos": {
+        "description": "Dimensões: C 7m x L 8m x A 8m\nLotação: 16 utilizadores",
+        "image_url": "imagens/paraiso_dos_macacos.png",
+        "price": 349
+    },
+    "Jungle Slide": {
+        "description": "Dimensões: C 7m x L 11m x A 8m\nLotação: 4 utilizadores",
+        "image_url": "imagens/jungle-slide.png",
+        "price": 359
+    },
+    "Missão a Marte": {
+        "description": "Dimensões: C 12m x L 6m x A 7m\nLotação: 18 utilizadores",
+        "image_url": "imagens/missao_a_marte.png",
+        "price": 389
+    },
+    "Twin Slide": {
+        "description": "Dimensões: C 11,5m x L 7m x A 7m\nLotação: 4 utilizadores",
+        "image_url": "imagens/twin-slide.png",
+        "price": 399
+    },
+    "Run n Slide": {
+        "description": "Dimensões: C 11m x L 5,5m x A 6m\nLotação: 8 utilizadores",
+        "image_url": "imagens/run-n-slide.png",
+        "price": 399
+    },
+    "Mega Slide": {
+        "description": "Dimensões: C 15m x L 7m x A 8m\nLotação: 4 utilizadores",
+        "image_url": "imagens/mega-slide.png",
+        "price": 449
+    },
+    "Climb n Slide": {
+        "description": "Dimensões: C 11m x L 5,5m x A 6m\nLotação: 8 utilizadores",
+        "image_url": "imagens/climb-n-slide.png",
+        "price": 449
+    },
+    "Volcano": {
+        "description": "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores",
+        "image_url": "imagens/volcano.png",
+        "price": 499
+    },
+    "Music Land": {
+        "description": "Dimensões: C 12m x L 7m x A 4,5m\nLotação: 20 utilizadores",
+        "image_url": "imagens/music-land.png",
+        "price": 559
+    },
+    "Parque Divertido": {
+        "description": "Dimensões: C 12m x L 9m x A 5m\nLotação: 24 utilizadores",
+        "image_url": "imagens/parque-divertido.png",
+        "price": 599
+    },
+    "Transformer": {
+        "description": "Dimensões: C 12m x L 8m x A 6,5m\nLotação: 22 utilizadores",
+        "image_url": "imagens/transformer.png",
+        "price": 599
+    },
+    "Banzai": {
+        "description": "Dimensões: C 26m x L 7m x A 8m\nLotação: 4 utilizadores",
+        "image_url": "imagens/banzai.png",
+        "price": 699
+    },
+    "Quartel dos Bombeiros": {
+        "description": "Dimensões: C 11m x L 11m x A 7,5m\nLotação: 30 utilizadores",
+        "image_url": "imagens/quartel_dos_bombeiros.png",
+        "price": 799
+    },
+    "Polar Express": {
+        "description": "Dimensões: C 20m x L 4m x A 4,5m\nLotação: 18 utilizadores",
+        "image_url": "imagens/polar-express.png",
+        "price": 799
+    },
+    "Adrenaline": {
+        "description": "Dimensões: C 21m x L 5.5m x A 6m\nLotação: 16 utilizadores",
+        "image_url": "imagens/adrenaline.png",
+        "price": 799
+    },
+    "Colossus": {
+        "description": "Dimensões: C 30m x L 8m x A 12m\nLotação: 8 utilizadores",
+        "image_url": "imagens/colossus.png",
+        "price": 1299
+    },
+    "Spartan": {
+        "description": "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/spartan.png",
+        "price": 199
+    },
+    "Samurai": {
+        "description": "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/samurai.png",
+        "price": 199
+    },
+    "Up and Down": {
+        "description": "Dimensões: C 12m x L 4m x A 4,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/up-and-down.png",
+        "price": 199
+    },
+    "Tropical": {
+        "description": "Dimensões: C 4m x L 4,5m x A 3,5m\nLotação: 16 utilizadores",
+        "image_url": "imagens/tropical.png",
+        "price": 299
+    },
+    "Extreme Slide": {
+        "description": "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores",
+        "image_url": "imagens/extreme-slide.png",
+        "price": 349
+    },
+    "Treasure Slide": {
+        "description": "Dimensões: C 9m x L 6m x A 6m\nLotação: 6 utilizadores",
+        "image_url": "imagens/treasure-slide.png",
+        "price": 369
+    },
+    "Kraken": {
+        "description": "Dimensões: C 10m x L 7m x A 6,5m\nLotação: 16 utilizadores",
+        "image_url": "imagens/kraken.png",
+        "price": 399
+    },
+    "Space X": {
+        "description": "Dimensões: C 6m x L 8m x A 6m\nLotação: 18 utilizadores",
+        "image_url": "imagens/space-x.png",
+        "price": 499
+    },
+    "Runner": {
+        "description": "Dimensões: C 25m x L 9m x A 4,5m\nLotação: 20 utilizadores",
+        "image_url": "imagens/runner.png",
+        "price": 799
+    },
+    "Kamikaze": {
+        "description": "Dimensões: C 30m x L 10m x A 10m\nLotação: 4 utilizadores",
+        "image_url": "imagens/kamikaze.png",
+        "price": 899
+    },
+    "Trampolim": {
+        "description": "Dimensões: C 4,3m x L 4,3m x A 2,7m\nLotação: 4 utilizadores",
+        "image_url": "imagens/trampolim.png",
+        "price": 99
+    },
+    "Touro Mecânico": {
+        "description": "Dimensões: C 5m x L 5m x A 2m\nLotação: 1 utilizador",
+        "image_url": "imagens/touro-mecanico.png",
+        "price": 299
+    },
+    "Surf Mecânico": {
+        "description": "Dimensões: C 5m x L 5m x A 2m\nLotação: 1 utilizadores",
+        "image_url": "imagens/surf-mecanico.png",
+        "price": 299
+    },
+    "Onda Mecânica": {
+        "description": "Dimensões: C 5.5m x L 5.5m x A 5m\nLotação: 1 utilizadores",
+        "image_url": "imagens/onda-mecanica.png",
+        "price": 299
+    },
+    "Airbourne": {
+        "description": "Dimensões: C 4,5m x L 4,5m x A 6,5m\nLotação: 1 utilizadores",
+        "image_url": "imagens/airbourne.png",
+        "price": 299
+    },
+    "BOOT": {
+        "description": "Dimensões: C 12m x L 3.5m x A 4.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/boot.png",
+        "price": 299
+    },
+    "Xtreme Challenge": {
+        "description": "Dimensões: C 8m x L 8,5m x A 5,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/xtreme-challenge.png",
+        "price": 349
+    },
+    "Cone de Escalada": {
+        "description": "Dimensões: C 8m x L 8m x A 6m\nLotação: 2 utilizadores",
+        "image_url": "imagens/cone-de-escalada.png",
+        "price": 379
+    },
+    "Eliminator": {
+        "description": "Dimensões: C 7m x L 7m x A 2m\nLotação: 6 utilizadores",
+        "image_url": "imagens/eliminator.png",
+        "price": 399
+    },
+    "BootCamp (18 metros)": {
+        "description": "Dimensões: C 18m x L 3.5m x A 4.5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/bootcamp-18-metros.png",
+        "price": 399
+    },
+    "Dynamicbungee": {
+        "description": "Dimensões: C 9m x L 9m x A 7m\nLotação: 4 utilizadores",
+        "image_url": "imagens/dynamicbungee.png",
+        "price": 449
+    },
+    "Extreme Fun Run": {
+        "description": "Dimensões: C 15.5m x L 7m x A 4.5m\nLotação: 20 utilizadores",
+        "image_url": "imagens/extreme-fun-run.png",
+        "price": 599
+    },
+    "Bag Jump": {
+        "description": "Dimensões: C 9m x L 10m x A 2m\nLotação: 1 utilizadores",
+        "image_url": "imagens/bag-jump.png",
+        "price": 599
+    },
+    "Target Jump": {
+        "description": "Dimensões: C 8,5m x L 6,5m x A 7m\nLotação: 6 utilizadores",
+        "image_url": "imagens/target-jump.png",
+        "price": 699
+    },
+    "BootCamp (35 metros)": {
+        "description": "Dimensões: C 35m x L 3.5m x A 4.5m\nLotação: 24 utilizadores",
+        "image_url": "imagens/bootcamp-35-metros.png",
+        "price": 799
+    },
+    "Xtreme Jump": {
+        "description": "Dimensões: C 20m x L 10m x A 9m\nLotação: 6 utilizadores",
+        "image_url": "imagens/xtreme-jump.png",
+        "price": 1299
+    },
+    "BootCamp (50 metros)": {
+        "description": "Dimensões: C 50m x L 3.5m x A 4.5m\nLotação: 36 utilizadores",
+        "image_url": "imagens/bootcamp-50-metros.png",
+        "price": 1499
+    },
+    "Parede Escalada com Slide": {
+        "description": "Dimensões: C 50m x L 3.5m x A 8m\nLotação: 5 utilizadores",
+        "image_url": "imagens/parede-escalada-com-slide.png",
+        "price": 1699
+    },
+    "BootCamp (75 metros)": {
+        "description": "Dimensões: C 75m x L 3.5m x A 4.5m\nLotação: 45 utilizadores",
+        "image_url": "imagens/bootcamp-75-metros.png",
+        "price": 1899
+    },
+    "Circuito Arborismo": {
+        "description": "Dimensões: C 12m x L 4m x A 4m\nLotação: 8 utilizadores",
+        "image_url": "imagens/circuito-arborismo.png",
+        "price": 1899
+    },
+    "BootCamp (100 metros)": {
+        "description": "Dimensões: C 100m x L 3.5m x A 4.5m\nLotação: 60 utlizadores",
+        "image_url": "imagens/bootcamp-100-metros.png",
+        "price": 2499
+    },
+    "Parede Anti-Gravidade": {
+        "description": "Dimensões: C 8m x L 4m x A 4m\nLotação: 2 utilizadores",
+        "image_url": "imagens/parede-anti-gravidade.png",
+        "price": 189
+    },
+    "Bungee Basket": {
+        "description": "Dimensões: C 11m x L 4,5m x A 2,5m\nLotação: 3 utilizadores",
+        "image_url": "imagens/bungee-basket.png",
+        "price": 249
+    },
+    "Snowboard Mecânico": {
+        "description": "Dimensões: C 5.5m x L 5.5m x A 5m\nLotação: 1 utilizadores",
+        "image_url": "imagens/snowboard-mecanico.png",
+        "price": 299
+    },
+    "Bola Mecânica": {
+        "description": "Dimensões: C 6.5m x L 6.5m x A 2m\nLotação: 1 utilizadores",
+        "image_url": "imagens/bola-mecanica.png",
+        "price": 299
+    },
+    "BootCamp (12 metros)": {
+        "description": "Dimensões: C 12m x L 3.5m x A 4.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/bootcamp-12-metros.png",
+        "price": 299
+    },
+    "Bowling Humano": {
+        "description": "Dimensões: C 10m x L 4.5m x A 2.1m\nLotação: 1 utilizadores",
+        "image_url": "imagens/bowling-humano.png",
+        "price": 399
+    },
+    "HOP": {
+        "description": "Dimensões: C 17m x L 5m x A 5.5m\nLotação: 4 utilizadores",
+        "image_url": "imagens/hop.png",
+        "price": 399
+    },
+    "Torre de Escalada": {
+        "description": "Dimensões: C 8m x L 8m x A 8m\nLotação: 2 utilizadores",
+        "image_url": "imagens/torre-de-escalada.png",
+        "price": 449
+    },
+    "Boom!": {
+        "description": "Dimensões: C 2m x L 5m x A 1.5m\nLotação: 2 utilizadores",
+        "image_url": "imagens/boom!.png",
+        "price": 99
+    },
+    "Ténis de Mesa": {
+        "description": "Dimensões: C 3,5m x L 1,6m x A 0,75m\nLotação: 4 utilizadores",
+        "image_url": "imagens/tenis-de-mesa.png",
+        "price": 99
+    },
+    "Alley Oop": {
+        "description": "Dimensões: C 2m x L 3,1m x A 4m\nLotação: 3 utilizadores",
+        "image_url": "imagens/alley-oop.png",
+        "price": 149
+    },
+    "Alvo Gigante": {
+        "description": "Dimensões: C 2.5m x L 3m x A 3m\nLotação: 1 utilizadores",
+        "image_url": "imagens/alvo-gigante.png",
+        "price": 149
+    },
+    "Wakka Wall": {
+        "description": "Dimensões: C 2,6m x L 4m x A 2,1m\nLotação: 2 utilizadores",
+        "image_url": "imagens/wakka-wall.png",
+        "price": 149
+    },
+    "4 em linha": {
+        "description": "Dimensões: C 2,5m x L 4m x A 2,8m\nLotação: 2 utilizadores",
+        "image_url": "imagens/4-em-linha.png",
+        "price": 149
+    },
+    "Golf Shot": {
+        "description": "Dimensões: C 4m x L 3m x A 3.5m\nLotação: 1 utilizadores",
+        "image_url": "imagens/golf-shot.png",
+        "price": 199
+    },
+    "Conjunto 4 Jogos": {
+        "description": "Dimensões: C 6m x L 1.5m x A 2m\nLotação: 4 utilizadores",
+        "image_url": "imagens/conjunto-4-jogos.png",
+        "price": 249
+    },
+    "Foot Pool": {
+        "description": "Dimensões: C 9m x L 5,5m x A 1m\nLotação: 2 utilizadores",
+        "image_url": "imagens/foot-pool.png",
+        "price": 299
+    },
+    "Mega Buzz": {
+        "description": "Dimensões: C 0,5m x L 3,5m x A 1,5m\nLotação: 1 utilizadores",
+        "image_url": "imagens/mega-buzz.png",
+        "price": 149
+    },
+    "Twist Air": {
+        "description": "Dimensões: C 1.2m x L 1.2m x A 1.75m\nLotação: 2 utilizadores",
+        "image_url": "imagens/twist-air.png",
+        "price": 89
+    },
+    "Air Ball": {
+        "description": "Dimensões: C 4.5m x L 1.5m x A 1.5m\nLotação: 6 utilizadores",
+        "image_url": "imagens/air-ball.png",
+        "price": 89
+    },
+    "Tiro com Arco": {
+        "description": "Dimensões: C 3m x L 2m x A 2.5m\nLotação: 2 utilizadores",
+        "image_url": "imagens/tiro-com-arco.png",
+        "price": 149
+    },
+    "Tola Toupeira": {
+        "description": "Dimensões: C 5m x L 5m x A 2.5m\nLotação: 7 utilizadores",
+        "image_url": "imagens/tola-toupeira.png",
+        "price": 199
+    },
+    "Cash Cube": {
+        "description": "Dimensões: C 1.5m x L 1.5m x A 2.2m\nLotação: 1 utilizador",
+        "image_url": "imagens/cash-cube.png",
+        "price": 159
+    },
+    "Ring Toss": {
+        "description": "Dimensões: C 4m x L 2,5m x A 2,8m\nLotação: 2 utilizadores",
+        "image_url": "imagens/ring-toss.png",
+        "price": 149
+    },
+    "Mesa de Matraquilhos": {
+        "description": "Dimensões: C 1.5m x L 1.3m x A 0.9m\nLotação: 4 utilizadores",
+        "image_url": "imagens/mesa-de-matraquilhos.png",
+        "price": 79
+    },
+    "Shoot Out": {
+        "description": "Dimensões: C 4.5m x L 2.5m x A 3.5m\nLotação: 2 utilizadores",
+        "image_url": "imagens/shoot-out.png",
+        "price": 129
+    },
+    "Golooo!": {
+        "description": "Dimensões: C 4m x L 2m x A 2m\nLotação: 2 utilizadores",
+        "image_url": "imagens/golooo!.png",
+        "price": 129
+    },
+    "Air Football": {
+        "description": "Dimensões: C 4.5m x L 2.4m x A 1.2m\nLotação: 6 utilizadores",
+        "image_url": "imagens/air-football.png",
+        "price": 149
+    },
+    "Penalti": {
+        "description": "Dimensões: C 7m x L 4m x A 2.5m\nLotação: 2 utilizadores",
+        "image_url": "imagens/penalti.png",
+        "price": 199
+    },
+    "Chuto ao Alvo": {
+        "description": "Dimensões: C 4m x L 2.5m x A 5m\nLotação: 1 utilizadores",
+        "image_url": "imagens/chuto-ao-alvo.png",
+        "price": 199
+    },
+    "Campo de Futebol": {
+        "description": "Dimensões: C 13m x L 7m x A 2.4m\nLotação: 10 utilizadores",
+        "image_url": "imagens/campo-de-futebol.png",
+        "price": 199
+    },
+    "Bubble Football": {
+        "description": "Dimensões: a partir de 50m2\nLotação: 6 utilizadores",
+        "image_url": "imagens/bubble-football.png",
+        "price": 199
+    },
+    "Speed Shot": {
+        "description": "Dimensões: C 4m x L 7m x A 2.4m\nLotação: 1 utilizadores",
+        "image_url": "imagens/speed-shot.png",
+        "price": 199
+    },
+    "Matrecos Humanos": {
+        "description": "Dimensões: C 13.5m x L 6m x A 2m\nLotação: 12 utilizadores",
+        "image_url": "imagens/matrecos-humanos.png",
+        "price": 249
+    },
+    "Arena de Futebol": {
+        "description": "Dimensões: C 20m x L 10m x A 2.4m\nLotação: 12 utilizadores",
+        "image_url": "imagens/arena-de-futebol.png",
+        "price": 349
+    },
+    "Foot Bump": {
+        "description": "Dimensões: C 13m x L 7m x A 2.4m\nLotação: 6 utilizadores",
+        "image_url": "imagens/foot-bump.png",
+        "price": 399
+    },
+    "Foot Bump Arena": {
+        "description": "Dimensões: C 20m x L 10m x A 2.4m\nLotação: 6 utilizadores",
+        "image_url": "imagens/foot-bump-arena.png",
+        "price": 599
+    },
+    "Double Penalty": {
+        "description": "Dimensões: C 4,5m x L 6m x A 3,7m\nLotação: 2 utilizadores",
+        "image_url": "imagens/double-penalty.png",
+        "price": 199
+    },
+    "Futebol de Sabão": {
+        "description": "Dimensões: C 13m x L 6m x A 2m\nLotação: 10 utilizadores",
+        "image_url": "imagens/futebol_de_sabão.png",
+        "price": 349
+    },
+    "Lutadores de Sumo": {
+        "description": "Dimensões: C 5m x L 5m x A 2m\nLotação: 2 utilizadores",
+        "image_url": "imagens/lutadores_de_sumo.png",
+        "price": 159
+    },
+    "Gladiadores": {
+        "description": "Dimensões: C 5m x L 5m x A 2.5m\nLotação: 2 utilizadores",
+        "image_url": "imagens/gladiadores.png",
+        "price": 159
+    },
+    "Ringue de Box": {
+        "description": "Dimensões: C 6m x L 6m x A 2.2m\nLotação: 2 utilizadores",
+        "image_url": "imagens/ringue_de_box.png",
+        "price": 199
+    },
+    "Luta de Almofadas": {
+        "description": "Dimensões: C 6m x L 6m x A 2.2m\nLotação: 4 utilizadores",
+        "image_url": "imagens/luta_de_almofadas.png",
+        "price": 249
+    },
+    "Guerreiros": {
+        "description": "Dimensões: C 5m x L 5m x A 2m\nLotação: 2 utilizadores",
+        "image_url": "imagens/guerreiros.png",
+        "price": 159
+    },
+    "Fun&Cycle": {
+        "description": "Dimensões: a partir de 40m2\nLotação: 4 utilizadores",
+        "image_url": "imagens/fun&cycle.png",
+        "price": 179
+    },
+    "Circuito Karts": {
+        "description": "Dimensões: C 20m x L 10m x A 3,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/circuito-karts.png",
+        "price": 399
+    },
+    "Circuito F1": {
+        "description": "Dimensões: C 30m x L 15m x A 3m\nLotação: 8 utilizadores",
+        "image_url": "imagens/circuito-f1.png",
+        "price": 599
+    },
+    "Dynamic Train": {
+        "description": "Dimensões: C 10m x L 1.5m x A 2m\nLotação: 10 utilizadores",
+        "image_url": "imagens/dynamic-train.png",
+        "price": 599
+    },
+    "TGV Comboio Eléctrico": {
+        "description": "Dimensões: C 10m x L 0.6m x A 0.6m\nLotação: 8 utilizadores",
+        "image_url": "imagens/tgv-comboio-electrico.png",
+        "price": 999
+    },
+    "Bouncy Pool": {
+        "description": "Dimensões: C 3,5m x L 4m x A 0,8m\nLotação: 8 utilizadores",
+        "image_url": "imagens/bouncy-pool.png",
+        "price": 89
+    },
+    "Aqua Castle": {
+        "description": "Dimensões: C 4m x L x 7m x A 4,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/aqua-castle.png",
+        "price": 199
+    },
+    "Rolo": {
+        "description": "Dimensões: C 3m x L 2m x A 2m\nLotação: 1 utilizador",
+        "image_url": "imagens/rolo.png",
+        "price": 199
+    },
+    "Dynamicboats": {
+        "description": "Dimensões: a partir de 40m2\nLotação: 4 utilizadores",
+        "image_url": "imagens/dynamicboats.png",
+        "price": 199
+    },
+    "Piscina 6mx5mx0,65m": {
+        "description": "Dimensões: C 6m x L 5m x A 0,65m\nLotação: 10 utilizadores",
+        "image_url": "imagens/piscina-6mx5mx0_65m.png",
+        "price": 199
+    },
+    "Aqua Slide": {
+        "description": "Dimensões: C 4,5m x L 9,5m x A 5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/aqua-slide.png",
+        "price": 249
+    },
+    "Palm Splash": {
+        "description": "Dimensões: C 10m x L 3m x A 4m\nLotação: 4 utilizadores",
+        "image_url": "imagens/palm-splash.png",
+        "price": 249
+    },
+    "Crocodilo": {
+        "description": "Dimensões: C 8m x L 3m x A 3m\nLotação: 12 utilizadores",
+        "image_url": "imagens/crocodilo.png",
+        "price": 249
+    },
+    "Barco Capitão Gancho": {
+        "description": "Dimensões: C 7m x L 3,5m x A 3m\nLotação: 12 utilizadores",
+        "image_url": "imagens/barco-capitao-gancho.png",
+        "price": 249
+    },
+    "Cova dos Piratas": {
+        "description": "Dimensões: C 4,5m x L 3,5m x A 3,5m\nLotação: 6 utilizadores",
+        "image_url": "imagens/cova_dos_piratas.png",
+        "price": 249
+    },
+    "Piscina 8mx6mx0,65m": {
+        "description": "Dimensões: C 8m x L 6m x A 0,65m\nLotação: 16 utilizadores",
+        "image_url": "imagens/piscina_8mx6mx0_65m.png",
+        "price": 249
+    },
+    "Water House": {
+        "description": "Dimensões: C 7m x L 7m x A 4m\nLotação: 14 utilizadores",
+        "image_url": "imagens/water-house.png",
+        "price": 299
+    },
+    "Kongro": {
+        "description": "Dimensões: C 13,5m x L 4,5m x A 5,5m\nLotação: 5 utilizadores",
+        "image_url": "imagens/kongro.png",
+        "price": 299
+    },
+    "Obstacle Splash": {
+        "description": "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores",
+        "image_url": "imagens/obstacle-splash.png",
+        "price": 299
+    },
+    "Piscina 10mx8mx0,65m": {
+        "description": "Dimensões: C 10m x L 8m x A 0,65m\nLotação: 24 utilizadores",
+        "image_url": "imagens/piscina_10mx8mx0_65m.png",
+        "price": 349
+    },
+    "Swimming Balls": {
+        "description": "Dimensões: C 10m x L 8m x A 0.33m\nLotação: 20 utilizadores",
+        "image_url": "imagens/swimming-balls.png",
+        "price": 349
+    },
+    "Castle Splash": {
+        "description": "Dimensões: C 12m x L 3,5m x A 4m\nLotação: 8 utilizadores",
+        "image_url": "imagens/castle-splash.png",
+        "price": 389
+    },
+    "Paraíso Aquático": {
+        "description": "Dimensões: C 15m x L 3m x A 4m\nLotação: 16 utilizadores",
+        "image_url": "imagens/paraiso-aquatico.png",
+        "price": 499
+    },
+    "Piscina 12mx10mx0,65m": {
+        "description": "Dimensões: C 12m x L 10m x A 0,65m\nLotação: 40 utilizadores",
+        "image_url": "imagens/piscina_12mx10mx0_65m.png",
+        "price": 499
+    },
+    "Giant Obstacle Splash": {
+        "description": "Dimensões: C 26m x L 6m x A 4m\nLotação: 12 utilizadores",
+        "image_url": "imagens/giant-obstacle-splash.png",
+        "price": 499
+    },
+    "Volcano Splash": {
+        "description": "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores",
+        "image_url": "imagens/volcano-splash.png",
+        "price": 499
+    },
+    "Slip & Splash": {
+        "description": "Dimensões: C 19m x L 4,5m x A 7m\nLotação: 6 utilizadores",
+        "image_url": "imagens/slip_&_splash.png",
+        "price": 559
+    },
+    "Run n Splash": {
+        "description": "Dimensões: C 17m x L 5.5m x A 6m\nLotação: 12 utilizadores",
+        "image_url": "imagens/run-n-splash.png",
+        "price": 599
+    },
+    "Banzai Splash": {
+        "description": "Dimensões: C 20m x L 10m x A 10m\nLotação: 6 utilizadores",
+        "image_url": "imagens/banzai-splash.png",
+        "price": 899
+    },
+    "Adrenaline Splash": {
+        "description": "Dimensões: C 27m x L 5.5m x A 6m\nLotação: 20 utilizadores",
+        "image_url": "imagens/adrenaline-splash.png",
+        "price": 999
+    },
+    "Ilha do Surf": {
+        "description": "Dimensões: C 14m x L 14m x A 6m\nLotação: 32 utilizadores",
+        "image_url": "imagens/ilha_do_surf.png",
+        "price": 1299
+    },
+    "Kamikaze Splash": {
+        "description": "Dimensões: C 34m x L 10m x A 10m\nLotação: 10 utilizadores",
+        "image_url": "imagens/kamikaze-splash.png",
+        "price": 1599
+    },
+    "Piscina Gigante": {
+        "description": "Dimensões: C 30m x L 15m x A 1,5m\nLotação: 75 utilizadores",
+        "image_url": "imagens/piscina-gigante.png",
+        "price": 1899
+    },
+    "Colossus Splash": {
+        "description": "Dimensões: C 35m x L 8m x A 12m\nLotação: 12 utilizadores",
+        "image_url": "imagens/colossus-splash.png",
+        "price": 1899
+    },
+    "Splash Slide": {
+        "description": "Dimensões: C 7m x L 4m x A 4m\nLotação: 4 utilizadores",
+        "image_url": "imagens/splash-slide.png",
+        "price": 179
+    },
+    "Space Splash": {
+        "description": "Dimensões: C 5.5m x L 5m x A 3.5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/space-splash.png",
+        "price": 229
+    },
+    "Splash": {
+        "description": "Dimensões: C 9m x L 4m x A 4m\nLotação: 6 utilizadores",
+        "image_url": "imagens/splash.png",
+        "price": 249
+    },
+    "Wild Splash": {
+        "description": "Dimensões: C 8.5m x L 2.5m x A 2m\nLotação: 1 utilizador",
+        "image_url": "imagens/wild-splash.png",
+        "price": 249
+    },
+    "Shark Splash": {
+        "description": "Dimensões: C 15m x L 2.6m x A 3m\nLotação: 1 utilizador",
+        "image_url": "imagens/shark-splash.png",
+        "price": 349
+    },
+    "Dunk Tank": {
+        "description": "Dimensões: C 3m x L 4,5m x A 3m\nLotação: 2 utilizadores",
+        "image_url": "imagens/dunk-tank.png",
+        "price": 399
+    },
+    "Splash Race": {
+        "description": "Dimensões: C 12m x L 5m x A 4,5m\nLotação: 6 utilizadores",
+        "image_url": "imagens/splash-race.png",
+        "price": 449
+    },
+    "Jungle Splash": {
+        "description": "Dimensões: C 17m x L 8m x A 8m\nLotação: 4 utilizadores",
+        "image_url": "imagens/jungle-splash.png",
+        "price": 699
+    },
+    "River Run": {
+        "description": "Dimensões: C 14m x L 4m x A 6m\nLotação: 4 utilizadores",
+        "image_url": "imagens/river-run.png",
+        "price": 1199
+    },
+    "Ringue de Espuma": {
+        "description": "Dimensões: C 6m x L 6m x A 2,2m\nLotação: 2 utilizadores",
+        "image_url": "imagens/ringue_de_espuma.png",
+        "price": 299
+    },
+    "Aqua Foam": {
+        "description": "Dimensões: C 4m x L 7m x A 4.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/aqua-foam.png",
+        "price": 299
+    },
+    "Foam Slide": {
+        "description": "Dimensões: C 4,5m x L 9,5m x A 5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/foam-slide.png",
+        "price": 349
+    },
+    "Piscina de Espuma": {
+        "description": "Dimensões: C 8m x L 6m x A 0,65m\nLotação: 16 utilizadores",
+        "image_url": "imagens/piscina_de_espuma.png",
+        "price": 399
+    },
+    "Foam House": {
+        "description": "Dimensões: C 6,5m x L 7m x A4,5m\nLotação: 14 utilizadores",
+        "image_url": "imagens/foam-house.png",
+        "price": 399
+    },
+    "Castle Foam": {
+        "description": "Dimensões: C 13,5m x L 6m x A 5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/castle-foam.png",
+        "price": 449
+    },
+    "Giant Obstacle Foam": {
+        "description": "Dimensões: C 26m x L 6m x A 4m\nLotação: 12 utilizadores",
+        "image_url": "imagens/giant-obstacle-foam.png",
+        "price": 699
+    },
+    "Volcano Foam": {
+        "description": "Dimensões: C 9m x L 6m x A 9m\nLotação: 3 utilizadores",
+        "image_url": "imagens/volcano-foam.png",
+        "price": 899
+    },
+    "Banzai Foam": {
+        "description": "Dimensões: C 20m x L 10m x A 10m\nLotação: 4 utilizadores",
+        "image_url": "imagens/banzai-foam.png",
+        "price": 999
+    },
+    "Wild Foam Splash": {
+        "description": "Dimensões: C 8,5m x L 2,5m x A2m\nLotação: 1 utilizador",
+        "image_url": "imagens/wild-foam-splash.png",
+        "price": 299
+    },
+    "Foam Park": {
+        "description": "Dimensões: C 10m x L 10m x A 2,5m\nLotação: 10 utilizadores",
+        "image_url": "imagens/foam-park.png",
+        "price": 399
+    },
+    "Slide Foam": {
+        "description": "Dimensões: C 9,5m x L 3m x A 6m\nLotação: 4 utilizadores",
+        "image_url": "imagens/slide-foam.png",
+        "price": 399
+    },
+    "Kongro Foam": {
+        "description": "Dimensões: C 13,5m x L 4,5m x A 5,5m\nLotação: 5 utilizadores",
+        "image_url": "imagens/kongro-foam.png",
+        "price": 399
+    },
+    "Twin Slide Foam": {
+        "description": "Dimensões: C 11,5m x L 7m x A 7m\nLotação: 4 utilizadores",
+        "image_url": "imagens/twin-slide-foam.png",
+        "price": 499
+    },
+    "Extreme Foam": {
+        "description": "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores",
+        "image_url": "imagens/extreme-foam.png",
+        "price": 599
+    },
+    "Extreme Foam com Bóias": {
+        "description": "Dimensões: C 17m x L 4,5m x A 6m\nLotação: 6 utilizadores",
+        "image_url": "imagens/extreme-foam-com-boias.png",
+        "price": 699
+    },
+    "Dynamickids Personalizado": {
+        "description": "Dimensões: C 4m x L 4m x A 2.8m\nLotação: 7 utilizadores",
+        "image_url": "imagens/dynamickids-personalizado.png",
+        "price": 199
+    },
+    "Jump n Slide Personalizado": {
+        "description": "Dimensões: C 4m x L 7m x A 4,5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/jump-n-slide-personalizado.png",
+        "price": 249
+    },
+    "Jumper Personalizado": {
+        "description": "Dimensões: C 5.5m x L 4.5m x A 4.5m\nLotação: 8 utilizadores",
+        "image_url": "imagens/jumper-personalizado.png",
+        "price": 199
+    },
+    "Ninja Personalizado": {
+        "description": "Dimensões: C 5m x L 6m x A 3.5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/ninja-personalizado.png",
+        "price": 299
+    },
+    "Submarino Personalizado": {
+        "description": "Dimensões: C 5,5m x L 5,5m x A 5,5m\nLotação: 12 utilizadores",
+        "image_url": "imagens/submarino-personalizado.png",
+        "price": 259
+    },
+    "Totem Cónico": {
+        "description": "Dimensões: C 0.65m x L 0.65m x A 2.6m\nLotação: ",
+        "image_url": "imagens/totem-conico.png",
+        "price": 59
+    },
+    "Tenda de Montagem Rápida": {
+        "description": "Dimensões: C 3m x L 3m x A 2.5m\nLotação: ",
+        "image_url": "imagens/tenda-de-montagem-rapida.png",
+        "price": 69
+    },
+    "Letras Insufláveis": {
+        "description": "Dimensões: C 1.5m x L 0.5m x A 4m\nLotação: ",
+        "image_url": "imagens/letras-insuflaveis.png",
+        "price": 89
+    },
+    "Tenda com Laterais": {
+        "description": "Dimensões: C 3m x L 3m x A 2.5m\nLotação: ",
+        "image_url": "imagens/tenda-com-laterais.png",
+        "price": 99
+    },
+    "Totem Iluminado": {
+        "description": "Dimensões: C 0.65m x L 0.65m x A 3m\nLotação: ",
+        "image_url": "imagens/totem-iluminado.png",
+        "price": 99
+    },
+    "Sky Dancer": {
+        "description": "Dimensões: C 0.5m x L 0.5m x A 4m\nLotação: ",
+        "image_url": "imagens/sky-dancer.png",
+        "price": 99
+    },
+    "Pórtico Iluminado": {
+        "description": "Dimensões: C 0.8m x L 6m x A 3.5m\nLotação: ",
+        "image_url": "imagens/portico-iluminado.png",
+        "price": 129
+    },
+    "Quiosque Insuflável": {
+        "description": "Dimensões: C 3m x L 3m x A 4m\nLotação: ",
+        "image_url": "imagens/quiosque-insuflavel.png",
+        "price": 159
+    },
+    "Pórtico Meta": {
+        "description": "Dimensões: C 6m x L 1m x A 4m\nLotação: ",
+        "image_url": "imagens/portico-meta.png",
+        "price": 159
+    },
+    "Pórtico Gigante": {
+        "description": "Dimensões: C 3m x L 10m x A 7m\nLotação: ",
+        "image_url": "imagens/portico-gigante.png",
+        "price": 229
+    },
+    "Iglo": {
+        "description": "Dimensões: C 5.8m x L 5m x A 3m\nLotação: ",
+        "image_url": "imagens/iglo.png",
+        "price": 239
+    },
+    "Tenda Insuflável": {
+        "description": "Dimensões: C 10m x L 10m x A 6m\nLotação: ",
+        "image_url": "imagens/tenda-insuflavel.png",
+        "price": 249
+    },
+    "Balão Personalizado": {
+        "description": "Dimensões: C 3m x L 3m x A 6m\nLotação: ",
+        "image_url": "imagens/balao-personalizado.png",
+        "price": 249
+    },
+    "Pórtico Complete": {
+        "description": "Dimensões: C 4m x L 8m x A 7m\nLotação: ",
+        "image_url": "imagens/portico-complete.png",
+        "price": 249
+    },
+    "Torre de Escalada Personalizada": {
+        "description": "Dimensões: C 8m x L 8m x A 8m\nLotação: 2 utilizadores",
+        "image_url": "imagens/torre_de_escalada_personalizada.png",
+        "price": 449
+    },
+    "Dynamicbungee Personalizado": {
+        "description": "Dimensões: C 9m x L 9m x A 7m\nLotação: 4 utilizadores",
+        "image_url": "imagens/dynamicbungee_personalizado.png",
+        "price": 449
+    },
+    "Xtreme Jump Personalizado": {
+        "description": "Dimensões: C 20m x L 10m x A 9m\nLotação: 6 utilizadores",
+        "image_url": "imagens/xtreme_jump_personalizado.png",
+        "price": 1299
+    },
+    "Globo Personalizado": {
+        "description": "Dimensões: C 4m x L 4m x A 4m\nLotação: ",
+        "image_url": "imagens/globo_personalizado.png",
+        "price": 1499
+    },
+    "Color Park": {
+        "description": "Dimensões: C 10m x L 10m x A 2.5m\nLotação: ",
+        "image_url": "imagens/color_park.png",
+        "price": 159
+    },
+    "Arco de Balões": {
+        "description": "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ",
+        "image_url": "imagens/arco_de_baloes.png",
+        "price": 189
+    },
+    "2 Colunas de Balões": {
+        "description": "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ",
+        "image_url": "imagens/2_colunas_de_baloes.png",
+        "price": 189
+    },
+    "Arco de Flores + 6 Flores": {
+        "description": "Dimensões: C 0.6m x L 3m x A 2.5m\nLotação: ",
+        "image_url": "imagens/arco_de_flores_+_6_flores.png",
+        "price": 289
+    },
+    "Gerador": {
+        "description": "Dimensões: C 0.5m x L 0.5m x A 0.6m\nLotação: ",
+        "image_url": "imagens/gerador.png",
+        "price": 99
+    },
+    "TV Led 55 com tripé": {
+        "description": "Dimensões: C 0.5m x L 1m x A 2m\nLotação: ",
+        "image_url": "imagens/tv_led_55_com_tripe.png",
+        "price": 159
+    },
+    "Canhão Lança T-Shirts": {
+        "description": "Dimensões: C 1m x L 1m x A 1m\nLotação: ",
+        "image_url": "imagens/canhao-lanca-t-shirts.png",
+        "price": 159
+    },
+    "Máquina de Fumo": {
+        "description": "Dimensões: C 0.6m x L 0.3m x A 0.4m\nLotação: ",
+        "image_url": "imagens/maquina_de_fumo.png",
+        "price": 199
+    },
+    "Canhão de Confettis Pressão de Ar": {
+        "description": "Dimensões: C 1m x L 1m x A 1m\nLotação: ",
+        "image_url": "imagens/canhao_de_confettis_pressao_de_ar.png",
+        "price": 269
+    },
+    "Canhão de Confettis Eléctrico": {
+        "description": "Dimensões: C 1m x L 1.5m x A 1m\nLotação: ",
+        "image_url": "imagens/canhao_de_confettis_electrico.png",
+        "price": 299
+    },
+    "Canhão de Neve": {
+        "description": "Dimensões: C 1.5m x L 1.5m x A 2m\nLotação: ",
+        "image_url": "imagens/canhao_de_neve.png",
+        "price": 299
+    },
+    "Canhão de Espuma": {
+        "description": "Dimensões: C 1.5m x L 1.5m x A 2m\nLotação: ",
+        "image_url": "imagens/canhao_de_espuma.png",
+        "price": 339
+    },
+    "Tela de Cinema": {
+        "description": "Dimensões: C 7m x L 3m x A 5.5m\nLotação: ",
+        "image_url": "imagens/tela_de_cinema.png",
+        "price": 349
+    },
+    "Mascotes": {
+        "description": "Dimensões: \nLotação: ",
+        "image_url": "imagens/mascotes.png",
+        "price": 129
+    },
+    "Pinturas Faciais": {
+        "description": "Dimensões: \nLotação: 1 utilizador",
+        "image_url": "imagens/pinturas_faciais.png",
+        "price": 199
+    },
+    "Modelagem de Balões": {
+        "description": "Dimensões: \nLotação: 1 utilizador",
+        "image_url": "imagens/modelagem_de_baloes.png",
+        "price": 199
+    },
+    "Origami Colorido": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores",
+        "image_url": "imagens/origami_colorido.png",
+        "price": 199
+    },
+    "Crachás": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores",
+        "image_url": "imagens/crachas.png",
+        "price": 199
+    },
+    "Faz o teu Slime": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores",
+        "image_url": "imagens/faz_o_teu_slime.png",
+        "price": 249
+    },
+    "Smart Tattoo": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador",
+        "image_url": "imagens/smart_tattoo.png",
+        "price": 249
+    },
+    "Penteados Malucos": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador",
+        "image_url": "imagens/penteados_malucos.png",
+        "price": 299
+    },
+    "Laboratório Divertido": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores",
+        "image_url": "imagens/laboratorio_divertido.png",
+        "price": 299
+    },
+    "Kinetic Sand": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores",
+        "image_url": "imagens/kinetic_sand.png",
+        "price": 299
+    },
+    "Fotos Loucas": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 4 utilizadores",
+        "image_url": "imagens/fotos_loucas.png",
+        "price": 349
+    },
+    "Salão de Beleza": {
+        "description": "Dimensões: C 3m x L 3m x A 2,5m\nLotação: 1 utilizador",
+        "image_url": "imagens/salao_de_beleza.png",
+        "price": 399
+    },
+    "Algodão Doce": {
+        "description": "Dimensões: C 0.7m x L 0.5m x A 1.5m\nLotação: ",
+        "image_url": "imagens/algodao_doce.png",
+        "price": 169
+    },
+    "Pipocas": {
+        "description": "Dimensões: C 0.7m x L 0.5m x A 1.9m\nLotação: ",
+        "image_url": "imagens/pipocas.png",
+        "price": 169
+    },
+    "Granizados": {
+        "description": "Dimensões: C 0.5m x L 0.5m x A 2m\nLotação: ",
+        "image_url": "imagens/granizados.png",
+        "price": 199
+    },
+    "Candy Bar": {
+        "description": "Dimensões: C 2m x L 1m x A 2m\nLotação: ",
+        "image_url": "imagens/candy_bar.png",
+        "price": 239
+    },
+    "Crepes": {
+        "description": "Dimensões: C 2m x L 1m x A 2m\nLotação: ",
+        "image_url": "imagens/crepes.png",
+        "price": 249
+    },
+    "Gelados": {
+        "description": "Dimensões: C 2m x L 1,5m x A 2m\nLotação: ",
+        "image_url": "imagens/gelados.png",
+        "price": 299
+    },
+    "Pórtico Standar": {
+        "description": "Dimensões: \nLotação: ",
+        "image_url": "imagens/portico_standar.png",
+        "price": 189
+    },
+    "FASTER": {
+        "description": "Dimensões: C 10m x L 3m x A 2,2m\nLotação: 2 Utilizadores",
+        "image_url": "imagens/faster.png",
+        "price": 199
+    },
+    "Tropical Splash": {
+        "description": "Dimensões: C 12m x L 5.5m x A 6m\nLotação: 8 utilizadores",
+        "image_url": "imagens/tropical_splash.png",
+        "price": 349
+    }
+}
