@@ -3,7 +3,7 @@
         const IVA_RATE = 0.23; 
         const CORRECT_PASSWORD = "Mddkdsds1"; 
 
-        const predefinedPrices = {
+        const DEFAULT_PRODUCTS = {
             "Piscina de Bolas": 49, "Mar de Bolas": 89, "Mergulho de Bolas": 249, "Bolobstacle": 299,
             "Oceano de Bolas": 399, "Casa das Bolas": 399, "Lago de Bolas": 79, "Space Balls": 249,
             "Slide Ball": 299, "Aquário de Bolas": 449, "Quintinha": 49, "Forty": 79, "Índios": 79,
@@ -89,8 +89,25 @@
             "Candy Bar": 239, "Crepes": 249, "Gelados": 299, "Pórtico Standar": 189,
             "FASTER": 199, "Tropical Splash": 349
         };
-        const MONITOR_BASE_CHARGE_IVA_INCLUSIVE = 89; 
-        const MONITOR_HOURLY_EXTRA_IVA_INCLUSIVE = 19; 
+let products = loadProducts();
+const MONITOR_BASE_CHARGE_IVA_INCLUSIVE = 89;
+const MONITOR_HOURLY_EXTRA_IVA_INCLUSIVE = 19;
+
+        function loadProducts() {
+            const stored = localStorage.getItem('products');
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch (e) {
+                    console.error('Erro ao ler produtos de localStorage', e);
+                }
+            }
+            return { ...DEFAULT_PRODUCTS };
+        }
+
+        function saveProducts() {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
 
         const transportationFees = {
             "Nenhuma": 0, 
@@ -524,10 +541,10 @@
 
                 // console.log(`   Nome Processado (lowercase, trimmed): '${enteredItemNameLower}'`);
 
-                for (const predefinedName in predefinedPrices) {
-                    if (predefinedPrices.hasOwnProperty(predefinedName)) {
+                for (const predefinedName in products) {
+                    if (products.hasOwnProperty(predefinedName)) {
                         if (predefinedName.toLowerCase() === enteredItemNameLower) {
-                            const ivaInclusivePrice = predefinedPrices[predefinedName];
+                            const ivaInclusivePrice = products[predefinedName];
                             priceInput.value = ivaInclusivePrice; // Directly set the IVA-inclusive price
                             priceInput.dataset.originalIvaInclusivePrice = ivaInclusivePrice; 
                             priceInput.dataset.manualOverride = 'false';
@@ -638,7 +655,7 @@
                     return;
                 }
 
-                const filteredNames = Object.keys(predefinedPrices).filter(name => 
+                const filteredNames = Object.keys(products).filter(name =>
                     name.toLowerCase().startsWith(inputText) // Changed from includes to startsWith
                 ).sort(); // Sort alphabetically for consistency
 
@@ -1946,11 +1963,12 @@
 
             if (passwordInput.value === CORRECT_PASSWORD) {
                 passwordSection.style.display = 'none';
-                appContainer.style.display = 'block';
-                document.body.style.alignItems = 'flex-start'; 
-                document.body.style.justifyContent = 'flex-start'; 
-                document.body.style.minHeight = 'auto'; 
-                initializeApp(); 
+                document.getElementById('navTabs').style.display = 'flex';
+                showTab('quotes');
+                document.body.style.alignItems = 'flex-start';
+                document.body.style.justifyContent = 'flex-start';
+                document.body.style.minHeight = 'auto';
+                initializeApp();
             } else {
                 passwordError.style.display = 'block';
                 passwordInput.value = '';
@@ -2027,4 +2045,67 @@
                     // This part might be redundant if classList works as expected with !important.
                 }
             }
+        }
+
+        function showTab(tab) {
+            const app = document.getElementById('appContainer');
+            const prod = document.getElementById('productManagement');
+            document.getElementById('tabQuotes').classList.remove('active');
+            document.getElementById('tabProducts').classList.remove('active');
+            if (tab === 'products') {
+                app.style.display = 'none';
+                prod.style.display = 'block';
+                document.getElementById('tabProducts').classList.add('active');
+                populateProductsTable();
+            } else {
+                prod.style.display = 'none';
+                app.style.display = 'block';
+                document.getElementById('tabQuotes').classList.add('active');
+            }
+        }
+
+        function populateProductsTable() {
+            const tbody = document.querySelector('#productsTable tbody');
+            tbody.innerHTML = '';
+            const names = Object.keys(products).sort();
+            names.forEach(name => addProductRow(name, products[name]));
+        }
+
+        function addProductRow(name = '', price = '') {
+            const tbody = document.querySelector('#productsTable tbody');
+            const tr = document.createElement('tr');
+            const nameTd = document.createElement('td');
+            const priceTd = document.createElement('td');
+            const delTd = document.createElement('td');
+            const nameInput = document.createElement('input');
+            nameInput.value = name;
+            nameInput.className = 'prod-name';
+            const priceInput = document.createElement('input');
+            priceInput.type = 'number';
+            priceInput.value = price;
+            priceInput.className = 'prod-price';
+            const delBtn = document.createElement('button');
+            delBtn.textContent = 'X';
+            delBtn.onclick = () => tr.remove();
+            nameTd.appendChild(nameInput);
+            priceTd.appendChild(priceInput);
+            delTd.appendChild(delBtn);
+            tr.appendChild(nameTd);
+            tr.appendChild(priceTd);
+            tr.appendChild(delTd);
+            tbody.appendChild(tr);
+        }
+
+        function saveProductsFromTable() {
+            const rows = document.querySelectorAll('#productsTable tbody tr');
+            products = {};
+            rows.forEach(row => {
+                const name = row.querySelector('.prod-name').value.trim();
+                const price = parseFloat(row.querySelector('.prod-price').value) || 0;
+                if (name) {
+                    products[name] = price;
+                }
+            });
+            saveProducts();
+            populateProductsTable();
         }
