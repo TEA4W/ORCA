@@ -21,6 +21,11 @@
         <p id="passwordError" class="password-error" style="display:none;">Senha incorreta!</p>
     </div>
 
+    <div id="navTabs" class="tabs" style="display:none;">
+        <button id="tabQuotes" class="tab active" onclick="showTab('quotes')">Orçamentos</button>
+        <button id="tabProducts" class="tab" onclick="showTab('products')">Produtos</button>
+    </div>
+
     <div id="appContainer" class="container" style="display:none;"> <h1>Calculadora de Orçamentos</h1>
         <div class="row">
             <div class="field-group">
@@ -103,6 +108,19 @@
                 </label>
             </div>
         </div>
+    </div>
+
+    <div id="productManagement" class="container" style="display:none;">
+        <h1>Gestão de Produtos</h1>
+        <table id="productsTable" class="products-table">
+            <thead>
+            <tr><th>Nome</th><th>Preço (€)</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button onclick="addProductRow()">Adicionar Produto</button>
+        <button onclick="saveProductsFromTable()">Guardar Alterações</button>
+        <button onclick="resetProducts()">Repor Padrão</button>
     </div>
 
     <script src="orca.js"></script>
