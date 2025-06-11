@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Autocomplete</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .autocomplete-suggestions {
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            z-index: 1000;
+            border-radius: 0 0 6px 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .name-field-container {
+            position: relative;
+            width: 300px;
+            margin: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #debug-info {
+            margin: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug Autocomplete</h1>
+    
+    <div id="debug-info">
+        <p><strong>Equipment Data Status:</strong> <span id="data-status">Loading...</span></p>
+        <p><strong>Equipment Count:</strong> <span id="equipment-count">0</span></p>
+        <p><strong>First 5 Equipment Names:</strong> <span id="first-names">None</span></p>
+    </div>
+
+    <div class="name-field-container">
+        <label>Test Equipment Name:</label>
+        <input type="text" id="testInput" placeholder="Start typing equipment name...">
+        <div id="suggestions" class="autocomplete-suggestions" style="display: none;"></div>
+    </div>
+
+    <script>
+        let equipmentData = {};
+
+        async function loadEquipmentData() {
+            try {
+                console.log('Loading equipment data...');
+                const response = await fetch('equipment_data.json?v=' + new Date().getTime());
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                equipmentData = await response.json();
+                console.log('Equipment data loaded:', equipmentData);
+                
+                // Update debug info
+                document.getElementById('data-status').textContent = 'Loaded Successfully';
+                document.getElementById('equipment-count').textContent = Object.keys(equipmentData).length;
+                
+                const firstFiveNames = Object.keys(equipmentData).slice(0, 5).join(', ');
+                document.getElementById('first-names').textContent = firstFiveNames;
+                
+                console.log('Number of equipment items:', Object.keys(equipmentData).length);
+                console.log('First 5 equipment names:', firstFiveNames);
+                
+            } catch (error) {
+                console.error("Could not load equipment data:", error);
+                document.getElementById('data-status').textContent = 'Failed to Load: ' + error.message;
+            }
+        }
+
+        function setupAutocomplete() {
+            const nameInput = document.getElementById('testInput');
+            const suggestionsContainer = document.getElementById('suggestions');
+            
+            nameInput.oninput = (event) => {
+                const inputText = event.target.value.toLowerCase();
+                console.log('Input text:', inputText);
+                
+                suggestionsContainer.innerHTML = '';
+                
+                if (inputText.length < 1) {
+                    suggestionsContainer.style.display = 'none';
+                    return;
+                }
+
+                const filteredNames = Object.keys(equipmentData).filter(name => 
+                    name.toLowerCase().startsWith(inputText)
+                ).sort();
+                
+                console.log('Filtered names:', filteredNames);
+
+                if (filteredNames.length > 0) {
+                    filteredNames.forEach(name => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.className = 'suggestion-item';
+                        
+                        const index = name.toLowerCase().indexOf(inputText);
+                        const part1 = name.substring(0, index);
+                        const match = name.substring(index, index + inputText.length);
+                        const part2 = name.substring(index + inputText.length);
+                        suggestionItem.innerHTML = `${part1}<strong>${match}</strong>${part2}`;
+
+                        suggestionItem.onclick = () => {
+                            nameInput.value = name;
+                            suggestionsContainer.style.display = 'none';
+                            console.log('Selected:', name);
+                            
+                            // Show price if available
+                            if (equipmentData[name]) {
+                                alert(`Price for ${name}: €${equipmentData[name].price}`);
+                            }
+                        };
+                        suggestionsContainer.appendChild(suggestionItem);
+                    });
+                    suggestionsContainer.style.display = 'block';
+                } else {
+                    suggestionsContainer.style.display = 'none';
+                }
+            };
+
+            nameInput.onblur = () => {
+                setTimeout(() => {
+                    suggestionsContainer.style.display = 'none';
+                }, 150);
+            };
+        }
+
+        // Initialize
+        window.onload = async () => {
+            await loadEquipmentData();
+            setupAutocomplete();
+        };
+    </script>
+</body>
+</html> 

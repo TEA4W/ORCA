@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>🎨 Modern Orca Design Demo - Dark/Light Mode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style_modern.css">
+    <style>
+        /* Demo specific styles */
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .demo-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+        
+        .demo-title {
+            color: var(--accent-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .feature-card {
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            text-align: center;
+            transition: var(--transition-fast);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: var(--text-inverse);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+        <svg class="theme-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path class="sun-icon" d="M12 18a6 6 0 100-12 6 6 0 000 12zM12 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zM12 20a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM4.22 4.22a1 1 0 011.42 0l.71.71a1 1 0 11-1.42 1.42l-.71-.71a1 1 0 010-1.42zM17.36 17.36a1 1 0 011.42 0l.71.71a1 1 0 11-1.42 1.42l-.71-.71a1 1 0 010-1.42zM2 12a1 1 0 011-1h1a1 1 0 110 2H3a1 1 0 01-1-1zM20 12a1 1 0 011-1h1a1 1 0 110 2h-1a1 1 0 01-1-1zM4.22 19.78a1 1 0 011.42 0l.71-.71a1 1 0 11-1.42-1.42l-.71.71a1 1 0 010 1.42zM17.36 6.64a1 1 0 011.42 0l.71-.71a1 1 0 11-1.42-1.42l-.71.71a1 1 0 010 1.42z"/>
+            <path class="moon-icon" style="display: none;" d="M9.37 2.363A9 9 0 1021.637 14.63c-.966.365-2.009.556-3.137.556A9 9 0 019.37 2.363z"/>
+        </svg>
+    </button>
+
+    <div class="demo-container">
+        <!-- Main Header Demo -->
+        <div class="main-header">
+            <img src="imagens/logo-orca.png" alt="Orca Logo" class="main-header-logo">
+            <h1 class="main-header-title">Orca Modern</h1>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="demo-section">
+            <h2 class="demo-title">🎉 Modern Design Transformation Complete!</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem;">
+                Your Orca Equipment Calculator now features a completely modern design with dark mode support!
+            </p>
+            
+            <!-- Feature Grid -->
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌙</div>
+                    <h3>Dark Mode</h3>
+                    <p>Toggle between light and dark themes with the button in the top-right corner</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>Modern UI</h3>
+                    <p>Clean, minimalist design with smooth animations and hover effects</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Responsive</h3>
+                    <p>Optimized for all devices - desktop, tablet, and mobile</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Design System</h3>
+                    <p>Consistent colors, spacing, and typography throughout</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Components -->
+        <div class="demo-section">
+            <h2 class="demo-title">🛠️ Component Showcase</h2>
+            
+            <!-- Buttons Demo -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Modern Buttons</h3>
+                <div class="buttons">
+                    <button class="add"><i class="fas fa-plus"></i> Add Equipment</button>
+                    <button class="export"><i class="fas fa-download"></i> Export</button>
+                    <button class="save"><i class="fas fa-save"></i> Save</button>
+                    <button class="reset"><i class="fas fa-rotate-left"></i> Reset</button>
+                </div>
+            </div>
+
+            <!-- Form Elements Demo -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Form Elements</h3>
+                <div class="row">
+                    <div class="field-group">
+                        <label for="demo-input">Text Input</label>
+                        <input type="text" id="demo-input" placeholder="Modern input design">
+                    </div>
+                    <div class="field-group">
+                        <label for="demo-select">Select Dropdown</label>
+                        <select id="demo-select">
+                            <option>Select an option</option>
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row options-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" checked> 
+                        Modern Checkbox
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox"> 
+                        Another Option
+                    </label>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Demo -->
+            <div>
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Tab Navigation</h3>
+                <div class="tab-navigation">
+                    <a class="tab-link active"><i class="fas fa-calculator"></i><span>Calculator</span></a>
+                    <a class="tab-link"><i class="fas fa-shapes"></i><span>Equipment</span></a>
+                    <a class="tab-link"><i class="fas fa-file-invoice-dollar"></i><span>Quotes</span></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Equipment Card Demo -->
+        <div class="demo-section">
+            <h2 class="demo-title">🎪 Equipment Card Example</h2>
+            <div class="equipment-cards-container" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="equipment-card">
+                    <div class="equipment-card-image-container">
+                        <img src="imagens/piscina-de-bolas.png" alt="Demo Equipment" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="equipment-card-content">
+                        <div class="equipment-card-title">Piscina de Bolas</div>
+                        <div class="equipment-card-price">€49.00</div>
+                        <div class="equipment-card-description">Modern card design with hover effects and smooth animations.</div>
+                        <div class="equipment-card-actions">
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="equipment-card">
+                    <div class="equipment-card-image-container">
+                        <img src="imagens/castelo-das-princesas.png" alt="Demo Equipment" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="equipment-card-content">
+                        <div class="equipment-card-title">Castelo das Princesas</div>
+                        <div class="equipment-card-price">€189.00</div>
+                        <div class="equipment-card-description">Beautiful hover effects and modern styling bring your equipment to life.</div>
+                        <div class="equipment-card-actions">
+                            <button class="edit-btn">Edit</button>
+                            <button class="delete-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Demo -->
+        <div class="demo-section">
+            <h2 class="demo-title">📊 Modern Summary</h2>
+            <div class="summary">
+                <p>Subtotal: <span>€238.00</span></p>
+                <p>Transport: <span>€25.00</span></p>
+                <p class="discount-line">Discount (10%): <span>-€23.80</span></p>
+                <p class="grand-total">Total: <span>€239.20</span></p>
+            </div>
+        </div>
+
+        <!-- Features Summary -->
+        <div class="demo-section">
+            <h2 class="demo-title">🚀 What's New</h2>
+            <div style="text-align: center;">
+                <div class="highlight">🎨 Modern Design System</div>
+                <div class="highlight">🌙 Dark/Light Mode</div>
+                <div class="highlight">✨ Smooth Animations</div>
+                <div class="highlight">📱 Better Mobile</div>
+                <div class="highlight">🎯 Improved UX</div>
+                <div class="highlight">⚡ CSS Variables</div>
+            </div>
+            
+            <div style="margin-top: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md); border-left: 4px solid var(--accent-primary);">
+                <h3 style="margin-top: 0; color: var(--accent-primary);">✅ All Functionality Preserved</h3>
+                <p style="margin-bottom: 0; color: var(--text-secondary);">
+                    The modern design maintains 100% of the original functionality while adding beautiful visual improvements and dark mode support. 
+                    All calculations, equipment management, quote saving, and export features work exactly as before.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark Mode Toggle Functionality
+        function initializeTheme() {
+            const themeToggle = document.getElementById('themeToggle');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            
+            // Apply saved theme
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Toggle theme
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // Add a nice transition effect
+                document.body.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+                setTimeout(() => {
+                    document.body.style.transition = '';
+                }, 300);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+        });
+    </script>
+</body>
+</html> 
