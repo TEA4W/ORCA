@@ -1848,9 +1848,14 @@ th, td { padding: 4px 6px; }
         }
         
         async function openQuoteInNewWindow(quoteData) {
+            const quoteWindow = window.open('', '_blank');
+            if (!quoteWindow) {
+                alert("Pop-up bloqueado. Por favor, permita pop-ups para este site.");
+                return;
+            }
+
             const quoteHtml = await buildQuoteHtml(quoteData);
 
-            const quoteWindow = window.open('', '_blank');
             if (quoteWindow) {
                 quoteWindow.document.write('<html><head><title>Visualizar Orçamento</title></head><body></body></html>');
                 quoteWindow.document.close();
