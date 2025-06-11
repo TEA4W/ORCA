@@ -1847,31 +1847,31 @@ th, td { padding: 4px 6px; }
             });
         }
         
-        async function openQuoteInNewWindow(quoteData) {
-            const quoteWindow = window.open('', '_blank');
-            if (!quoteWindow) {
+        async function openQuoteInNewWindow(quoteData, quoteWindow = null) {
+            const win = quoteWindow || window.open('', '_blank');
+            if (!win) {
                 alert("Pop-up bloqueado. Por favor, permita pop-ups para este site.");
                 return;
             }
 
             const quoteHtml = await buildQuoteHtml(quoteData);
 
-            if (quoteWindow) {
-                quoteWindow.document.write('<html><head><title>Visualizar Orçamento</title></head><body></body></html>');
-                quoteWindow.document.close();
+            if (win) {
+                win.document.write('<html><head><title>Visualizar Orçamento</title></head><body></body></html>');
+                win.document.close();
 
-                const jspdfScript = quoteWindow.document.createElement('script');
+                const jspdfScript = win.document.createElement('script');
                 jspdfScript.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-                quoteWindow.document.head.appendChild(jspdfScript);
+                win.document.head.appendChild(jspdfScript);
 
-                const html2canvasScript = quoteWindow.document.createElement('script');
+                const html2canvasScript = win.document.createElement('script');
                 html2canvasScript.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
-                quoteWindow.document.head.appendChild(html2canvasScript);
+                win.document.head.appendChild(html2canvasScript);
 
-                quoteWindow.document.body.innerHTML = quoteHtml;
-                
+                win.document.body.innerHTML = quoteHtml;
+
                 html2canvasScript.onload = () => {
-                    const downloadBtn = quoteWindow.document.createElement('button');
+                    const downloadBtn = win.document.createElement('button');
                     downloadBtn.textContent = 'Download PDF';
                     downloadBtn.style.position = 'fixed';
                     downloadBtn.style.top = '10px';
@@ -1889,15 +1889,15 @@ th, td { padding: 4px 6px; }
                         downloadBtn.textContent = 'A gerar...';
                         downloadBtn.disabled = true;
                         try {
-                            const elementToPrint = quoteWindow.document.querySelector('.export-container');
-                             const canvas = await quoteWindow.html2canvas(elementToPrint, {
+                            const elementToPrint = win.document.querySelector('.export-container');
+                            const canvas = await win.html2canvas(elementToPrint, {
                                 scale: 2,
                                 useCORS: true,
                                 allowTaint: true,
                             });
 
                             const imgData = canvas.toDataURL('image/png');
-                            const { jsPDF } = quoteWindow.jspdf;
+                            const { jsPDF } = win.jspdf;
 
                             let pdf = new jsPDF('p', 'mm', 'a4');
                             const imgProps = pdf.getImageProperties(imgData);
@@ -1924,10 +1924,10 @@ th, td { padding: 4px 6px; }
                         }
                     };
 
-                    quoteWindow.document.body.appendChild(downloadBtn);
+                    win.document.body.appendChild(downloadBtn);
                 };
-                
-                quoteWindow.focus();
+
+                win.focus();
             } else {
                 alert("Pop-up bloqueado. Por favor, permita pop-ups para este site.");
             }
@@ -2232,7 +2232,12 @@ th, td { padding: 4px 6px; }
             document.getElementById('saveQuoteBtn').addEventListener('click', saveQuote);
             document.getElementById('viewCurrentQuoteBtn').addEventListener('click', () => {
                 const currentQuoteData = getQuoteDataForSave();
-                openQuoteInNewWindow(currentQuoteData);
+                const previewWindow = window.open('', '_blank');
+                if (!previewWindow) {
+                    alert('Pop-up bloqueado. Por favor, permita pop-ups para este site.');
+                    return;
+                }
+                openQuoteInNewWindow(currentQuoteData, previewWindow);
             });
 
             displayEquipmentList();
